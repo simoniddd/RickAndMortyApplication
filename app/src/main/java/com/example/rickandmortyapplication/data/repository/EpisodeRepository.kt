@@ -1,5 +1,4 @@
 
-import com.example.rickandmortyapplication.data.database.entities.CharacterEntity
 import com.example.rickandmortyapplication.data.database.entities.EpisodeEntity
 import com.example.rickandmortyapplication.data.network.ApiService
 import com.example.rickandmortyapplication.data.network.RetrofitInstance.api

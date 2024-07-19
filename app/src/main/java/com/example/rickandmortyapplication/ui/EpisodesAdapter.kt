@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyapplication.R
 import com.example.rickandmortyapplication.data.database.entities.EpisodeEntity
 
-class EpisodeAdapter : ListAdapter<EpisodeEntity, EpisodeAdapter.EpisodeViewHolder>(EpisodeDiffCallback()) {
+class EpisodesAdapter : ListAdapter<EpisodeEntity, EpisodesAdapter.EpisodeViewHolder>(EpisodeDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_episode, parent, false)

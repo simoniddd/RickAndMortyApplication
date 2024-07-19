@@ -51,6 +51,7 @@ dependencies {
     implementation ("com.squareup.okhttp3:logging-interceptor:4.9.0")
     implementation ("androidx.room:room-runtime:2.4.0")
     implementation(libs.androidx.activity)
+    implementation(libs.androidx.swiperefreshlayout)
     annotationProcessor("androidx.room:room-compiler:2.4.0")
     implementation ("androidx.room:room-ktx:2.4.0")
 

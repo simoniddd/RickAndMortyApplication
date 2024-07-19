@@ -17,7 +17,7 @@ class EpisodesActivity : AppCompatActivity() {
         setContentView(R.layout.activity_episode)
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        val adapter = EpisodeAdapter()
+        val adapter = EpisodesAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(this, 2) // 2 столбца
 

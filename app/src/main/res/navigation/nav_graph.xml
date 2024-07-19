@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Главный экран с нижней навигацией -->
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.myapp.ui.main.MainFragment"
+        android:label="Main Fragment"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_main_to_characters"
+            app:destination="@id/charactersFragment" />
+        <action
+            android:id="@+id/action_main_to_episodes"
+            app:destination="@id/episodesFragment" />
+        <action
+            android:id="@+id/action_main_to_locations"
+            app:destination="@id/locationsFragment" />
+    </fragment>
+
+    <!-- Фрагмент с персонажами -->
+    <fragment
+        android:id="@+id/charactersFragment"
+        android:name="com.example.myapp.ui.characters.CharactersFragment"
+        android:label="Characters Fragment"
+        tools:layout="@layout/fragment_characters">
+        <action
+            android:id="@+id/action_characters_to_characterDetails"
+            app:destination="@id/characterDetailsFragment" />
+    </fragment>
+
+    <!-- Фрагмент с деталями персонажа -->
+    <fragment
+        android:id="@+id/characterDetailsFragment"
+        android:name="com.example.myapp.ui.characters.CharacterDetailsFragment"
+        android:label="Character Details Fragment"
+        tools:layout="@layout/fragment_character_details">
+        <argument
+            android:name="characterId"
+            app:argType="string" />
+    </fragment>
+
+    <!-- Фрагмент с эпизодами -->
+    <fragment
+        android:id="@+id/episodesFragment"
+        android:name="com.example.myapp.ui.episodes.EpisodesFragment"
+        android:label="Episodes Fragment"
+        tools:layout="@layout/fragment_episodes">
+        <action
+            android:id="@+id/action_episodes_to_episodeDetails"
+            app:destination="@id/episodeDetailsFragment" />
+    </fragment>
+
+    <!-- Фрагмент с деталями эпизода -->
+    <fragment
+        android:id="@+id/episodeDetailsFragment"
+        android:name="com.example.myapp.ui.episodes.EpisodeDetailsFragment"
+        android:label="Episode Details Fragment"
+        tools:layout="@layout/fragment_episode_details">
+        <argument
+            android:name="episodeId"
+            app:argType="string" />
+    </fragment>
+
+    <!-- Фрагмент с локациями -->
+    <fragment
+        android:id="@+id/locationsFragment"
+        android:name="com.example.myapp.ui.locations.LocationsFragment"
+        android:label="Locations Fragment"
+        tools:layout="@layout/fragment_locations">
+        <action
+            android:id="@+id/action_locations_to_locationDetails"
+            app:destination="@id/locationDetailsFragment" />
+    </fragment>
+
+    <!-- Фрагмент с деталями локации -->
+    <fragment
+        android:id="@+id/locationDetailsFragment"
+        android:name="com.example.myapp.ui.locations.LocationDetailsFragment"
+        android:label="Location Details Fragment"
+        tools:layout="@layout/fragment_location_details">
+        <argument
+            android:name="locationId"
+            app:argType="string" />
+    </fragment>
+
+</navigation>

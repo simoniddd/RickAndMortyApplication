@@ -16,10 +16,10 @@
             android:name=".ui.LocationsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.EpisodeActivity"
+            android:name=".ui.EpisodesActivity"
             android:exported="false" />
         <activity
-            android:name=".CharactersActivity"
+            android:name=".CharacterActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

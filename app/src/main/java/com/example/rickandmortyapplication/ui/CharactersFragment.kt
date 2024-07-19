@@ -1,10 +1,13 @@
+package com.example.rickandmortyapplication.ui
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapp.data.repository.CharacterRepository
 import com.example.myapp.ui.CharacterViewModel
@@ -38,15 +41,15 @@ class CharactersFragment : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
 
-        // Handle search query
+        // Обработка ввода в SearchView
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let { characterViewModel.refreshCharacters(page = 1) }
+                query?.let { characterViewModel.setSearchQuery(it) }
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let { characterViewModel.refreshCharacters(page = 1) }
+                newText?.let { characterViewModel.setSearchQuery(it) }
                 return true
             }
         })
@@ -57,9 +60,11 @@ class CharactersFragment : Fragment() {
             binding.swipeRefreshLayout.isRefreshing = false
         }
 
-        // Observe character list
-        characterViewModel.allCharacters.observe(viewLifecycleOwner, { characters ->
-            characters?.let { adapter.submitList(it) }
-        })
+        // Наблюдение за фильтрованными результатами
+        lifecycleScope.launchWhenStarted {
+            characterViewModel.filteredCharacters.collect { characters ->
+                adapter.submitList(characters)
+            }
+        }
     }
 }

@@ -15,7 +15,7 @@ class CharacterRepository(
         withContext(Dispatchers.IO) {
             val response = api.getAllCharacters(page)
             val characters = response.results.map {
-                CharacterEntity(it.id, it.name, it.species, it.status, it.origin, it.gender, it.image)
+                CharacterEntity(it.id, it.name, it.species, it.status, it.origin, it.gender, it.image, it.episodes)
             }
             characterDao.insertCharacters(characters)
         }
@@ -23,5 +23,9 @@ class CharacterRepository(
 
     fun getAllCharacters(): Flow<List<CharacterEntity>> {
         return characterDao.getAllCharacters()
+    }
+
+    fun getCharacter(characterId: Int): Flow<CharacterEntity> {
+        return characterDao.getCharacterById(characterId)
     }
 }

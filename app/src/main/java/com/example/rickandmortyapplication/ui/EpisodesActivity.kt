@@ -1,10 +1,13 @@
+package com.example.rickandmortyapplication.ui
+
+import EpisodesAdapter
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapp.ui.EpisodeViewModel
+import com.example.myapp.ui.episodes.EpisodeViewModel
 import com.example.rickandmortyapplication.R
 import kotlinx.coroutines.launch
 

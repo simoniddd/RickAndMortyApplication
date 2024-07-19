@@ -4,6 +4,7 @@ import com.example.rickandmortyapplication.data.network.ApiService
 import com.example.rickandmortyapplication.data.network.RetrofitInstance.api
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class EpisodeRepository(private val apiService: ApiService, private val episodeDao: EpisodeDao) {
@@ -22,4 +23,12 @@ class EpisodeRepository(private val apiService: ApiService, private val episodeD
         fun getAllEpisodes(): Flow<List<EpisodeEntity>> {
             return episodeDao.getAllEpisodes()
         }
+
+    // Метод для получения отфильтрованных эпизодов
+    fun getFilteredEpisodes(query: String): Flow<List<EpisodeEntity>> {
+        return episodeDao.getAllEpisodes()
+            .map { episodes ->
+                episodes.filter { it.name.contains(query, ignoreCase = true) }
+            }
     }
+}

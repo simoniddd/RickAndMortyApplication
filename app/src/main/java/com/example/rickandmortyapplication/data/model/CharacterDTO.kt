@@ -7,5 +7,6 @@ package com.example.rickandmortyapplication.data.model
         val status: String,
         val origin: String,
         val gender: String,
-        val image: String
+        val image: String,
+        val episodes: List<String>
     )

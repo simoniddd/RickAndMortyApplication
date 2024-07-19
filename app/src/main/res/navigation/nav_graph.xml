@@ -6,7 +6,7 @@
     <!-- Главный экран с нижней навигацией -->
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.myapp.ui.main.MainFragment"
+        android:name="com.example.rickandmortyapplication.ui.MainFragment"
         android:label="Main Fragment"
         tools:layout="@layout/fragment_main">
         <action
@@ -23,7 +23,7 @@
     <!-- Фрагмент с персонажами -->
     <fragment
         android:id="@+id/charactersFragment"
-        android:name="com.example.myapp.ui.characters.CharactersFragment"
+        android:name="com.example.rickandmortyapplication.ui.CharactersFragment"
         android:label="Characters Fragment"
         tools:layout="@layout/fragment_characters">
         <action

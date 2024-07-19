@@ -4,6 +4,7 @@ import com.example.rickandmortyapplication.data.network.ApiService
 import com.example.rickandmortyapplication.data.network.RetrofitInstance.api
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class LocationRepository(private val apiService: ApiService, private val locationDao: LocationDao) {
@@ -21,5 +22,13 @@ class LocationRepository(private val apiService: ApiService, private val locatio
 
     fun getAllLocations(): Flow<List<LocationEntity>> {
         return locationDao.getAllLocations()
+    }
+
+    // Метод для получения отфильтрованных локаций
+    fun getFilteredLocations(query: String): Flow<List<LocationEntity>> {
+        return locationDao.getAllLocations()
+            .map { locations ->
+                locations.filter { it.name.contains(query, ignoreCase = true) }
+            }
     }
 }

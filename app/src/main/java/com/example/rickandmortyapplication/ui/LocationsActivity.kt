@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.ui.LocationViewModel
+import com.example.myapp.ui.locations.LocationViewModel
 import com.example.rickandmortyapplication.R
 import kotlinx.coroutines.launch
 

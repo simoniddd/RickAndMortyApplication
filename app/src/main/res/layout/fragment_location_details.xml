@@ -3,7 +3,7 @@
         <!-- Declare ViewModel -->
         <variable
             name="viewModel"
-            type="com.example.myapp.ui.locations.LocationViewModel" />
+            type="com.example.myapp.ui.locations.LocationsViewModel" />
     </data>
 
     <RelativeLayout

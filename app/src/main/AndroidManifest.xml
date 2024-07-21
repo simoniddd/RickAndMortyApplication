@@ -16,7 +16,7 @@
             android:name=".ui.LocationsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.EpisodesActivity"
+            android:name=".ui.EpisodeActivity"
             android:exported="false" />
         <activity
             android:name=".ui.CharacterActivity"

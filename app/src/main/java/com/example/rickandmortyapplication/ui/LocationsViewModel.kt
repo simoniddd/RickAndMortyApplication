@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
-class LocationViewModel(
+class LocationsViewModel(
     application: Application,
     private val repository: LocationRepository
 ) : AndroidViewModel(application) {

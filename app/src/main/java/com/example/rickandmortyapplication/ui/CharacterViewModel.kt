@@ -10,6 +10,8 @@ import com.example.rickandmortyapplication.data.network.RetrofitInstance.api
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -21,7 +23,8 @@ class CharacterViewModel(
 ) : AndroidViewModel(application) {
 
     // Хранение поискового запроса
-    private val searchQuery = MutableStateFlow("")
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
     // открытый поток всех персонажей
     val allCharacters: Flow<List<CharacterEntity>> = repository.getAllCharacters()
@@ -29,15 +32,11 @@ class CharacterViewModel(
     // Фильтрованные результаты поиска
     val filteredCharacters: Flow<List<CharacterEntity>> = searchQuery
         .flatMapLatest { query ->
-            allCharacters.map { characters ->
-                characters.filter { character ->
-                    character.name.contains(query, ignoreCase = true)
-                }
-            }
+            repository.getFilteredCharacters(query)
         }
 
     fun setSearchQuery(query: String) {
-        searchQuery.value = query
+        _searchQuery.value = query
     }
 
     fun refreshCharacters(page: Int) {

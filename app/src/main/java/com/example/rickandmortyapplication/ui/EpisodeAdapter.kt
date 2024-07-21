@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyapplication.R
 import com.example.rickandmortyapplication.data.database.entities.EpisodeEntity
 
-class EpisodesAdapter : ListAdapter<EpisodeEntity, EpisodesAdapter.EpisodeViewHolder>(EpisodeDiffCallback()) {
+class EpisodeAdapter : ListAdapter<EpisodeEntity, EpisodeAdapter.EpisodeViewHolder>(EpisodeDiffCallback()) {
 
     private var onItemClickListener: ((EpisodeEntity) -> Unit)? = null
 

@@ -17,13 +17,13 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
 
 
-class LocationFragment : Fragment() {
+class LocationsFragment : Fragment() {
 
     private lateinit var binding: FragmentLocationsBinding
     private val locationDao by lazy { AppDatabase.getDatabase(requireContext()).locationDao() }
     private val apiService by lazy { RetrofitInstance.api }
     private val locationRepository by lazy { LocationRepository(apiService, locationDao) }
-    private val locationViewModel: LocationViewModel by viewModels {
+    private val locationViewModel: LocationsViewModel by viewModels {
         LocationViewModelFactory(requireActivity().application, locationRepository)
     }
 
@@ -47,6 +47,13 @@ class LocationFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        // Observe filtered location list using lifecycleScope
+        lifecycleScope.launch {
+            locationViewModel.filteredLocations.collect { locations ->
+                adapter.submitList(locations)
+            }
+        }
+
         // Handle search query
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -64,13 +71,6 @@ class LocationFragment : Fragment() {
         binding.swipeRefreshLayout.setOnRefreshListener {
             locationViewModel.refreshLocations(page = 1)
             binding.swipeRefreshLayout.isRefreshing = false
-        }
-
-        // Observe filtered location list using lifecycleScope
-        viewLifecycleOwner.lifecycleScope.launch {
-            locationViewModel.filteredLocations.collect { locations ->
-                locations?.let { adapter.submitList(it) }
-            }
         }
     }
 }

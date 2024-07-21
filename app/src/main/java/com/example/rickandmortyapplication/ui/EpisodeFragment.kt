@@ -1,7 +1,7 @@
 package com.example.myapp.ui.episodes
 
 import EpisodeRepository
-import EpisodesAdapter
+import EpisodeAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -38,9 +38,23 @@ class EpisodeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = EpisodesAdapter()
+        val adapter = EpisodeAdapter()
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
+
+        // Observe filtered episode list using lifecycleScope
+        lifecycleScope.launch {
+            episodeViewModel.filteredEpisodes.collect { episodes ->
+                adapter.submitList(episodes)
+            }
+        }
+
+        // Set item click listener
+        adapter.setOnItemClickListener { episode ->
+            val action =
+                EpisodesFragmentDirections.actionEpisodesFragmentToEpisodeDetailFragment(episode.id)
+            findNavController().navigate(action)
+        }
 
         // Настройка SearchView
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -60,21 +74,7 @@ class EpisodeFragment : Fragment() {
                 episodeViewModel.refreshEpisodes(page = 1)
                 binding.swipeRefreshLayout.isRefreshing = false
             }
-
-            // Observe filtered episode list using lifecycleScope
-            viewLifecycleOwner.lifecycleScope.launch {
-                episodeViewModel.filteredEpisodes.collect { episodes ->
-                    episodes?.let { adapter.submitList(it) }
-                }
-            }
-
-            // Set item click listener
-            adapter.setOnItemClickListener { episode ->
-                val action =
-                    EpisodesFragmentDirections.actionEpisodesFragmentToEpisodeDetailFragment(episode.id)
-                findNavController().navigate(action)
-            }
-        }
     }
 }
+
 

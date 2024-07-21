@@ -1,6 +1,6 @@
 package com.example.rickandmortyapplication.ui
 
-import EpisodesAdapter
+import EpisodeAdapter
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +12,7 @@ import com.example.rickandmortyapplication.R
 import kotlinx.coroutines.launch
 
 
-class EpisodesActivity : AppCompatActivity() {
+class EpisodeActivity : AppCompatActivity() {
     private val viewModel: EpisodeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +20,7 @@ class EpisodesActivity : AppCompatActivity() {
         setContentView(R.layout.activity_episode)
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        val adapter = EpisodesAdapter()
+        val adapter = EpisodeAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(this, 2) // 2 столбца
 

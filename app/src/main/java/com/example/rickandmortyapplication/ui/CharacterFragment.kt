@@ -8,15 +8,16 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapp.data.repository.CharacterRepository
 import com.example.myapp.ui.CharacterViewModel
 import com.example.myapp.ui.CharacterViewModelFactory
 import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.databinding.FragmentCharactersBinding
-import com.example.rickandmortyapplication.ui.CharacterAdapter
+import kotlinx.coroutines.launch
 
-class CharactersFragment : Fragment() {
+class CharacterFragment : Fragment() {
 
     private lateinit var binding: FragmentCharactersBinding
     private val characterDao by lazy { AppDatabase.getDatabase(requireContext()).characterDao() }
@@ -54,6 +55,11 @@ class CharactersFragment : Fragment() {
             }
         })
 
+        adapter.setOnItemClickListener { character ->
+            val action = CharactersFragmentDirections.actionCharactersToCharacterDetails(character.id)
+            findNavController().navigate(action)
+        }
+
         // Handle swipe to refresh
         binding.swipeRefreshLayout.setOnRefreshListener {
             characterViewModel.refreshCharacters(page = 1)
@@ -61,7 +67,7 @@ class CharactersFragment : Fragment() {
         }
 
         // Наблюдение за фильтрованными результатами
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launch {
             characterViewModel.filteredCharacters.collect { characters ->
                 adapter.submitList(characters)
             }

@@ -23,7 +23,7 @@
     <!-- Фрагмент с персонажами -->
     <fragment
         android:id="@+id/charactersFragment"
-        android:name="com.example.rickandmortyapplication.ui.CharactersFragment"
+        android:name="com.example.rickandmortyapplication.ui.CharacterFragment"
         android:label="Characters Fragment"
         tools:layout="@layout/fragment_characters">
         <action
@@ -34,7 +34,7 @@
     <!-- Фрагмент с деталями персонажа -->
     <fragment
         android:id="@+id/characterDetailsFragment"
-        android:name="com.example.myapp.ui.characters.CharacterDetailsFragment"
+        android:name="com.example.myapp.ui.CharacterDetailsFragment"
         android:label="Character Details Fragment"
         tools:layout="@layout/fragment_character_details">
         <argument
@@ -56,7 +56,7 @@
     <!-- Фрагмент с деталями эпизода -->
     <fragment
         android:id="@+id/episodeDetailsFragment"
-        android:name="com.example.myapp.ui.EpisodeDetailFragment"
+        android:name="com.example.myapp.ui.EpisodeDetailsFragment"
         android:label="Episode Details Fragment"
         tools:layout="@layout/fragment_episode_detail">
         <argument
@@ -67,7 +67,7 @@
     <!-- Фрагмент с локациями -->
     <fragment
         android:id="@+id/locationsFragment"
-        android:name="com.example.myapp.ui.locations.LocationFragment"
+        android:name="com.example.myapp.ui.LocationsFragment"
         android:label="Locations Fragment"
         tools:layout="@layout/fragment_locations">
         <action
@@ -78,7 +78,7 @@
     <!-- Фрагмент с деталями локации -->
     <fragment
         android:id="@+id/locationDetailsFragment"
-        android:name="com.example.myapp.ui.locations.LocationDetailsFragment"
+        android:name="com.example.myapp.ui.LocationDetailsFragment"
         android:label="Location Details Fragment"
         tools:layout="@layout/fragment_location_details">
         <argument

@@ -1,12 +1,12 @@
 package com.example.rickandmortyapplication.ui
 
-import EpisodesAdapter
+import EpisodeAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -15,20 +15,20 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import com.bumptech.glide.Glide
 import com.example.myapp.ui.CharacterViewModel
-import com.example.rickandmortyapplication.databinding.FragmentCharacterDetailBinding
+import com.example.rickandmortyapplication.databinding.FragmentCharacterDetailsBinding
 import kotlinx.coroutines.launch
 
 class CharacterDetailFragment : Fragment() {
 
-    private var _binding: FragmentCharacterDetailBinding? = null
+    private var _binding: FragmentCharacterDetailsBinding? = null
     private val binding get() = _binding!!
-    private val characterViewModel: CharacterViewModel by viewModels()
+    private val characterViewModel: CharacterViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentCharacterDetailBinding.inflate(inflater, container, false)
+        _binding = FragmentCharacterDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -51,7 +51,7 @@ class CharacterDetailFragment : Fragment() {
                         .into(binding.characterImage)
 
                     // Адаптер и RecyclerView для отображения эпизодов
-                    val adapter = EpisodesAdapter()
+                    val adapter = EpisodeAdapter()
                     binding.episodesRecyclerView.adapter = adapter
                     binding.episodesRecyclerView.layoutManager = LinearLayoutManager(context)
 

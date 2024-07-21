@@ -30,7 +30,9 @@ class LocationRepository(
 
     // Метод для получения отфильтрованных локаций
     fun getFilteredLocations(query: String): Flow<List<LocationEntity>> {
-        return locationDao.getFilteredLocations(query)
+        return locationDao.getAllLocations().map { locations ->
+            locations.filter { it.name.contains(query, ignoreCase = true) }
+        }
     }
 
     fun getLocationById(id: Int): Flow<LocationEntity> {

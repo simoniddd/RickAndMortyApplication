@@ -21,6 +21,10 @@ class CharacterRepository(
         }
     }
 
+    fun getFilteredCharacters(query: String): Flow<List<CharacterEntity>> {
+        return characterDao.getCharactersByName(query)
+    }
+
     fun getAllCharacters(): Flow<List<CharacterEntity>> {
         return characterDao.getAllCharacters()
     }

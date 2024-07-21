@@ -2,8 +2,9 @@ package com.example.rickandmortyapplication.ui
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.myapp.ui.episodes.EpisodeFragment
-import com.example.myapp.ui.locations.LocationsFragment
+import com.example.rickandmortyapplication.ui.episodes.EpisodeFragment
+import com.example.rickandmortyapplication.ui.locations.listLocations.LocationsFragment
+import com.example.rickandmortyapplication.ui.character.CharacterFragment
 
 class MainPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int = 3

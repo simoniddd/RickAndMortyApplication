@@ -1,3 +1,5 @@
+package com.example.rickandmortyapplication.ui.locations
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +11,9 @@ import com.example.rickandmortyapplication.R
 import com.example.rickandmortyapplication.data.database.entities.LocationEntity
 
 
-class LocationsAdapter : ListAdapter<LocationEntity, LocationsAdapter.LocationViewHolder>(LocationDiffCallback()) {
+class LocationsAdapter : ListAdapter<LocationEntity, LocationsAdapter.LocationViewHolder>(
+    LocationDiffCallback()
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_location, parent, false)

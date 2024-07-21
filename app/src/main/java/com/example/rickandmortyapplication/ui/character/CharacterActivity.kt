@@ -1,4 +1,4 @@
-package com.example.rickandmortyapplication.ui
+package com.example.rickandmortyapplication.ui.character
 
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -6,9 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapp.ui.CharacterViewModel
 import com.example.rickandmortyapplication.R
-import com.example.rickandmortyapplication.ui.CharacterAdapter
 import kotlinx.coroutines.launch
 
 class CharacterActivity : AppCompatActivity() {

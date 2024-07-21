@@ -1,6 +1,6 @@
-package com.example.rickandmortyapplication.ui
+package com.example.rickandmortyapplication.ui.character
 
-import EpisodeAdapter
+import com.example.rickandmortyapplication.ui.episodes.EpisodeAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import com.bumptech.glide.Glide
-import com.example.myapp.ui.CharacterViewModel
 import com.example.rickandmortyapplication.databinding.FragmentCharacterDetailsBinding
 import kotlinx.coroutines.launch
 

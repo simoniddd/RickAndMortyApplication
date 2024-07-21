@@ -1,4 +1,4 @@
-package com.example.rickandmortyapplication.ui
+package com.example.rickandmortyapplication.ui.locations.detailLocation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.myapp.ui.locations.LocationsViewModel
 import com.example.rickandmortyapplication.databinding.FragmentLocationDetailsBinding
+import com.example.rickandmortyapplication.ui.locations.listLocations.LocationsViewModel
 import kotlinx.coroutines.launch
 
 class LocationDetailsFragment : Fragment() {

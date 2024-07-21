@@ -1,35 +1,34 @@
-package com.example.rickandmortyapplication.ui
+package com.example.rickandmortyapplication.ui.episodes
 
-import LocationsAdapter
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapp.ui.locations.LocationsViewModel
 import com.example.rickandmortyapplication.R
 import kotlinx.coroutines.launch
 
-class LocationsActivity : AppCompatActivity() {
-    private val viewModel: LocationsViewModel by viewModels()
+
+class EpisodeActivity : AppCompatActivity() {
+    private val viewModel: EpisodeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_locations)
+        setContentView(R.layout.activity_episode)
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        val adapter = LocationsAdapter()
+        val adapter = EpisodeAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(this, 2) // 2 столбца
 
         lifecycleScope.launch {
-            viewModel.allLocations.collect { locations ->
-                adapter.submitList(locations)
+            viewModel.allEpisodes.collect { episodes ->
+                adapter.submitList(episodes)
             }
         }
 
         // Загрузить данные при запуске
-        viewModel.refreshLocations(1)
+        viewModel.refreshEpisodes(1)
     }
 }

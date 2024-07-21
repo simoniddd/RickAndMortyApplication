@@ -23,18 +23,18 @@
     <!-- Фрагмент с персонажами -->
     <fragment
         android:id="@+id/charactersFragment"
-        android:name="com.example.rickandmortyapplication.ui.CharacterFragment"
+        android:name="com.example.rickandmortyapplication.ui.character.CharacterFragment"
         android:label="Characters Fragment"
         tools:layout="@layout/fragment_characters">
         <action
-            android:id="@+id/action_characters_to_characterDetails"
+            android:id="@+id/action_charactersFragment_to_characterDetailsFragment"
             app:destination="@id/characterDetailsFragment" />
     </fragment>
 
     <!-- Фрагмент с деталями персонажа -->
     <fragment
         android:id="@+id/characterDetailsFragment"
-        android:name="com.example.myapp.ui.CharacterDetailsFragment"
+        android:name="com.example.rickandmortyapplication.ui.character.CharacterDetailsFragment"
         android:label="Character Details Fragment"
         tools:layout="@layout/fragment_character_details">
         <argument
@@ -45,18 +45,18 @@
     <!-- Фрагмент с эпизодами -->
     <fragment
         android:id="@+id/episodesFragment"
-        android:name="com.example.myapp.ui.episodes.EpisodeFragment"
+        android:name="com.example.rickandmortyapplication.ui.episodes.EpisodeFragment"
         android:label="Episodes Fragment"
         tools:layout="@layout/fragment_episodes">
         <action
-            android:id="@+id/action_episodes_to_episodeDetails"
+            android:id="@+id/action_episodesFragment_to_episodeDetailsFragment"
             app:destination="@id/episodeDetailsFragment" />
     </fragment>
 
     <!-- Фрагмент с деталями эпизода -->
     <fragment
         android:id="@+id/episodeDetailsFragment"
-        android:name="com.example.myapp.ui.EpisodeDetailsFragment"
+        android:name="com.example.rickandmortyapplication.ui.episodes.EpisodeDetailsFragment"
         android:label="Episode Details Fragment"
         tools:layout="@layout/fragment_episode_detail">
         <argument
@@ -67,18 +67,18 @@
     <!-- Фрагмент с локациями -->
     <fragment
         android:id="@+id/locationsFragment"
-        android:name="com.example.myapp.ui.LocationsFragment"
+        android:name="com.example.rickandmortyapplication.ui.locations.listLocations.LocationsFragment"
         android:label="Locations Fragment"
         tools:layout="@layout/fragment_locations">
         <action
-            android:id="@+id/action_locations_to_locationDetails"
+            android:id="@+id/action_locationsFragment_to_locationDetailsFragment"
             app:destination="@id/locationDetailsFragment" />
     </fragment>
 
     <!-- Фрагмент с деталями локации -->
     <fragment
         android:id="@+id/locationDetailsFragment"
-        android:name="com.example.myapp.ui.LocationDetailsFragment"
+        android:name="com.example.rickandmortyapplication.ui.locations.detailLocation.LocationDetailsFragment"
         android:label="Location Details Fragment"
         tools:layout="@layout/fragment_location_details">
         <argument

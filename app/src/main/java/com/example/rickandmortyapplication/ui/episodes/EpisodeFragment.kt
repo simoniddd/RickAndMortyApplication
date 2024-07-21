@@ -1,7 +1,6 @@
-package com.example.myapp.ui.episodes
+package com.example.rickandmortyapplication.ui.episodes
 
 import EpisodeRepository
-import EpisodeAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -51,8 +50,7 @@ class EpisodeFragment : Fragment() {
 
         // Set item click listener
         adapter.setOnItemClickListener { episode ->
-            val action =
-                EpisodesFragmentDirections.actionEpisodesFragmentToEpisodeDetailFragment(episode.id)
+            val action = EpisodeFragmentDirections.actionEpisodesFragmentToEpisodeDetailFragment(episode.id)
             findNavController().navigate(action)
         }
 

@@ -1,7 +1,6 @@
-package com.example.myapp.ui
+package com.example.rickandmortyapplication.ui.character
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapp.data.repository.CharacterRepository

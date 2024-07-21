@@ -1,4 +1,4 @@
-package com.example.myapp.ui.episodes
+package com.example.rickandmortyapplication.ui.episodes
 
 import EpisodeRepository
 import android.app.Application

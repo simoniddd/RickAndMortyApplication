@@ -1,4 +1,4 @@
-package com.example.rickandmortyapplication.ui
+package com.example.rickandmortyapplication.ui.locations.detailLocation
 
 import LocationRepository
 import android.app.Application

@@ -1,18 +1,19 @@
-package com.example.myapp.ui.locations
+package com.example.rickandmortyapplication.ui.locations.detailLocation
 
 import LocationRepository
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class LocationViewModelFactory(
+class LocationDetailsViewModelFactory(
     private val application: Application,
     private val repository: LocationRepository
-) : ViewModelProvider.Factory {
-    @Suppress("unchecked_cast")
+) : ViewModelProvider.NewInstanceFactory() {
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(LocationsViewModel::class.java)) {
-            return LocationsViewModel(application, repository) as T
+        if (modelClass.isAssignableFrom(LocationDetailsViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return LocationDetailsViewModel(application, repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

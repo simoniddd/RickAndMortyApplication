@@ -1,7 +1,6 @@
-package com.example.myapp.ui.locations
+package com.example.rickandmortyapplication.ui.locations.listLocations
 
 import LocationRepository
-import LocationsAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +13,7 @@ import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.databinding.FragmentLocationsBinding
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.rickandmortyapplication.ui.locations.LocationsAdapter
 import kotlinx.coroutines.launch
 
 
@@ -43,7 +43,7 @@ class LocationsFragment : Fragment() {
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
 
         adapter.setOnItemClickListener { location ->
-            val action = LocationFragmentDirections.actionLocationFragmentToLocationDetailsFragment(location.id)
+            val action = LocationsFragmentDirections.actionLocationsFragmentToLocationDetailsFragment(location.id)
             findNavController().navigate(action)
         }
 

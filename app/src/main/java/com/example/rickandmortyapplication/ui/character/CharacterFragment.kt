@@ -1,4 +1,4 @@
-package com.example.rickandmortyapplication.ui
+package com.example.rickandmortyapplication.ui.character
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,8 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapp.data.repository.CharacterRepository
-import com.example.myapp.ui.CharacterViewModel
-import com.example.myapp.ui.CharacterViewModelFactory
 import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.databinding.FragmentCharactersBinding
 import kotlinx.coroutines.launch
@@ -56,7 +54,7 @@ class CharacterFragment : Fragment() {
         })
 
         adapter.setOnItemClickListener { character ->
-            val action = CharactersFragmentDirections.actionCharactersToCharacterDetails(character.id)
+            val action = CharacterFragmentDirections.actionCharactersFragmentToCharacterDetailsFragment(character.id)
             findNavController().navigate(action)
         }
 

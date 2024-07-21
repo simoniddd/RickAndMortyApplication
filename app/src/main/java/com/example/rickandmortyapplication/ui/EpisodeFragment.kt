@@ -10,14 +10,14 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.databinding.FragmentEpisodesBinding
+import kotlinx.coroutines.launch
 
 
-class EpisodesFragment : Fragment() {
+class EpisodeFragment : Fragment() {
 
     private lateinit var binding: FragmentEpisodesBinding
     private val episodeDao by lazy { AppDatabase.getDatabase(requireContext()).episodeDao() }
@@ -55,27 +55,25 @@ class EpisodesFragment : Fragment() {
             }
         })
 
-        // Наблюдение за изменениями в отфильтрованных эпизодах
-        lifecycleScope.launchWhenStarted {
-            episodeViewModel.filteredEpisodes.collect { episodes ->
-                adapter.submitList(episodes)
+            // Handle swipe to refresh
+            binding.swipeRefreshLayout.setOnRefreshListener {
+                episodeViewModel.refreshEpisodes(page = 1)
+                binding.swipeRefreshLayout.isRefreshing = false
             }
 
-        // Handle swipe to refresh
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            episodeViewModel.refreshEpisodes(page = 1)
-            binding.swipeRefreshLayout.isRefreshing = false
-        }
+            // Observe filtered episode list using lifecycleScope
+            viewLifecycleOwner.lifecycleScope.launch {
+                episodeViewModel.filteredEpisodes.collect { episodes ->
+                    episodes?.let { adapter.submitList(it) }
+                }
+            }
 
-        // Observe episode list
-        episodeViewModel.allEpisodes.observe(viewLifecycleOwner) { episodes ->
-            episodes?.let { adapter.submitList(it) }
-        }
-
-        // Set item click listener
-        adapter.setOnItemClickListener { episode ->
-            val action = EpisodesFragmentDirections.actionEpisodesFragmentToEpisodeDetailFragment(episode.id)
-            findNavController().navigate(action)
+            // Set item click listener
+            adapter.setOnItemClickListener { episode ->
+                val action =
+                    EpisodesFragmentDirections.actionEpisodesFragmentToEpisodeDetailFragment(episode.id)
+                findNavController().navigate(action)
+            }
         }
     }
 }

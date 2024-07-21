@@ -28,7 +28,11 @@ class LocationViewModel(
     // Фильтруем локации на основе поискового запроса
     val filteredLocations: Flow<List<LocationEntity>> = searchQuery
         .flatMapLatest { query ->
-            repository.getFilteredLocations(query)
+            if (query.isBlank()) {
+                _allLocations
+            } else {
+                repository.getFilteredLocations(query)
+            }
         }
 
     init {
@@ -48,5 +52,10 @@ class LocationViewModel(
         viewModelScope.launch {
             repository.refreshLocations(page)
         }
+    }
+
+    // Метод для получения локации по ID
+    fun getLocationById(id: Int): Flow<LocationEntity> {
+        return repository.getLocationById(id)
     }
 }

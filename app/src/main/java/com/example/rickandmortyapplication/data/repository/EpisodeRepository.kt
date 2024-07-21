@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 class EpisodeRepository(private val apiService: ApiService, private val episodeDao: EpisodeDao) {
 
     // Функция для получения эпизодов с API и сохранения их в базе данных
-        suspend fun refreshEpisodes(page: Int) {
+   suspend fun refreshEpisodes(page: Int) {
             withContext(Dispatchers.IO) {
                 val response = api.getAllEpisodes(page)
                 val episodes = response.results.map {
@@ -20,9 +20,13 @@ class EpisodeRepository(private val apiService: ApiService, private val episodeD
             }
         }
 
-        fun getAllEpisodes(): Flow<List<EpisodeEntity>> {
+    fun getAllEpisodes(): Flow<List<EpisodeEntity>> {
             return episodeDao.getAllEpisodes()
         }
+
+    fun getEpisodeById(id: Int): Flow<EpisodeEntity?> {
+        return episodeDao.getEpisodeById(id)
+    }
 
     // Метод для получения отфильтрованных эпизодов
     fun getFilteredEpisodes(query: String): Flow<List<EpisodeEntity>> {

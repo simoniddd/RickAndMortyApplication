@@ -45,7 +45,7 @@
     <!-- Фрагмент с эпизодами -->
     <fragment
         android:id="@+id/episodesFragment"
-        android:name="com.example.myapp.ui.episodes.EpisodesFragment"
+        android:name="com.example.myapp.ui.episodes.EpisodeFragment"
         android:label="Episodes Fragment"
         tools:layout="@layout/fragment_episodes">
         <action
@@ -56,9 +56,9 @@
     <!-- Фрагмент с деталями эпизода -->
     <fragment
         android:id="@+id/episodeDetailsFragment"
-        android:name="com.example.myapp.ui.episodes.EpisodeDetailsFragment"
+        android:name="com.example.myapp.ui.EpisodeDetailFragment"
         android:label="Episode Details Fragment"
-        tools:layout="@layout/fragment_episode_details">
+        tools:layout="@layout/fragment_episode_detail">
         <argument
             android:name="episodeId"
             app:argType="string" />
@@ -67,7 +67,7 @@
     <!-- Фрагмент с локациями -->
     <fragment
         android:id="@+id/locationsFragment"
-        android:name="com.example.myapp.ui.locations.LocationsFragment"
+        android:name="com.example.myapp.ui.locations.LocationFragment"
         android:label="Locations Fragment"
         tools:layout="@layout/fragment_locations">
         <action

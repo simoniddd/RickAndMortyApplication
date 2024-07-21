@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
 class EpisodeViewModel(
@@ -31,6 +32,14 @@ class EpisodeViewModel(
             repository.getFilteredEpisodes(query)
         }
 
+    // Храним текущий идентификатор эпизода
+    private val _episodeId = MutableStateFlow<Int?>(null)
+
+    // Получаем данные эпизода по ID
+    val episodeDetail: Flow<EpisodeEntity?> = _episodeId.flatMapLatest { id ->
+        id?.let { repository.getEpisodeById(it) } ?: flowOf(null)
+    }
+
     init {
         // Инициализируем получение эпизодов, если нужно
         viewModelScope.launch {
@@ -41,6 +50,16 @@ class EpisodeViewModel(
     // Метод для установки поискового запроса
     fun setSearchQuery(query: String) {
         _searchQuery.value = query
+    }
+
+    // Метод для установки идентификатора эпизода
+    fun setEpisodeId(id: Int) {
+        _episodeId.value = id
+    }
+
+    // Метод для получения эпизода по ID (если нужно)
+    fun getEpisodeById(id: Int): Flow<EpisodeEntity?> {
+        return repository.getEpisodeById(id)
     }
 
     // Метод для обновления эпизодов

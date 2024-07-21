@@ -35,8 +35,7 @@ class EpisodesAdapter : ListAdapter<EpisodeEntity, EpisodesAdapter.EpisodeViewHo
             itemView.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val episode = getItem(position)
-                    onItemClickListener?.invoke(episode)
+                    adapter.getItem(position)?.let { onItemClickListener?.invoke(it) }
                 }
             }
         }

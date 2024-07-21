@@ -1,10 +1,9 @@
 package com.example.rickandmortyapplication.ui
 
-import CharactersFragment
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.myapp.ui.episodes.EpisodesFragment
-import com.example.myapp.ui.locations.LocationsFragment
+import com.example.myapp.ui.episodes.EpisodeFragment
+import com.example.myapp.ui.locations.LocationFragment
 
 class MainPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int = 3
@@ -12,8 +11,8 @@ class MainPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> CharactersFragment()
-            1 -> EpisodesFragment()
-            2 -> LocationsFragment()
+            1 -> EpisodeFragment()
+            2 -> LocationFragment()
             else -> throw IllegalStateException("Unexpected $position")
         }
     }

@@ -12,9 +12,12 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.databinding.FragmentLocationsBinding
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.launch
 
 
-class LocationsFragment : Fragment() {
+class LocationFragment : Fragment() {
 
     private lateinit var binding: FragmentLocationsBinding
     private val locationDao by lazy { AppDatabase.getDatabase(requireContext()).locationDao() }
@@ -39,15 +42,20 @@ class LocationsFragment : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
 
+        adapter.setOnItemClickListener { location ->
+            val action = LocationFragmentDirections.actionLocationFragmentToLocationDetailsFragment(location.id)
+            findNavController().navigate(action)
+        }
+
         // Handle search query
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let { locationViewModel.refreshLocations(page = 1) }
+                query?.let { locationViewModel.setSearchQuery(it) }
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let { locationViewModel.refreshLocations(page = 1) }
+                newText?.let { locationViewModel.setSearchQuery(it) }
                 return true
             }
         })
@@ -58,9 +66,11 @@ class LocationsFragment : Fragment() {
             binding.swipeRefreshLayout.isRefreshing = false
         }
 
-        // Observe location list
-        locationViewModel.allLocations.observe(viewLifecycleOwner, { locations ->
-            locations?.let { adapter.submitList(it) }
-        })
+        // Observe filtered location list using lifecycleScope
+        viewLifecycleOwner.lifecycleScope.launch {
+            locationViewModel.filteredLocations.collect { locations ->
+                locations?.let { adapter.submitList(it) }
+            }
+        }
     }
 }

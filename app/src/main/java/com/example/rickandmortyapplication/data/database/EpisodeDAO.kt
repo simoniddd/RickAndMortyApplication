@@ -10,6 +10,12 @@ interface EpisodeDao {
     @Query("SELECT * FROM episodes")
     fun getAllEpisodes(): Flow<List<EpisodeEntity>>
 
+    @Query("SELECT * FROM episodes WHERE id = :id")
+    fun getEpisodeById(id: Int): Flow<EpisodeEntity?>
+
+    @Query("SELECT * FROM episodes WHERE name LIKE '%' || :query || '%'")
+    fun getFilteredEpisodes(query: String): Flow<List<EpisodeEntity>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEpisodes(episodes: List<EpisodeEntity>)
 }

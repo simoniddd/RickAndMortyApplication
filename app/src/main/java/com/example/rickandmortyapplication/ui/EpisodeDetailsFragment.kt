@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.myapp.ui.episodes.EpisodeViewModel
 import com.example.rickandmortyapplication.databinding.FragmentEpisodeDetailBinding
+import kotlinx.coroutines.launch
 
-class EpisodeDetailFragment : Fragment() {
+class EpisodeDetailsFragment : Fragment() {
 
     private var _binding: FragmentEpisodeDetailBinding? = null
     private val binding get() = _binding!!
@@ -28,14 +30,16 @@ class EpisodeDetailFragment : Fragment() {
 
         val episodeId = arguments?.getInt("episodeId") ?: return
 
+        episodeViewModel.setEpisodeId(episodeId)
         episodeViewModel.getEpisodeById(episodeId)
 
-        episodeViewModel.episodeDetail.observe(viewLifecycleOwner) { episode ->
-            episode?.let {
-                binding.episodeName.text = it.name
-                binding.episodeAirDate.text = it.airdate
-                binding.episodeUrl.text = it.url
-                // Привязка других данных
+        viewLifecycleOwner.lifecycleScope.launch {
+            episodeViewModel.episodeDetail.collect { episode ->
+                episode?.let {
+                    binding.episodeName.text = it.name
+                    binding.episodeAirDate.text = it.airdate
+                    binding.episodeUrl.text = it.url
+                }
             }
         }
     }
@@ -45,3 +49,4 @@ class EpisodeDetailFragment : Fragment() {
         _binding = null
     }
 }
+

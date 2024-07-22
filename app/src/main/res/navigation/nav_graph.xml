@@ -34,7 +34,7 @@
     <!-- Фрагмент с деталями персонажа -->
     <fragment
         android:id="@+id/characterDetailsFragment"
-        android:name="com.example.rickandmortyapplication.ui.character.CharacterDetailsFragment"
+        android:name="com.example.rickandmortyapplication.ui.character.CharacterDetailFragment"
         android:label="Character Details Fragment"
         tools:layout="@layout/fragment_character_details">
         <argument

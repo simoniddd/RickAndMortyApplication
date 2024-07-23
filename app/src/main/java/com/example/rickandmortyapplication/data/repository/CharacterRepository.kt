@@ -1,6 +1,6 @@
-package com.example.myapp.data.repository
+package com.example.rickandmortyapplication.data.repository
 
-import CharacterDao
+import com.example.rickandmortyapplication.data.database.CharacterDao
 import com.example.rickandmortyapplication.data.database.entities.CharacterEntity
 import com.example.rickandmortyapplication.data.network.ApiService
 import kotlinx.coroutines.Dispatchers

@@ -1,6 +1,4 @@
-package com.example.myapp.data.model
-
-import com.example.rickandmortyapplication.data.model.CharacterDto
+package com.example.rickandmortyapplication.data.model
 
 data class CharacterResponse(
     val results: List<CharacterDto>

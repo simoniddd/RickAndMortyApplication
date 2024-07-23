@@ -1,4 +1,6 @@
+package com.example.rickandmortyapplication.data.repository
 
+import com.example.rickandmortyapplication.data.database.LocationDao
 import com.example.rickandmortyapplication.data.database.entities.LocationEntity
 import com.example.rickandmortyapplication.data.network.ApiService
 import com.example.rickandmortyapplication.data.network.RetrofitInstance.api

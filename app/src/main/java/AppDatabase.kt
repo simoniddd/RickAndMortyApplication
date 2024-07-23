@@ -2,6 +2,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import android.content.Context
+import com.example.rickandmortyapplication.data.database.CharacterDao
+import com.example.rickandmortyapplication.data.database.EpisodeDao
+import com.example.rickandmortyapplication.data.database.LocationDao
 import com.example.rickandmortyapplication.data.database.entities.CharacterEntity
 import com.example.rickandmortyapplication.data.database.entities.EpisodeEntity
 import com.example.rickandmortyapplication.data.database.entities.LocationEntity

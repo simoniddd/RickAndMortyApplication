@@ -3,10 +3,10 @@ package com.example.rickandmortyapplication.ui.character
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapp.data.repository.CharacterRepository
 import com.example.rickandmortyapplication.data.database.entities.CharacterEntity
 import com.example.rickandmortyapplication.data.database.entities.EpisodeEntity
 import com.example.rickandmortyapplication.data.network.RetrofitInstance.api
+import com.example.rickandmortyapplication.data.repository.CharacterRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +23,7 @@ class CharacterViewModel(
 
     // Хранение поискового запроса
     private val _searchQuery = MutableStateFlow("")
-    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+    private val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
     // открытый поток всех персонажей
     val allCharacters: Flow<List<CharacterEntity>> = repository.getAllCharacters()

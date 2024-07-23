@@ -32,7 +32,7 @@ class LocationDetailsFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             locationViewModel.getLocationById(locationId).collect { location ->
-                location?.let {
+                location.let {
                     binding.locationName.text = it.name
                     binding.locationType.text = it.type
                     binding.locationDimension.text = it.dimension

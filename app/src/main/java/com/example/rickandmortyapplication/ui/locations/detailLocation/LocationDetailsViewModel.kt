@@ -1,10 +1,10 @@
 package com.example.rickandmortyapplication.ui.locations.detailLocation
 
-import LocationRepository
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rickandmortyapplication.data.database.entities.LocationEntity
+import com.example.rickandmortyapplication.data.repository.LocationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

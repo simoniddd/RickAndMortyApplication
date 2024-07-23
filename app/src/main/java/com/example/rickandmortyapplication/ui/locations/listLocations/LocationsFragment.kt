@@ -1,6 +1,5 @@
 package com.example.rickandmortyapplication.ui.locations.listLocations
 
-import LocationRepository
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +12,7 @@ import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.databinding.FragmentLocationsBinding
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.rickandmortyapplication.data.repository.LocationRepository
 import com.example.rickandmortyapplication.ui.locations.LocationsAdapter
 import kotlinx.coroutines.launch
 

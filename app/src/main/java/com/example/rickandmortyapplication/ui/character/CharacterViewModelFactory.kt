@@ -3,7 +3,7 @@ package com.example.rickandmortyapplication.ui.character
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.myapp.data.repository.CharacterRepository
+import com.example.rickandmortyapplication.data.repository.CharacterRepository
 
 class CharacterViewModelFactory(
     private val application: Application,

@@ -1,6 +1,5 @@
 package com.example.rickandmortyapplication.ui.episodes
 
-import EpisodeRepository
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.rickandmortyapplication.data.network.RetrofitInstance
+import com.example.rickandmortyapplication.data.repository.EpisodeRepository
 import com.example.rickandmortyapplication.databinding.FragmentEpisodesBinding
 import kotlinx.coroutines.launch
 

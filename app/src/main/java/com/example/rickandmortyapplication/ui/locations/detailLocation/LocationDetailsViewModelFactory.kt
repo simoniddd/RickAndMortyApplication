@@ -1,9 +1,9 @@
 package com.example.rickandmortyapplication.ui.locations.detailLocation
 
-import LocationRepository
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.rickandmortyapplication.data.repository.LocationRepository
 
 class LocationDetailsViewModelFactory(
     private val application: Application,

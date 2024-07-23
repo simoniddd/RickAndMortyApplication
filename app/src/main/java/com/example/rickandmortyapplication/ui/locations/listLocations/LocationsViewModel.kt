@@ -1,10 +1,10 @@
 package com.example.rickandmortyapplication.ui.locations.listLocations
 
-import LocationRepository
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rickandmortyapplication.data.database.entities.LocationEntity
+import com.example.rickandmortyapplication.data.repository.LocationRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +19,7 @@ class LocationsViewModel(
 
     // Храним текущий поисковый запрос
     private val _searchQuery = MutableStateFlow("")
-    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+    private val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
     // Получаем все локации
     private val _allLocations = repository.getAllLocations()

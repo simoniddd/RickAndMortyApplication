@@ -10,8 +10,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.myapp.data.repository.CharacterRepository
 import com.example.rickandmortyapplication.data.network.RetrofitInstance
+import com.example.rickandmortyapplication.data.repository.CharacterRepository
 import com.example.rickandmortyapplication.databinding.FragmentCharactersBinding
 import kotlinx.coroutines.launch
 

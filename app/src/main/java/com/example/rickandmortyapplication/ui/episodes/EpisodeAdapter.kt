@@ -22,7 +22,7 @@ class EpisodeAdapter : ListAdapter<EpisodeEntity, EpisodeAdapter.EpisodeViewHold
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_episode, parent, false)
-        return EpisodeViewHolder(view, onItemClickListener)
+        return EpisodeViewHolder(view, onItemClickListener, this::getItem)
     }
 
     override fun onBindViewHolder(holder: EpisodeViewHolder, position: Int) {
@@ -30,7 +30,11 @@ class EpisodeAdapter : ListAdapter<EpisodeEntity, EpisodeAdapter.EpisodeViewHold
         holder.bind(episode)
     }
 
-    class EpisodeViewHolder(itemView: View, private val onItemClickListener: ((EpisodeEntity) -> Unit)?) : RecyclerView.ViewHolder(itemView) {
+    class EpisodeViewHolder(
+        itemView: View,
+        private val onItemClickListener: ((EpisodeEntity) -> Unit)?,
+        private val getItem: (Int) -> EpisodeEntity?
+    ) : RecyclerView.ViewHolder(itemView) {
         private val nameTextView: TextView = itemView.findViewById(R.id.nameTextView)
         private val airDateTextView: TextView = itemView.findViewById(R.id.airDateTextView)
         private val urlTextView: TextView = itemView.findViewById(R.id.urlTextView)
@@ -39,7 +43,7 @@ class EpisodeAdapter : ListAdapter<EpisodeEntity, EpisodeAdapter.EpisodeViewHold
             itemView.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    adapter.getItem(position)?.let { onItemClickListener?.invoke(it) }
+                    getItem(position)?.let { onItemClickListener?.invoke(it) }
                 }
             }
         }

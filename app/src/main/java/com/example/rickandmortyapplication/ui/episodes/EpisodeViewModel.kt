@@ -1,10 +1,10 @@
 package com.example.rickandmortyapplication.ui.episodes
 
-import EpisodeRepository
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rickandmortyapplication.data.database.entities.EpisodeEntity
+import com.example.rickandmortyapplication.data.repository.EpisodeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +20,7 @@ class EpisodeViewModel(
 
     // Храним текущий поисковый запрос
     private val _searchQuery = MutableStateFlow("")
-    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+    private val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
     // Получаем все эпизоды
     private val _allEpisodes = repository.getAllEpisodes()

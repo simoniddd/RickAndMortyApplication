@@ -16,9 +16,15 @@ class CharacterAdapter : ListAdapter<CharacterEntity, CharacterAdapter.Character
     CharacterDiffCallback()
 ) {
 
+    private var onItemClickListener: ((CharacterEntity) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (CharacterEntity) -> Unit) {
+        onItemClickListener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_character, parent, false)
-        return CharacterViewHolder(view)
+        return CharacterViewHolder(view, onItemClickListener, this::getItem)
     }
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
@@ -26,7 +32,11 @@ class CharacterAdapter : ListAdapter<CharacterEntity, CharacterAdapter.Character
         holder.bind(character)
     }
 
-    class CharacterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class CharacterViewHolder(
+        itemView: View,
+        private val onItemClickListener: ((CharacterEntity) -> Unit)?,
+        private val getItem: (Int) -> CharacterEntity?
+    ) : RecyclerView.ViewHolder(itemView) {
         private val nameTextView: TextView = itemView.findViewById(R.id.characterName)
         private val speciesTextView: TextView = itemView.findViewById(R.id.characterSpecies)
         private val statusTextView: TextView = itemView.findViewById(R.id.characterStatus)
@@ -39,6 +49,15 @@ class CharacterAdapter : ListAdapter<CharacterEntity, CharacterAdapter.Character
             statusTextView.text = character.status
             genderTextView.text = character.gender
             Glide.with(itemView.context).load(character.image).into(imageView)
+        }
+
+        init {
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    getItem(position)?.let { onItemClickListener?.invoke(it) }
+                }
+            }
         }
     }
 }

@@ -15,9 +15,15 @@ class LocationsAdapter : ListAdapter<LocationEntity, LocationsAdapter.LocationVi
     LocationDiffCallback()
 ) {
 
+    private var onItemClickListener: ((LocationEntity) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (LocationEntity) -> Unit) {
+        onItemClickListener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_location, parent, false)
-        return LocationViewHolder(view)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_episode, parent, false)
+        return LocationViewHolder(view, onItemClickListener, this::getItem)
     }
 
     override fun onBindViewHolder(holder: LocationViewHolder, position: Int) {
@@ -25,10 +31,23 @@ class LocationsAdapter : ListAdapter<LocationEntity, LocationsAdapter.LocationVi
         holder.bind(location)
     }
 
-    class LocationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class LocationViewHolder(
+        itemView: View,
+        private val onItemClickListener: ((LocationEntity) -> Unit)?,
+        private val getItem: (Int) -> LocationEntity?
+    ) : RecyclerView.ViewHolder(itemView)  {
         private val nameTextView: TextView = itemView.findViewById(R.id.nameTextView)
         private val typeTextView: TextView = itemView.findViewById(R.id.typeTextView)
         private val dimensionTextView: TextView = itemView.findViewById(R.id.dimensionTextView)
+
+        init {
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    getItem(position)?.let { onItemClickListener?.invoke(it) }
+                }
+            }
+        }
 
         fun bind(location: LocationEntity) {
             nameTextView.text = location.name

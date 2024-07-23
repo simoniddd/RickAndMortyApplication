@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -12,6 +12,7 @@ import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.databinding.FragmentLocationsBinding
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.rickandmortyapplication.data.AppDatabase
 import com.example.rickandmortyapplication.data.repository.LocationRepository
 import com.example.rickandmortyapplication.ui.locations.LocationsAdapter
 import kotlinx.coroutines.launch
@@ -43,7 +44,9 @@ class LocationsFragment : Fragment() {
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
 
         adapter.setOnItemClickListener { location ->
-            val action = LocationsFragmentDirections.actionLocationsFragmentToLocationDetailsFragment(location.id)
+            val action = LocationsFragmentDirections.actionLocationsFragmentToLocationDetailsFragment(
+                location.id.toString()
+            )
             findNavController().navigate(action)
         }
 

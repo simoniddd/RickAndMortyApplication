@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.rickandmortyapplication.data.AppDatabase
 import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.data.repository.EpisodeRepository
 import com.example.rickandmortyapplication.databinding.FragmentEpisodesBinding
@@ -50,7 +51,9 @@ class EpisodeFragment : Fragment() {
 
         // Set item click listener
         adapter.setOnItemClickListener { episode ->
-            val action = EpisodeFragmentDirections.actionEpisodesFragmentToEpisodeDetailFragment(episode.id)
+            val action = EpisodeFragmentDirections.actionEpisodesFragmentToEpisodeDetailsFragment(
+                episode.id.toString()
+            )
             findNavController().navigate(action)
         }
 

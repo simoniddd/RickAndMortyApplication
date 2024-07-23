@@ -22,7 +22,7 @@ class LocationsAdapter : ListAdapter<LocationEntity, LocationsAdapter.LocationVi
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_episode, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_location, parent, false)
         return LocationViewHolder(view, onItemClickListener, this::getItem)
     }
 

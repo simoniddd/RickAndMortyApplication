@@ -2,24 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/mainFragment">
-
-    <!-- Главный экран с нижней навигацией -->
-    <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.example.rickandmortyapplication.ui.MainFragment"
-        android:label="Main Fragment"
-        tools:layout="@layout/fragment_main">
-        <action
-            android:id="@+id/action_main_to_characters"
-            app:destination="@id/charactersFragment" />
-        <action
-            android:id="@+id/action_main_to_episodes"
-            app:destination="@id/episodesFragment" />
-        <action
-            android:id="@+id/action_main_to_locations"
-            app:destination="@id/locationsFragment" />
-    </fragment>
+    app:startDestination="@id/charactersFragment">
 
     <!-- Фрагмент с персонажами -->
     <fragment

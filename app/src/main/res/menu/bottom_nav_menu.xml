@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@color/cardview_dark_background"
+        android:title="Characters" />
+    <item
+        android:id="@+id/navigation_dashboard"
+        android:icon="@color/cardview_dark_background"
+        android:title="Episodes" />
+    <item
+        android:id="@+id/navigation_notifications"
+        android:icon="@color/cardview_dark_background"
+        android:title="Locations" />
+</menu>

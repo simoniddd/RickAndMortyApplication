@@ -36,7 +36,6 @@ class LocationDetailsFragment : Fragment() {
                     binding.locationName.text = it.name
                     binding.locationType.text = it.type
                     binding.locationDimension.text = it.dimension
-                    // Привязка других данных, если нужно
                 }
             }
         }

@@ -39,12 +39,11 @@ class CharacterDetailFragment : Fragment() {
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 characterViewModel.getCharacter(characterId).collect { character ->
-                    // Обновите UI с данными персонажа
+                    // Обновить UI с данными персонажа
                     binding.characterName.text = character.name
                     binding.characterSpecies.text = character.species
                     binding.characterStatus.text = character.status
                     binding.characterGender.text = character.gender
-                    // Используйте библиотеку загрузки изображений, например Glide, чтобы загрузить изображение
                     Glide.with(this@CharacterDetailFragment)
                         .load(character.image)
                         .into(binding.characterImage)

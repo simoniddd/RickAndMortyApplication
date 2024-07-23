@@ -1,6 +1,7 @@
 package com.example.rickandmortyapplication.ui.character
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,14 +30,14 @@ class CharacterFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentCharactersBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Log.d("CharacterFragment", "onViewCreated called")
         val adapter = CharacterAdapter()
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
@@ -44,18 +45,23 @@ class CharacterFragment : Fragment() {
         // Обработка ввода в SearchView
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let { characterViewModel.setSearchQuery(it) }
+                query?.let {
+                    Log.d("CharacterFragment", "Search query submitted: $it")
+                    characterViewModel.setSearchQuery(it) }
                 return true
             }
-
+        // Изменение поискового запроса
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let { characterViewModel.setSearchQuery(it) }
+                newText?.let {
+                    Log.d("CharacterFragment", "Search query changed: $it")
+                    characterViewModel.setSearchQuery(it) }
                 return true
             }
         })
 
         adapter.setOnItemClickListener { character ->
-            val action = CharacterFragmentDirections.actionCharactersFragmentToCharacterDetailsFragment(
+            val action = CharacterFragmentDirections
+                .actionCharactersFragmentToCharacterDetailsFragment(
                 character.id.toString()
             )
             findNavController().navigate(action)
@@ -63,6 +69,7 @@ class CharacterFragment : Fragment() {
 
         // Handle swipe to refresh
         binding.swipeRefreshLayout.setOnRefreshListener {
+            Log.d("CharacterFragment", "Swipe to refresh")
             characterViewModel.refreshCharacters(page = 1)
             binding.swipeRefreshLayout.isRefreshing = false
         }
@@ -70,6 +77,7 @@ class CharacterFragment : Fragment() {
         // Наблюдение за фильтрованными результатами
         lifecycleScope.launch {
             characterViewModel.filteredCharacters.collect { characters ->
+                Log.d("CharacterFragment", "Filtered characters collected: ${characters.size}")
                 adapter.submitList(characters)
             }
         }

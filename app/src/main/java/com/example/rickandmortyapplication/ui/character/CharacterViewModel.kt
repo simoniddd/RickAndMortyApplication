@@ -25,7 +25,7 @@ class CharacterViewModel(
     private val _searchQuery = MutableStateFlow("")
     private val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
-    // открытый поток всех персонажей
+    // Открытый флоу всех персонажей
     val allCharacters: Flow<List<CharacterEntity>> = repository.getAllCharacters()
 
     // Фильтрованные результаты поиска

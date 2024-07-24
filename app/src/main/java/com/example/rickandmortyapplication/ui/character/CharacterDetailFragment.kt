@@ -1,6 +1,5 @@
 package com.example.rickandmortyapplication.ui.character
 
-import com.example.rickandmortyapplication.ui.episodes.EpisodeAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +9,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import com.bumptech.glide.Glide
 import com.example.rickandmortyapplication.databinding.FragmentCharacterDetailsBinding
 import kotlinx.coroutines.launch
@@ -47,18 +43,6 @@ class CharacterDetailFragment : Fragment() {
                     Glide.with(this@CharacterDetailFragment)
                         .load(character.image)
                         .into(binding.characterImage)
-
-                    // Адаптер и RecyclerView для отображения эпизодов
-                    val adapter = EpisodeAdapter()
-                    binding.episodesRecyclerView.adapter = adapter
-                    binding.episodesRecyclerView.layoutManager = LinearLayoutManager(context)
-
-                    val episodeEntities = character.episodes.map { episodeUrl ->
-                        async {
-                            characterViewModel.getEpisodeData(episodeUrl)
-                        }
-                    }.awaitAll()
-                    adapter.submitList(episodeEntities)
                 }
             }
         }

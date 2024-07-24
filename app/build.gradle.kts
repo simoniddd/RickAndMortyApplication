@@ -56,6 +56,8 @@ dependencies {
     implementation (libs.androidx.room.runtime)
     implementation (libs.kotlinx.coroutines.core)
     implementation (libs.kotlinx.coroutines.android)
+    // Kotlin Coroutines Adapter for Retrofit
+    implementation (libs.retrofit2.kotlin.coroutines.adapter)
     // Glide
     implementation (libs.glide)
     implementation(libs.androidx.navigation.fragment)

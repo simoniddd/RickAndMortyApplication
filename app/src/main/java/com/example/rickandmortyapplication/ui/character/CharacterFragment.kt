@@ -15,6 +15,7 @@ import com.example.rickandmortyapplication.data.AppDatabase
 import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.data.repository.CharacterRepository
 import com.example.rickandmortyapplication.databinding.FragmentCharactersBinding
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class CharacterFragment : Fragment() {
@@ -41,6 +42,13 @@ class CharacterFragment : Fragment() {
         val adapter = CharacterAdapter()
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
+
+        //приведение первых данных из репозитория на экран
+        lifecycleScope.launch {
+            characterViewModel.allCharacters.collectLatest { characters ->
+                adapter.submitList(characters)
+            }
+        }
 
         // Обработка ввода в SearchView
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

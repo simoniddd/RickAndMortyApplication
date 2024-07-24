@@ -4,6 +4,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.TypeConverters
 import com.example.rickandmortyapplication.data.database.CharacterDao
 import com.example.rickandmortyapplication.data.database.EpisodeDao
@@ -13,7 +14,8 @@ import com.example.rickandmortyapplication.data.database.entities.CharacterEntit
 import com.example.rickandmortyapplication.data.database.entities.EpisodeEntity
 import com.example.rickandmortyapplication.data.database.entities.LocationEntity
 
-@Database(entities = [CharacterEntity::class, EpisodeEntity::class, LocationEntity::class], version = 1)
+@Database(entities = [CharacterEntity::class, EpisodeEntity::class, LocationEntity::class],
+    version = 1)
 @TypeConverters(ListStringConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun characterDao(): CharacterDao

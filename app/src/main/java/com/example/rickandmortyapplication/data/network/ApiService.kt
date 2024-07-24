@@ -12,16 +12,16 @@ interface ApiService {
 
     //запрос на получение листа всех персонажей
     @GET("character")
-    fun getAllCharacters(@Query("page") page: Int): CharacterResponse
+    suspend fun getAllCharacters(@Query("page") page: Int): CharacterResponse
 
     //запрос на получение листа всех эпизодов
     @GET("episode")
-    fun getAllEpisodes(@Query("page") page: Int): EpisodeResponse
+    suspend fun getAllEpisodes(@Query("page") page: Int): EpisodeResponse
 
     @GET
     suspend fun getEpisode(@Url episodeUrl: String): EpisodeEntity
 
     //запрос на получение листа всех локаций
     @GET("location")
-    fun getAllLocations(@Query("page") page: Int): LocationResponse
+    suspend fun getAllLocations(@Query("page") page: Int): LocationResponse
 }

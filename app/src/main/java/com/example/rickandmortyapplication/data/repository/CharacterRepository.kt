@@ -15,7 +15,7 @@ class CharacterRepository(
         withContext(Dispatchers.IO) {
             val response = api.getAllCharacters(page)
             val characters = response.results.map {
-                CharacterEntity(it.id, it.name, it.species, it.status, it.origin, it.gender, it.image, it.episodes)
+                CharacterEntity(it.id, it.name, it.species, it.status, it.gender, it.image)
             }
             characterDao.insertCharacters(characters)
         }

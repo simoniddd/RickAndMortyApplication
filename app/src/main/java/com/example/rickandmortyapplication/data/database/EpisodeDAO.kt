@@ -20,4 +20,7 @@ interface EpisodeDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEpisodes(episodes: List<EpisodeEntity>)
+
+    @Query("SELECT* FROM episodes WHERE page = :page")
+    suspend fun getEpisodesForPage(page: Int): List<EpisodeEntity>
 }

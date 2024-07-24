@@ -8,5 +8,6 @@ data class EpisodeEntity(
     @PrimaryKey val id: Int,
     val name: String,
     @SerializedName("air_date") val airdate: String,
-    val episode: String
+    val episode: String,
+    var page: Int? = null
 )

@@ -15,50 +15,51 @@ import kotlinx.coroutines.launch
 class EpisodeViewModel(
     application: Application,
     private val repository: EpisodeRepository
-) : AndroidViewModel(application) {
+) : AndroidViewModel(application) {private val _episodeUiState = MutableStateFlow<EpisodeUiState>(EpisodeUiState.Loading)
+    val episodeUiState: StateFlow<EpisodeUiState> = _episodeUiState.asStateFlow()
 
-    // Храним текущий поисковый запрос
-    private val _searchQuery = MutableStateFlow("")
-    private val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+    private var currentPage = 1
+    var isLastPage = false
+    private var currentQuery = ""
 
-    // Получаем все эпизоды
-    private val _allEpisodes = repository.getAllEpisodes()
-    val allEpisodes: Flow<List<EpisodeEntity>> = _allEpisodes
+    init {
+        loadEpisodes()
+    }
 
-    // Фильтруем эпизоды на основе поискового запроса
-    val filteredEpisodes: Flow<List<EpisodeEntity>> = searchQuery
-        .flatMapLatest { query ->
-            repository.getFilteredEpisodes(query)
+    fun loadEpisodes(query: String = "") {
+        viewModelScope.launch {
+            _episodeUiState.value = EpisodeUiState.Loading
+            try {
+                val episodes = repository.getEpisodes(currentPage, query)
+                _episodeUiState.value = EpisodeUiState.Success(episodes)
+                isLastPage = episodes.isEmpty()
+                currentPage++
+            } catch (e: Exception) {
+                _episodeUiState.value = EpisodeUiState.Error("Failed to loadepisodes")
+            }
         }
+    }
 
-    // Храним текущий идентификатор эпизода
-    private val _episodeId = MutableStateFlow<Int?>(null)
+    fun loadNextPage() {
+        if (!isLastPage) {
+            loadEpisodes(currentQuery)
+        }
+    }
+
+    fun setSearchQuery(query: String) {
+        currentQuery = query
+        currentPage = 1
+        isLastPage = false
+        loadEpisodes(query)
+    }
 
     fun getEpisodeById(episodeId: Int): Flow<EpisodeEntity> {
         return repository.getEpisodeById(episodeId)
     }
+}
 
-    init {
-        // Инициализируем получение эпизодов, если нужно
-        viewModelScope.launch {
-            repository.refreshEpisodes(page = 1)  // Обновите страницу, если требуется
-        }
-    }
-
-    // Метод для установки поискового запроса
-    fun setSearchQuery(query: String) {
-        _searchQuery.value = query
-    }
-
-    // Метод для установки идентификатора эпизода
-    fun setEpisodeId(id: Int) {
-        _episodeId.value = id
-    }
-
-    // Метод для обновления эпизодов
-    fun refreshEpisodes(page: Int) {
-        viewModelScope.launch {
-            repository.refreshEpisodes(page)
-        }
-    }
+sealed class EpisodeUiState {
+    object Loading : EpisodeUiState()
+    data class Success(val episodes: List<EpisodeEntity>) : EpisodeUiState()
+    data class Error(val message: String) : EpisodeUiState()
 }

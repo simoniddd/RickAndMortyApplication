@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyapplication.data.AppDatabase
 import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.data.repository.EpisodeRepository
@@ -43,19 +44,34 @@ class EpisodeFragment : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
 
-        // Adding first info on screen
-        lifecycleScope.launch {
-            episodeViewModel.allEpisodes.collectLatest { characters ->
-                adapter.submitList(characters)
+        // Observe episode UI state
+        viewLifecycleOwner.lifecycleScope.launch {episodeViewModel.episodeUiState.collectLatest { state ->
+            when (state) {
+                is EpisodeUiState.Loading -> {
+                    // Show loading indicator (e.g., ProgressBar)
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                is EpisodeUiState.Success -> {
+                    adapter.submitList(state.episodes)
+                    binding.progressBar.visibility = View.GONE
+                }
+                is EpisodeUiState.Error -> {
+                    binding.progressBar.visibility = View.GONE
+                    // Show error message (e.g., Snackbar)Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
+                }
             }
+        }
         }
 
-        // Observe filtered episode list using lifecycleScope
-        lifecycleScope.launch {
-            episodeViewModel.filteredEpisodes.collect { episodes ->
-                adapter.submitList(episodes)
+        // Handle scrolling for pagination
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (!recyclerView.canScrollVertically(1) && !episodeViewModel.isLastPage) {
+                    episodeViewModel.loadNextPage()
+                }
             }
-        }
+        })
 
         // Set item click listener
         adapter.setOnItemClickListener { episode ->
@@ -79,9 +95,10 @@ class EpisodeFragment : Fragment() {
             }
         })
 
-            // Handle swipe to refresh
-            binding.swipeRefreshLayout.setOnRefreshListener {
-                episodeViewModel.refreshEpisodes(page = 1)
+        // Handle swipe to refresh
+        binding.swipeRefreshLayout.setOnRefreshListener {
+                episodeViewModel.setSearchQuery("") // Reset search query if needed
+                episodeViewModel.loadEpisodes() // Call loadEpisodes to refresh
                 binding.swipeRefreshLayout.isRefreshing = false
             }
     }

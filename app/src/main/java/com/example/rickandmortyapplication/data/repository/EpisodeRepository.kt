@@ -1,5 +1,6 @@
 package com.example.rickandmortyapplication.data.repository
 
+import android.util.Log
 import com.example.rickandmortyapplication.data.database.EpisodeDao
 import com.example.rickandmortyapplication.data.database.entities.EpisodeEntity
 import com.example.rickandmortyapplication.data.network.ApiService
@@ -14,20 +15,25 @@ class EpisodeRepository(
 ) {
     suspend fun getEpisodes(page: Int, query: String = ""): List<EpisodeEntity> {
         return withContext(Dispatchers.IO) {
-            val cachedEpisodes = episodeDao.getEpisodesForPage(page)
+            val cachedEpisodes= episodeDao.getEpisodesForPage(page)
             if (cachedEpisodes.isNotEmpty() && query.isBlank()) {
-                cachedEpisodes} else {
+                cachedEpisodes
+            } else {
                 val episodes = try {
                     val response = api.getAllEpisodes(page)
-                    response.results.map { episodeResponse ->
-                        val airDate = episodeResponse.airdate ?: ""
-                        EpisodeEntity(
-                            id = episodeResponse.id,
-                            name = episodeResponse.name,
-                            airdate = airDate,
-                            episode = episodeResponse.episode,
-                            page = page // Add page number
-                        )
+                    Log.d("API Response", response.body().toString())
+                    if (response.isSuccessful && response.body() != null) { // Check for success and non-null body
+                        response.body()!!.results.map { episodeResponse -> // Access results from the body
+                            val airDate = episodeResponse.air_date ?: ""
+                            EpisodeEntity(
+                                id = episodeResponse.id,name = episodeResponse.name,
+                                air_date = airDate,
+                                episode = episodeResponse.episode,
+                                page = page
+                            )
+                        }
+                    } else {
+                        emptyList() // Handle error or empty response
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()

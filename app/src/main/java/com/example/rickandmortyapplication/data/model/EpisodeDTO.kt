@@ -3,6 +3,6 @@ package com.example.rickandmortyapplication.data.model
 data class EpisodeDTO(
     val id: Int,
     val name: String,
-    val airdate: String,
+    val air_date: String,
     val episode: String
 )

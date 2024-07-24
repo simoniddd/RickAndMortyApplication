@@ -46,7 +46,7 @@ class EpisodeDetailsFragment : Fragment() {
                 episodeViewModel.getEpisodeById(episodeId).collect { episode ->
                     // Обновить UI с данными персонажа
                     binding.episodeName.text = episode.name
-                    binding.episodeAirDate.text = episode.airdate
+                    binding.episodeAirDate.text = episode.air_date
                     binding.episodeNumber.text = episode.episode
                 }
             }

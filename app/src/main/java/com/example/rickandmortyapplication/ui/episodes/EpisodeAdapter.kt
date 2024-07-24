@@ -50,7 +50,7 @@ class EpisodeAdapter : ListAdapter<EpisodeEntity, EpisodeAdapter.EpisodeViewHold
 
         fun bind(episode: EpisodeEntity) {
             nameTextView.text = episode.name
-            airDateTextView.text = episode.airdate
+            airDateTextView.text = episode.air_date
             episodeTextView.text = episode.episode
         }
     }

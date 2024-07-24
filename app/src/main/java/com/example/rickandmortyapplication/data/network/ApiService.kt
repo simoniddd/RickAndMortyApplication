@@ -17,7 +17,7 @@ interface ApiService {
 
     //запрос на получение листа всех эпизодов
     @GET("episode")
-    suspend fun getAllEpisodes(@Query("page") page: Int): EpisodeResponse
+    suspend fun getAllEpisodes(@Query("page") page: Int): Response<EpisodeResponse>
 
     @GET
     suspend fun getEpisode(@Url episodeUrl: String): EpisodeEntity

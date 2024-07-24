@@ -44,6 +44,7 @@ class CharacterFragment : Fragment() {
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
 
         //приведение первых данных из репозитория на экран
+        Log.d("CharacterFragment", "CharacterViewModel created")
         lifecycleScope.launch {
             characterViewModel.allCharacters.collectLatest { characters ->
                 adapter.submitList(characters)

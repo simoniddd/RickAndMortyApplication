@@ -14,6 +14,7 @@ import com.example.rickandmortyapplication.data.AppDatabase
 import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.data.repository.EpisodeRepository
 import com.example.rickandmortyapplication.databinding.FragmentEpisodesBinding
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
@@ -42,6 +43,13 @@ class EpisodeFragment : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
 
+        // Adding first info on screen
+        lifecycleScope.launch {
+            episodeViewModel.allEpisodes.collectLatest { characters ->
+                adapter.submitList(characters)
+            }
+        }
+
         // Observe filtered episode list using lifecycleScope
         lifecycleScope.launch {
             episodeViewModel.filteredEpisodes.collect { episodes ->
@@ -51,7 +59,8 @@ class EpisodeFragment : Fragment() {
 
         // Set item click listener
         adapter.setOnItemClickListener { episode ->
-            val action = EpisodeFragmentDirections.actionEpisodesFragmentToEpisodeDetailsFragment(
+            val action = EpisodeFragmentDirections
+                .actionEpisodesFragmentToEpisodeDetailsFragment(
                 episode.id.toString()
             )
             findNavController().navigate(action)

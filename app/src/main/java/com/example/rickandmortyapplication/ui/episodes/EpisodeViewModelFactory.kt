@@ -9,7 +9,7 @@ class EpisodeViewModelFactory(
     private val application: Application,
     private val repository: EpisodeRepository
 ) : ViewModelProvider.Factory {
-    @Suppress("unchecked_cast_episode")
+    @Suppress("UNCHECKED_CAST_EPISODE")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(EpisodeViewModel::class.java)) {
             return EpisodeViewModel(application, repository) as T

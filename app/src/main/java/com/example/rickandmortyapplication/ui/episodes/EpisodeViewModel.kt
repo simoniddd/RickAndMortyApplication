@@ -3,6 +3,7 @@ package com.example.rickandmortyapplication.ui.episodes
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.rickandmortyapplication.data.database.entities.CharacterEntity
 import com.example.rickandmortyapplication.data.database.entities.EpisodeEntity
 import com.example.rickandmortyapplication.data.repository.EpisodeRepository
 import kotlinx.coroutines.flow.Flow
@@ -35,9 +36,8 @@ class EpisodeViewModel(
     // Храним текущий идентификатор эпизода
     private val _episodeId = MutableStateFlow<Int?>(null)
 
-    // Получаем данные эпизода по ID
-    val episodeDetail: Flow<EpisodeEntity?> = _episodeId.flatMapLatest { id ->
-        id?.let { repository.getEpisodeById(it) } ?: flowOf(null)
+    fun getEpisodeById(episodeId: Int): Flow<EpisodeEntity> {
+        return repository.getEpisodeById(episodeId)
     }
 
     init {
@@ -55,11 +55,6 @@ class EpisodeViewModel(
     // Метод для установки идентификатора эпизода
     fun setEpisodeId(id: Int) {
         _episodeId.value = id
-    }
-
-    // Метод для получения эпизода по ID (если нужно)
-    fun getEpisodeById(id: Int): Flow<EpisodeEntity?> {
-        return repository.getEpisodeById(id)
     }
 
     // Метод для обновления эпизодов

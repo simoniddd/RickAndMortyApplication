@@ -18,12 +18,12 @@ class EpisodeRepository(private val api: ApiService,
             val response = api.getAllEpisodes(page)
             val episodes = response.results.map {
                 episodeResponse ->
-            val airDate = episodeResponse.airdate ?: "" // Provide default value if null
+            val airDate = episodeResponse.airdate ?: ""
             EpisodeEntity(
                 id = episodeResponse.id,
                 name = episodeResponse.name,
-                episode = episodeResponse.episode,
                 airdate = airDate,
+                episode = episodeResponse.episode,
             )
         }
             episodeDao.insertEpisodes(episodes)
@@ -34,7 +34,7 @@ class EpisodeRepository(private val api: ApiService,
             return episodeDao.getAllEpisodes()
         }
 
-    fun getEpisodeById(id: Int): Flow<EpisodeEntity?> {
+    fun getEpisodeById(id: Int): Flow<EpisodeEntity> {
         return episodeDao.getEpisodeById(id)
     }
 

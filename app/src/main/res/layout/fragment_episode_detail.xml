@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <!-- Переменные для привязки данных (если нужно) -->
+
     </data>
 
     <LinearLayout

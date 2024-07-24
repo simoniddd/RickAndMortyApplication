@@ -13,7 +13,7 @@ interface EpisodeDao {
     fun getAllEpisodes(): Flow<List<EpisodeEntity>>
 
     @Query("SELECT * FROM episodes WHERE id = :id")
-    fun getEpisodeById(id: Int): Flow<EpisodeEntity?>
+    fun getEpisodeById(id: Int): Flow<EpisodeEntity>
 
     @Query("SELECT * FROM episodes WHERE name LIKE '%' || :query || '%'")
     fun getFilteredEpisodes(query: String): Flow<List<EpisodeEntity>>

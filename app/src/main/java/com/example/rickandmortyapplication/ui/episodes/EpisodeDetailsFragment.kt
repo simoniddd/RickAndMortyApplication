@@ -9,7 +9,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.bumptech.glide.Glide
 import com.example.rickandmortyapplication.data.AppDatabase
 import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.data.repository.EpisodeRepository

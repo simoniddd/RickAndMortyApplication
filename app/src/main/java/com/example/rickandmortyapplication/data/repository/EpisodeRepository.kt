@@ -3,7 +3,6 @@ package com.example.rickandmortyapplication.data.repository
 import com.example.rickandmortyapplication.data.database.EpisodeDao
 import com.example.rickandmortyapplication.data.database.entities.EpisodeEntity
 import com.example.rickandmortyapplication.data.network.ApiService
-import com.example.rickandmortyapplication.data.network.RetrofitInstance.api
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

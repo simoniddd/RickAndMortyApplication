@@ -10,4 +10,5 @@ data class CharacterEntity(
     val status: String,
     val gender: String,
     val image: String,
+    var page: Int? = null
 )

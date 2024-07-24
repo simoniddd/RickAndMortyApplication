@@ -2,6 +2,7 @@ package com.example.rickandmortyapplication.data.repository
 
 import com.example.rickandmortyapplication.data.database.CharacterDao
 import com.example.rickandmortyapplication.data.database.entities.CharacterEntity
+import com.example.rickandmortyapplication.data.model.toEntity
 import com.example.rickandmortyapplication.data.network.ApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -11,13 +12,26 @@ class CharacterRepository(
     private val api: ApiService,
     private val characterDao: CharacterDao
 ) {
-    suspend fun refreshCharacters(page: Int) {
-        withContext(Dispatchers.IO) {
-            val response = api.getAllCharacters(page)
-            val characters = response.results.map {
-                CharacterEntity(it.id, it.name, it.species, it.status, it.gender, it.image)
-            }
-            characterDao.insertCharacters(characters)
+
+    suspend fun getCharacters(page: Int): List<CharacterEntity> {
+        return withContext(Dispatchers.IO) {
+            val cachedCharacters = characterDao.getCharactersForPage(page)
+            (if (cachedCharacters.isNotEmpty()) {
+                cachedCharacters // Return cached characters if available
+            } else {
+                // Fetch from API and cache if not available
+                val response = api.getAllCharacters(page)
+                if (response.isSuccessful) {
+                    response.body()?.let { characterResponse ->
+                        val characters = characterResponse.results.map { it.toEntity() }
+                        characters.forEach { it.page = page } // Associate page number
+                        characterDao.insertCharacters(characters)
+                        characters
+                    } ?: emptyList()
+                } else {
+                    emptyList()
+                }
+            })
         }
     }
 
@@ -25,11 +39,33 @@ class CharacterRepository(
         return characterDao.getCharactersByName(query)
     }
 
-    fun getAllCharacters(): Flow<List<CharacterEntity>> {
-        return characterDao.getAllCharacters()
+    fun getCharacterById(characterId: Int): Flow<CharacterEntity> {
+        return characterDao.getCharacterById(characterId)
     }
 
-    fun getCharacter(characterId: Int): Flow<CharacterEntity> {
-        return characterDao.getCharacterById(characterId)
+    suspend fun refreshCharacters(page: Int): List<CharacterEntity> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = api.getAllCharacters(page)
+                if (response.isSuccessful) {
+                    response.body()?.let { characterResponse ->
+                        val characters = characterResponse.results.map { it.toEntity() }
+                        characters.forEach { it.page = page } // Associate page number
+                        characterDao.insertCharacters(characters)
+                        characters // Return the fetched and inserted characters
+                    } ?: emptyList() // Return empty list if response bodyis null
+                } else {
+                    emptyList() // Return empty list if API call fails
+                }
+            } catch (e: Exception) {
+                // Handle exception (e.g., log, show error message)
+                e.printStackTrace()
+                emptyList() // Return an empty list in case of an error
+            }
+        }
+    }
+
+    fun deleteAll() {
+        characterDao.deleteAll()
     }
 }

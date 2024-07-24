@@ -15,9 +15,15 @@ interface CharacterDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCharacters(characters: List<CharacterEntity>)
 
+    @Query("DELETE FROM characters")
+    fun deleteAll()
+
     @Query("SELECT * FROM characters WHERE id = :characterId")
     fun getCharacterById(characterId: Int): Flow<CharacterEntity>
 
     @Query("SELECT * FROM characters WHERE name LIKE '%' || :query || '%'")
     fun getCharactersByName(query: String): Flow<List<CharacterEntity>>
+
+    @Query("SELECT * FROM characters WHERE page = :page")
+    suspend fun getCharactersForPage(page: Int): List<CharacterEntity>
 }

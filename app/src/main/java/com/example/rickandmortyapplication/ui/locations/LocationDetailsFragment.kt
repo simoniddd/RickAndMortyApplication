@@ -11,12 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.rickandmortyapplication.data.AppDatabase
 import com.example.rickandmortyapplication.data.network.RetrofitInstance
-import com.example.rickandmortyapplication.data.repository.EpisodeRepository
 import com.example.rickandmortyapplication.data.repository.LocationRepository
-import com.example.rickandmortyapplication.databinding.FragmentEpisodeDetailBinding
 import com.example.rickandmortyapplication.databinding.FragmentLocationDetailsBinding
-import com.example.rickandmortyapplication.ui.episodes.EpisodeViewModel
-import com.example.rickandmortyapplication.ui.episodes.EpisodeViewModelFactory
 import kotlinx.coroutines.launch
 
 class LocationDetailsFragment : Fragment() {

@@ -3,7 +3,6 @@ package com.example.rickandmortyapplication.ui.episodes
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.rickandmortyapplication.data.database.entities.CharacterEntity
 import com.example.rickandmortyapplication.data.database.entities.EpisodeEntity
 import com.example.rickandmortyapplication.data.repository.EpisodeRepository
 import kotlinx.coroutines.flow.Flow
@@ -11,7 +10,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
 class EpisodeViewModel(

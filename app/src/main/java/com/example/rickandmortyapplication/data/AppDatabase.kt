@@ -1,10 +1,9 @@
 package com.example.rickandmortyapplication.data
 
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import android.content.Context
-import androidx.room.AutoMigration
 import androidx.room.TypeConverters
 import com.example.rickandmortyapplication.data.database.CharacterDao
 import com.example.rickandmortyapplication.data.database.EpisodeDao

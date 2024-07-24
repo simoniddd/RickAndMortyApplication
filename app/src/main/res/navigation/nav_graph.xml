@@ -64,7 +64,7 @@
     <!-- Фрагмент с локациями -->
     <fragment
         android:id="@+id/locationsFragment"
-        android:name="com.example.rickandmortyapplication.ui.locations.listLocations.LocationsFragment"
+        android:name="com.example.rickandmortyapplication.ui.locations.LocationsFragment"
         android:label="Locations Fragment"
         tools:layout="@layout/fragment_locations">
         <action
@@ -81,7 +81,7 @@
     <!-- Фрагмент с деталями локации -->
     <fragment
         android:id="@+id/locationDetailsFragment"
-        android:name="com.example.rickandmortyapplication.ui.locations.detailLocation.LocationDetailsFragment"
+        android:name="com.example.rickandmortyapplication.ui.locations.LocationDetailsFragment"
         android:label="Location Details Fragment"
         tools:layout="@layout/fragment_location_details">
         <argument

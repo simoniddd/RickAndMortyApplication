@@ -1,4 +1,4 @@
-package com.example.rickandmortyapplication.ui.locations.listLocations
+package com.example.rickandmortyapplication.ui.locations
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,7 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.rickandmortyapplication.data.AppDatabase
 import com.example.rickandmortyapplication.data.repository.LocationRepository
-import com.example.rickandmortyapplication.ui.locations.LocationsAdapter
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
@@ -43,8 +43,17 @@ class LocationsFragment : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
 
+        // Adding first info on screen
+        lifecycleScope.launch {
+            locationViewModel.allLocations.collectLatest { characters ->
+                adapter.submitList(characters)
+            }
+        }
+
+        // Set item click listener
         adapter.setOnItemClickListener { location ->
-            val action = LocationsFragmentDirections.actionLocationsFragmentToLocationDetailsFragment(
+            val action = LocationsFragmentDirections
+                .actionLocationsFragmentToLocationDetailsFragment(
                 location.id.toString()
             )
             findNavController().navigate(action)

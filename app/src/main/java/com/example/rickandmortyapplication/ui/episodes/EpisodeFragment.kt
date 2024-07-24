@@ -66,7 +66,7 @@ class EpisodeFragment : Fragment() {
             findNavController().navigate(action)
         }
 
-        // Настройка SearchView
+        // Handle search query
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let { episodeViewModel.setSearchQuery(it) }

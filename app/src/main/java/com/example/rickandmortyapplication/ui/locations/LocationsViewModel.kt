@@ -1,4 +1,4 @@
-package com.example.rickandmortyapplication.ui.locations.listLocations
+package com.example.rickandmortyapplication.ui.locations
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

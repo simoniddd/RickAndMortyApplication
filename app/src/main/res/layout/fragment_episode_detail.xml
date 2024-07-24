@@ -34,7 +34,5 @@
             android:textSize="18sp"
             android:paddingTop="4dp" />
 
-        <!-- Привязка других данных -->
-
     </LinearLayout>
 </layout>

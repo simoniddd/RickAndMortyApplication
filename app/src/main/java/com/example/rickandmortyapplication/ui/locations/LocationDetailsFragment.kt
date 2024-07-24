@@ -1,4 +1,4 @@
-package com.example.rickandmortyapplication.ui.episodes
+package com.example.rickandmortyapplication.ui.locations
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,54 +9,56 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.bumptech.glide.Glide
 import com.example.rickandmortyapplication.data.AppDatabase
 import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.data.repository.EpisodeRepository
+import com.example.rickandmortyapplication.data.repository.LocationRepository
 import com.example.rickandmortyapplication.databinding.FragmentEpisodeDetailBinding
+import com.example.rickandmortyapplication.databinding.FragmentLocationDetailsBinding
+import com.example.rickandmortyapplication.ui.episodes.EpisodeViewModel
+import com.example.rickandmortyapplication.ui.episodes.EpisodeViewModelFactory
 import kotlinx.coroutines.launch
 
-class EpisodeDetailsFragment : Fragment() {
+class LocationDetailsFragment : Fragment() {
 
-    private var _binding: FragmentEpisodeDetailBinding? = null
+    private var _binding: FragmentLocationDetailsBinding? = null
     private val binding get() = _binding!!
 
     private val apiService by lazy { RetrofitInstance.api }
-    private val episodeDao by lazy { AppDatabase.getDatabase(requireContext()).episodeDao() }
-    private val episodeRepository by lazy { EpisodeRepository(apiService, episodeDao) }
+    private val locationDao by lazy { AppDatabase.getDatabase(requireContext()).locationDao() }
+    private val locationRepository by lazy { LocationRepository(apiService, locationDao) }
 
-    private val episodeViewModel: EpisodeViewModel by activityViewModels {
-        EpisodeViewModelFactory(requireActivity().application, episodeRepository)
+    private val locationViewModel: LocationsViewModel by activityViewModels {
+        LocationViewModelFactory(requireActivity().application, locationRepository)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentEpisodeDetailBinding.inflate(inflater, container, false)
+        _binding = FragmentLocationDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val episodeIdString = arguments?.getString("episodeId") ?: return
-        val episodeId = episodeIdString.toIntOrNull() ?: return // Convert to Int
+        val locationIdString = arguments?.getString("locationId") ?: return
+        val locationId = locationIdString.toIntOrNull() ?: return // Convert to Int
 
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                episodeViewModel.getEpisodeById(episodeId).collect { episode ->
+                locationViewModel.getLocationById(locationId).collect { location ->
                     // Обновить UI с данными персонажа
-                    binding.episodeName.text = episode.name
-                    binding.episodeAirDate.text = episode.airdate
-                    binding.episodeNumber.text = episode.episode
+                    binding.locationName.text = location.name
+                    binding.locationType.text = location.type
+                    binding.locationDimension.text = location.dimension
                 }
             }
         }
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 }
-

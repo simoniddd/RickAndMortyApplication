@@ -12,6 +12,7 @@ import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.databinding.FragmentLocationsBinding
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyapplication.data.AppDatabase
 import com.example.rickandmortyapplication.data.repository.LocationRepository
 import kotlinx.coroutines.flow.collectLatest
@@ -43,12 +44,34 @@ class LocationsFragment : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
 
-        // Adding first info on screen
-        lifecycleScope.launch {
-            locationViewModel.allLocations.collectLatest { characters ->
-                adapter.submitList(characters)
+        // Observe location UI state
+        viewLifecycleOwner.lifecycleScope.launch {locationViewModel.locationUiState.collectLatest { state ->
+            when (state) {
+                is LocationUiState.Loading -> {
+                    // Show loading indicator (e.g., ProgressBar)
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                is LocationUiState.Success -> {
+                    adapter.submitList(state.locations)
+                    binding.progressBar.visibility = View.GONE
+                }
+                is LocationUiState.Error -> {
+                    binding.progressBar.visibility = View.GONE
+                    // Show error message (e.g., Snackbar)Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
+                }
             }
         }
+        }
+
+        // Handle scrolling for pagination
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (!recyclerView.canScrollVertically(1) && !locationViewModel.isLastPage) {
+                    locationViewModel.loadNextPage()
+                }
+            }
+        })
 
         // Set item click listener
         adapter.setOnItemClickListener { location ->
@@ -57,13 +80,6 @@ class LocationsFragment : Fragment() {
                 location.id.toString()
             )
             findNavController().navigate(action)
-        }
-
-        // Observe filtered location list using lifecycleScope
-        lifecycleScope.launch {
-            locationViewModel.filteredLocations.collect { locations ->
-                adapter.submitList(locations)
-            }
         }
 
         // Handle search query
@@ -81,7 +97,8 @@ class LocationsFragment : Fragment() {
 
         // Handle swipe to refresh
         binding.swipeRefreshLayout.setOnRefreshListener {
-            locationViewModel.refreshLocations(page = 1)
+            locationViewModel.setSearchQuery("") // Reset search query if needed
+            locationViewModel.loadLocations() // Call loadLocations to refresh
             binding.swipeRefreshLayout.isRefreshing = false
         }
     }

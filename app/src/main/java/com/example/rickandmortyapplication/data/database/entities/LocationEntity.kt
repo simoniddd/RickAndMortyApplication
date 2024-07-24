@@ -9,4 +9,5 @@ data class LocationEntity(
     val name: String,
     val type: String,
     val dimension: String,
+    var page: Int? = null
 )

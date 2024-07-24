@@ -21,4 +21,7 @@ interface LocationDao {
 
     @Query("SELECT * FROM locations WHERE name LIKE '%' || :query || '%'")
     fun getFilteredLocations(query: String): Flow<List<LocationEntity>>
+
+    @Query("SELECT* FROM locations WHERE page = :page")
+    suspend fun getLocationsForPage(page: Int): List<LocationEntity>
 }

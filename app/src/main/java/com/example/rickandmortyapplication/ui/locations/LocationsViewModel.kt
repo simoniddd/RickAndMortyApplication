@@ -15,47 +15,51 @@ import kotlinx.coroutines.launch
 class LocationsViewModel(
     application: Application,
     private val repository: LocationRepository
-) : AndroidViewModel(application) {
+) : AndroidViewModel(application) {private val _locationUiState = MutableStateFlow<LocationUiState>(LocationUiState.Loading)
+    val locationUiState: StateFlow<LocationUiState> = _locationUiState.asStateFlow()
 
-    // Храним текущий поисковый запрос
-    private val _searchQuery = MutableStateFlow("")
-    private val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
-
-    // Получаем все локации
-    private val _allLocations = repository.getAllLocations()
-    val allLocations: Flow<List<LocationEntity>> = _allLocations
-
-    // Фильтруем локации на основе поискового запроса
-    val filteredLocations: Flow<List<LocationEntity>> = searchQuery
-        .flatMapLatest { query ->
-            if (query.isBlank()) {
-                _allLocations
-            } else {
-                repository.getFilteredLocations(query)
-            }
-        }
+    private var currentPage = 1
+    var isLastPage = false
+    private var currentQuery = ""
 
     init {
-        // Инициализируем получение локаций, если нужно
+        loadLocations()
+    }
+
+    fun loadLocations(query: String = "") {
         viewModelScope.launch {
-            repository.refreshLocations(page = 1)  // Обновите страницу, если требуется
+            _locationUiState.value = LocationUiState.Loading
+            try {
+                val locations = repository.getLocations(currentPage, query)
+                _locationUiState.value = LocationUiState.Success(locations)
+                isLastPage = locations.isEmpty()
+                currentPage++
+            } catch (e: Exception) {
+                _locationUiState.value = LocationUiState.Error("Failed to loadlocations")
+            }
         }
     }
 
-    // Метод для установки поискового запроса
+    fun loadNextPage() {
+        if (!isLastPage) {
+            loadLocations(currentQuery)
+        }
+    }
+
     fun setSearchQuery(query: String) {
-        _searchQuery.value = query
+        currentQuery = query
+        currentPage = 1
+        isLastPage = false
+        loadLocations(query)
     }
 
-    // Метод для обновления локаций
-    fun refreshLocations(page: Int) {
-        viewModelScope.launch {
-            repository.refreshLocations(page)
-        }
-    }
-
-    // Метод для получения локации по ID
     fun getLocationById(id: Int): Flow<LocationEntity> {
         return repository.getLocationById(id)
     }
+}
+
+sealed class LocationUiState {
+    object Loading : LocationUiState()
+    data class Success(val locations: List<LocationEntity>) : LocationUiState()
+    data class Error(val message: String) : LocationUiState()
 }

@@ -37,7 +37,7 @@ class EpisodeAdapter : ListAdapter<EpisodeEntity, EpisodeAdapter.EpisodeViewHold
     ) : RecyclerView.ViewHolder(itemView) {
         private val nameTextView: TextView = itemView.findViewById(R.id.nameTextView)
         private val airDateTextView: TextView = itemView.findViewById(R.id.airDateTextView)
-        private val urlTextView: TextView = itemView.findViewById(R.id.urlTextView)
+        private val episodeTextView: TextView = itemView.findViewById(R.id.episodeTextView)
 
         init {
             itemView.setOnClickListener {
@@ -51,7 +51,7 @@ class EpisodeAdapter : ListAdapter<EpisodeEntity, EpisodeAdapter.EpisodeViewHold
         fun bind(episode: EpisodeEntity) {
             nameTextView.text = episode.name
             airDateTextView.text = episode.airdate
-            urlTextView.text = episode.url
+            episodeTextView.text = episode.episode
         }
     }
 

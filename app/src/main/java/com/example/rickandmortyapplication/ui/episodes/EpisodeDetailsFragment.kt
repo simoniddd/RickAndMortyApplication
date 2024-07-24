@@ -37,7 +37,7 @@ class EpisodeDetailsFragment : Fragment() {
                 episode?.let {
                     binding.episodeName.text = it.name
                     binding.episodeAirDate.text = it.airdate
-                    binding.episodeUrl.text = it.url
+                    binding.episodeNumber.text = it.episode
                 }
             }
         }

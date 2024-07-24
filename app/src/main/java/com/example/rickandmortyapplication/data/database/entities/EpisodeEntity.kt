@@ -7,5 +7,5 @@ data class EpisodeEntity(
     @PrimaryKey val id: Int,
     val name: String,
     val airdate: String,
-    val url: String
+    val episode: String
 )

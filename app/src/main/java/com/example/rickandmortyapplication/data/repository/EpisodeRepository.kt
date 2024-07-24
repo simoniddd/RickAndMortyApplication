@@ -9,18 +9,26 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-class EpisodeRepository(private val apiService: ApiService, private val episodeDao: EpisodeDao) {
+class EpisodeRepository(private val api: ApiService,
+                        private val episodeDao: EpisodeDao) {
 
     // Функция для получения эпизодов с API и сохранения их в базе данных
-   suspend fun refreshEpisodes(page: Int) {
-            withContext(Dispatchers.IO) {
-                val response = api.getAllEpisodes(page)
-                val episodes = response.results.map {
-                    EpisodeEntity(it.id, it.name, it.airdate, it.url)
-                }
-                episodeDao.insertEpisodes(episodes)
-            }
+    suspend fun refreshEpisodes(page: Int) {
+        withContext(Dispatchers.IO) {
+            val response = api.getAllEpisodes(page)
+            val episodes = response.results.map {
+                episodeResponse ->
+            val airDate = episodeResponse.airdate ?: "" // Provide default value if null
+            EpisodeEntity(
+                id = episodeResponse.id,
+                name = episodeResponse.name,
+                episode = episodeResponse.episode,
+                airdate = airDate,
+            )
         }
+            episodeDao.insertEpisodes(episodes)
+        }
+    }
 
     fun getAllEpisodes(): Flow<List<EpisodeEntity>> {
             return episodeDao.getAllEpisodes()

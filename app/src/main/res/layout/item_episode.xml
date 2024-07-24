@@ -27,10 +27,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center"
         android:padding="4dp"
-        tools:text="Episode"/>
+        tools:text="Air Date"/>
 
     <TextView
-        android:id="@+id/urlTextView"
+        android:id="@+id/episodeTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/airDateTextView"
@@ -38,6 +38,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center"
         android:padding="4dp"
-        tools:text="Air Date"/>
+        tools:text="Episode Number"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

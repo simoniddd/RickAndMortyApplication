@@ -9,5 +9,4 @@ data class LocationEntity(
     val name: String,
     val type: String,
     val dimension: String,
-    val url: String
 )

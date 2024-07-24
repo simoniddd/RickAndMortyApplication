@@ -19,7 +19,7 @@ class LocationRepository(
         withContext(Dispatchers.IO) {
             val response = api.getAllLocations(page)
             val locations = response.results.map {
-                LocationEntity(it.id, it.name, it.type, it.dimension, it.url)
+                LocationEntity(it.id, it.name, it.type, it.dimension)
             }
             locationDao.insertLocations(locations)
         }

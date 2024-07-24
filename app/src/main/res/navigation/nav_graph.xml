@@ -13,6 +13,13 @@
         <action
             android:id="@+id/action_charactersFragment_to_characterDetailsFragment"
             app:destination="@id/characterDetailsFragment" />
+        <action
+            android:id="@+id/action_charactersFragment_to_episodesFragment"
+            app:destination="@id/episodesFragment" />
+        <action
+            android:id="@+id/action_charactersFragment_to_locationsFragment"
+            app:destination="@id/locationsFragment" />
+
     </fragment>
 
     <!-- Фрагмент с деталями персонажа -->
@@ -35,6 +42,12 @@
         <action
             android:id="@+id/action_episodesFragment_to_episodeDetailsFragment"
             app:destination="@id/episodeDetailsFragment" />
+        <action
+            android:id="@+id/action_episodesFragment_to_charactersFragment"
+            app:destination="@id/charactersFragment" />
+        <action
+            android:id="@+id/action_episodesFragment_to_locationsFragment"
+            app:destination="@id/locationsFragment" />
     </fragment>
 
     <!-- Фрагмент с деталями эпизода -->
@@ -57,6 +70,12 @@
         <action
             android:id="@+id/action_locationsFragment_to_locationDetailsFragment"
             app:destination="@id/locationDetailsFragment" />
+        <action
+            android:id="@+id/action_locationsFragment_to_charactersFragment"
+            app:destination="@id/charactersFragment" />
+        <action
+            android:id="@+id/action_locationsFragment_to_episodesFragment"
+            app:destination="@id/episodesFragment" />
     </fragment>
 
     <!-- Фрагмент с деталями локации -->

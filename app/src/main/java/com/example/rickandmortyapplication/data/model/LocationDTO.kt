@@ -5,5 +5,4 @@ data class LocationDTO(
     val name: String,
     val type: String,
     val dimension: String,
-    val url: String
 )

@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 class LocationsFragment : Fragment() {
 
     private lateinit var binding: FragmentLocationsBinding
-    private val locationDao by lazy { AppDatabase.getDatabase(requireContext()).locationDao() }
+    private val locationDao by lazy { AppDatabase.getDatabase(requireContext()).locationDao()}
     private val apiService by lazy { RetrofitInstance.api }
     private val locationRepository by lazy { LocationRepository(apiService, locationDao) }
     private val locationViewModel: LocationsViewModel by viewModels {
@@ -32,7 +32,7 @@ class LocationsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentLocationsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -44,45 +44,40 @@ class LocationsFragment : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
 
-        // Observe location UI state
-        viewLifecycleOwner.lifecycleScope.launch {locationViewModel.locationUiState.collectLatest { state ->
-            when (state) {
-                is LocationUiState.Loading -> {
-                    // Show loading indicator (e.g., ProgressBar)
-                    binding.progressBar.visibility = View.VISIBLE
-                }
-                is LocationUiState.Success -> {
-                    adapter.submitList(state.locations)
-                    binding.progressBar.visibility = View.GONE
-                }
-                is LocationUiState.Error -> {
-                    binding.progressBar.visibility = View.GONE
-                    // Show error message (e.g., Snackbar)Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
+        viewLifecycleOwner.lifecycleScope.launch {
+            locationViewModel.locationUiState.collect { state ->
+                when (state) {
+                    is LocationUiState.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+                    is LocationUiState.Success -> {
+                        adapter.submitList(state.locations)
+                        binding.progressBar.visibility = View.GONE
+                    }
+                    is LocationUiState.Error -> {
+                        binding.progressBar.visibility = View.GONE
+                        // Show error message (e.g., Snackbar)
+                        // Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
-        }
 
-        // Handle scrolling for pagination
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (!recyclerView.canScrollVertically(1) && !locationViewModel.isLastPage) {
+                if (!recyclerView.canScrollVertically(1)) {
                     locationViewModel.loadNextPage()
                 }
             }
         })
 
-        // Set item click listener
         adapter.setOnItemClickListener { location ->
             val action = LocationsFragmentDirections
-                .actionLocationsFragmentToLocationDetailsFragment(
-                location.id.toString()
-            )
+                .actionLocationsFragmentToLocationDetailsFragment(location.id.toString())
             findNavController().navigate(action)
         }
 
-        // Handle search query
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let { locationViewModel.setSearchQuery(it) }
@@ -95,10 +90,9 @@ class LocationsFragment : Fragment() {
             }
         })
 
-        // Handle swipe to refresh
         binding.swipeRefreshLayout.setOnRefreshListener {
-            locationViewModel.setSearchQuery("") // Reset search query if needed
-            locationViewModel.loadLocations() // Call loadLocations to refresh
+            locationViewModel.setSearchQuery("")
+            locationViewModel.loadLocations()
             binding.swipeRefreshLayout.isRefreshing = false
         }
     }

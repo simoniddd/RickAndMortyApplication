@@ -15,38 +15,40 @@ class EpisodeRepository(
 ) {
     suspend fun getEpisodes(page: Int, query: String = ""): List<EpisodeEntity> {
         return withContext(Dispatchers.IO) {
-            val cachedEpisodes= episodeDao.getEpisodesForPage(page)
-            if (cachedEpisodes.isNotEmpty() && query.isBlank()) {
-                cachedEpisodes
-            } else {
-                val episodes = try {
-                    val response = api.getAllEpisodes(page)
-                    Log.d("API Response", response.body().toString())
-                    if (response.isSuccessful && response.body() != null) { // Check for success and non-null body
-                        response.body()!!.results.map { episodeResponse -> // Access results from the body
-                            val airDate = episodeResponse.air_date ?: ""
-                            EpisodeEntity(
-                                id = episodeResponse.id,name = episodeResponse.name,
-                                air_date = airDate,
-                                episode = episodeResponse.episode,
-                                page = page
-                            )
-                        }
-                    } else {
-                        emptyList() // Handle error or empty response
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
+            if (query.isBlank()) {
+                val cachedEpisodes = episodeDao.getEpisodesForPage(page)
+                if (cachedEpisodes.isNotEmpty()) {return@withContext cachedEpisodes
+                }
+            }
+
+            val episodes = try {
+                val response = api.getAllEpisodes(page)
+                if (response.isSuccessful && response.body() != null) {
+                    response.body()!!.results.map { episodeResponse ->
+                        val airDate = episodeResponse.air_date ?: ""
+                        EpisodeEntity(
+                            id = episodeResponse.id,
+                            name = episodeResponse.name,
+                            air_date = airDate,
+                            episode = episodeResponse.episode,
+                            page = page
+                        )}
+                } else {
                     emptyList()
                 }
-                val filteredEpisodes = if (query.isNotBlank()) {
-                    episodes.filter { it.name.contains(query, ignoreCase = true) }
-                } else {
-                    episodes
-                }
-                episodeDao.insertEpisodes(filteredEpisodes)
-                filteredEpisodes
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emptyList()
             }
+
+            val filteredEpisodes = if (query.isNotBlank()) {
+                episodes.filter { it.name.contains(query, ignoreCase = true) }
+            } else {
+                episodes
+            }
+
+            episodeDao.insertEpisodes(filteredEpisodes)
+            filteredEpisodes
         }
     }
 

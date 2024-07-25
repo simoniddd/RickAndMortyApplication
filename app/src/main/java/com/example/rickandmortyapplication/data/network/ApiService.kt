@@ -24,5 +24,5 @@ interface ApiService {
 
     //запрос на получение листа всех локаций
     @GET("location")
-    suspend fun getAllLocations(@Query("page") page: Int): LocationResponse
+    suspend fun getAllLocations(@Query("page") page: Int): Response<LocationResponse>
 }

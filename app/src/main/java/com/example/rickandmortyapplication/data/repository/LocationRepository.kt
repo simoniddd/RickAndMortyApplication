@@ -15,28 +15,41 @@ class LocationRepository(
 ) {
     suspend fun getLocations(page: Int, query: String = ""): List<LocationEntity> {
         return withContext(Dispatchers.IO) {
-            val cachedLocations = locationDao.getLocationsForPage(page)
-            if (cachedLocations.isNotEmpty() && query.isBlank()) {
-                cachedLocations
-            } else {
-                val locations = try {
-                    val response = apiService.getAllLocations(page)
-                    response.results.map {
-                        LocationEntity(it.id, it.name, it.type, it.dimension, page) // Add page
+            if (query.isBlank()) {
+                val cachedLocations = locationDao.getLocationsForPage(page)
+                if (cachedLocations.isNotEmpty()){
+                    return@withContext cachedLocations
+                }
+            }
+
+            val locations = try {
+                val response = apiService.getAllLocations(page)
+                if (response.isSuccessful && response.body() != null) {
+                    response.body()!!.results.map { locationResponse ->
+                        LocationEntity(
+                            locationResponse.id,
+                            locationResponse.name,
+                            locationResponse.type,
+                            locationResponse.dimension,
+                            page
+                        )
                     }
-                } catch (e: Exception) {
-                    e.printStackTrace()
+                } else {
                     emptyList()
                 }
-
-                val filteredLocations = if (query.isNotBlank()) {
-                    locations.filter { it.name.contains(query, ignoreCase = true) }
-                } else {
-                    locations}
-
-                locationDao.insertLocations(filteredLocations)
-                filteredLocations
+            } catch (e: Exception){
+                e.printStackTrace()
+                emptyList()
             }
+
+            val filteredLocations = if (query.isNotBlank()) {
+                locations.filter { it.name.contains(query, ignoreCase = true) }
+            } else {
+                locations
+            }
+
+            locationDao.insertLocations(filteredLocations)
+            filteredLocations
         }
     }
 

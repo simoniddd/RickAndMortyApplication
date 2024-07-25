@@ -18,9 +18,11 @@ class LocationsViewModel(
 ) : AndroidViewModel(application) {private val _locationUiState = MutableStateFlow<LocationUiState>(LocationUiState.Loading)
     val locationUiState: StateFlow<LocationUiState> = _locationUiState.asStateFlow()
 
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+
     private var currentPage = 1
-    var isLastPage = false
-    private var currentQuery = ""
+    private var isLastPage = false
 
     init {
         loadLocations()
@@ -33,21 +35,23 @@ class LocationsViewModel(
                 val locations = repository.getLocations(currentPage, query)
                 _locationUiState.value = LocationUiState.Success(locations)
                 isLastPage = locations.isEmpty()
-                currentPage++
+                if (!isLastPage){
+                    currentPage++
+                }
             } catch (e: Exception) {
-                _locationUiState.value = LocationUiState.Error("Failed to loadlocations")
+                _locationUiState.value = LocationUiState.Error("Failed to load locations")
             }
         }
     }
 
     fun loadNextPage() {
-        if (!isLastPage) {
-            loadLocations(currentQuery)
+        if (!isLastPage && searchQuery.value.isBlank()) { // Only load next page if not searching
+            loadLocations()
         }
     }
 
     fun setSearchQuery(query: String) {
-        currentQuery = query
+        _searchQuery.value = query
         currentPage = 1
         isLastPage = false
         loadLocations(query)

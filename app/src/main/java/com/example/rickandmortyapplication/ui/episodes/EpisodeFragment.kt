@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 class EpisodeFragment : Fragment() {
 
     private lateinit var binding: FragmentEpisodesBinding
-    private val episodeDao by lazy { AppDatabase.getDatabase(requireContext()).episodeDao() }
+    private val episodeDao by lazy { AppDatabase.getDatabase(requireContext()).episodeDao()}
     private val apiService by lazy { RetrofitInstance.api }
     private val episodeRepository by lazy { EpisodeRepository(apiService, episodeDao) }
     private val episodeViewModel: EpisodeViewModel by viewModels {
@@ -45,29 +45,30 @@ class EpisodeFragment : Fragment() {
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
 
         // Observe episode UI state
-        viewLifecycleOwner.lifecycleScope.launch {episodeViewModel.episodeUiState.collectLatest { state ->
-            when (state) {
-                is EpisodeUiState.Loading -> {
-                    // Show loading indicator (e.g., ProgressBar)
-                    binding.progressBar.visibility = View.VISIBLE
-                }
-                is EpisodeUiState.Success -> {
-                    adapter.submitList(state.episodes)
-                    binding.progressBar.visibility = View.GONE
-                }
-                is EpisodeUiState.Error -> {
-                    binding.progressBar.visibility = View.GONE
-                    // Show error message (e.g., Snackbar)Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
+        viewLifecycleOwner.lifecycleScope.launch {
+            episodeViewModel.episodeUiState.collectLatest { state ->
+                when (state) {
+                    is EpisodeUiState.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+                    is EpisodeUiState.Success -> {
+                        adapter.submitList(state.episodes)
+                        binding.progressBar.visibility = View.GONE
+                    }
+                    is EpisodeUiState.Error -> {
+                        binding.progressBar.visibility = View.GONE
+                        // Show error message (e.g., Snackbar)
+                        // Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
+                    }
                 }
             }
-        }
         }
 
         // Handle scrolling for pagination
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (!recyclerView.canScrollVertically(1) && !episodeViewModel.isLastPage) {
+                if (!recyclerView.canScrollVertically(1)) {
                     episodeViewModel.loadNextPage()
                 }
             }
@@ -77,8 +78,8 @@ class EpisodeFragment : Fragment() {
         adapter.setOnItemClickListener { episode ->
             val action = EpisodeFragmentDirections
                 .actionEpisodesFragmentToEpisodeDetailsFragment(
-                episode.id.toString()
-            )
+                    episode.id.toString()
+                )
             findNavController().navigate(action)
         }
 
@@ -97,10 +98,10 @@ class EpisodeFragment : Fragment() {
 
         // Handle swipe to refresh
         binding.swipeRefreshLayout.setOnRefreshListener {
-                episodeViewModel.setSearchQuery("") // Reset search query if needed
-                episodeViewModel.loadEpisodes() // Call loadEpisodes to refresh
-                binding.swipeRefreshLayout.isRefreshing = false
-            }
+            episodeViewModel.setSearchQuery("") // Reset search query
+            episodeViewModel.loadEpisodes() // Reload episodes (starts from page 1)
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
     }
 }
 

@@ -18,9 +18,11 @@ class EpisodeViewModel(
 ) : AndroidViewModel(application) {private val _episodeUiState = MutableStateFlow<EpisodeUiState>(EpisodeUiState.Loading)
     val episodeUiState: StateFlow<EpisodeUiState> = _episodeUiState.asStateFlow()
 
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+
     private var currentPage = 1
-    var isLastPage = false
-    private var currentQuery = ""
+    private var isLastPage = false
 
     init {
         loadEpisodes()
@@ -33,21 +35,23 @@ class EpisodeViewModel(
                 val episodes = repository.getEpisodes(currentPage, query)
                 _episodeUiState.value = EpisodeUiState.Success(episodes)
                 isLastPage = episodes.isEmpty()
-                currentPage++
+                if (!isLastPage){
+                    currentPage++
+                }
             } catch (e: Exception) {
-                _episodeUiState.value = EpisodeUiState.Error("Failed to loadepisodes")
+                _episodeUiState.value = EpisodeUiState.Error("Failed to load episodes")
             }
         }
     }
 
     fun loadNextPage() {
-        if (!isLastPage) {
-            loadEpisodes(currentQuery)
+        if (!isLastPage && searchQuery.value.isBlank()) { // Only load next page if not searching
+            loadEpisodes()
         }
     }
 
     fun setSearchQuery(query: String) {
-        currentQuery = query
+        _searchQuery.value = query
         currentPage = 1
         isLastPage = false
         loadEpisodes(query)

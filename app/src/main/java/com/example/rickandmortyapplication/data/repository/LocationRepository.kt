@@ -6,6 +6,7 @@ import com.example.rickandmortyapplication.data.network.ApiService
 import com.example.rickandmortyapplication.data.network.RetrofitInstance.api
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
@@ -13,43 +14,51 @@ class LocationRepository(
     private val apiService: ApiService,
     private val locationDao: LocationDao
 ) {
-    suspend fun getLocations(page: Int, query: String = ""): List<LocationEntity> {
+    suspend fun getLocations(
+    page: Int,
+    name: String = "",
+    type: String = "",
+    dimension: String = ""
+    ): List<LocationEntity> {
         return withContext(Dispatchers.IO) {
-            if (query.isBlank()) {
-                val cachedLocations = locationDao.getLocationsForPage(page)
-                if (cachedLocations.isNotEmpty()){
-                    return@withContext cachedLocations
-                }
-            }
-
-            val locations = try {
-                val response = apiService.getAllLocations(page)
-                if (response.isSuccessful && response.body() != null) {
-                    response.body()!!.results.map { locationResponse ->
-                        LocationEntity(
-                            locationResponse.id,
-                            locationResponse.name,
-                            locationResponse.type,
-                            locationResponse.dimension,
-                            page
-                        )
-                    }
-                } else {
-                    emptyList()
-                }
-            } catch (e: Exception){
-                e.printStackTrace()
-                emptyList()
-            }
-
-            val filteredLocations = if (query.isNotBlank()) {
-                locations.filter { it.name.contains(query, ignoreCase = true) }
+            val dbLocations = locationDao.getAllLocations()
+            if (name.isBlank() && type.isBlank() && dimension.isBlank()) {
+            val cachedLocations = locationDao.getLocationsForPage(page)
+            if (cachedLocations.isNotEmpty()) {
+                return@withContext cachedLocations
             } else {
-                locations
+                try {
+                    val response = apiService.getAllLocations(page)
+                    if (response.isSuccessful && response.body() != null) {
+                        val locations = response.body()!!.results.map { locationResponse ->
+                            LocationEntity(
+                                locationResponse.id,
+                                locationResponse.name,locationResponse.type,
+                                locationResponse.dimension,
+                                page
+                            )
+                        }
+                        locationDao.insertLocations(locations)
+                        return@withContext locations
+                    } else {
+                        return@withContext emptyList()
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    return@withContext emptyList()
+                }
             }
-
-            locationDao.insertLocations(filteredLocations)
-            filteredLocations
+        } else {
+            return@withContext dbLocations
+                .map { locationList ->
+                    locationList.filter { locationEntity ->
+                        (name.isBlank() || locationEntity.name.contains(name, ignoreCase = true)) &&
+                                (type.isBlank() || locationEntity.type.contains(type, ignoreCase = true)) &&
+                                (dimension.isBlank() || locationEntity.dimension.contains(dimension, ignoreCase = true))
+                    }
+                }
+                .first()
+            }
         }
     }
 

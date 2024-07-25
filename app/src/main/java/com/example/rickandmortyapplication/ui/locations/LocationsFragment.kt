@@ -15,11 +15,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyapplication.data.AppDatabase
 import com.example.rickandmortyapplication.data.repository.LocationRepository
+import com.example.rickandmortyapplication.ui.filters.EpisodeFilterDialogFragment
+import com.example.rickandmortyapplication.ui.filters.LocationFilterDialogFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-class LocationsFragment : Fragment() {
+class LocationsFragment : Fragment(),
+    LocationFilterDialogFragment.LocationFilterListener {
 
     private lateinit var binding: FragmentLocationsBinding
     private val locationDao by lazy { AppDatabase.getDatabase(requireContext()).locationDao()}
@@ -63,6 +66,11 @@ class LocationsFragment : Fragment() {
             }
         }
 
+        binding.filterButton.setOnClickListener {
+            val dialog = LocationFilterDialogFragment()
+            dialog.show(childFragmentManager, "LocationFilterDialog")
+        }
+
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -95,5 +103,8 @@ class LocationsFragment : Fragment() {
             locationViewModel.loadLocations()
             binding.swipeRefreshLayout.isRefreshing = false
         }
+    }
+    override fun onLocationFiltersApplied(filters: LocationFilterDialogFragment.LocationFilterData) {
+        locationViewModel.applyFilters(filters)
     }
 }

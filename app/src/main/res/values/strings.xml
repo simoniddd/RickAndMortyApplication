@@ -1,9 +1,41 @@
 <resources>
     <string name="app_name">RickAndMortyApplication</string>
-    <!-- Strings used for fragments for navigation -->
     <string name="characters">Characters</string>
     <string name="episodes">Episodes</string>
     <string name="locations">Locations</string>
+    <string name="name">Name</string>
+    <string name="status">Status</string>
+    <string name="species">Species</string>
+    <string name="type">Type</string>
+    <string name="gender">Gender</string>
+    <string name="apply">Apply</string>
+    <string name="episode">Episode</string>
+    <string name="dimension">Dimension</string>
 
+    <string-array name="character_gender_array">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Genderless</item>
+        <item>Unknown</item>
+    </string-array>
+
+    <string-array name="character_status_array">
+        <item>Alive</item>
+        <item>Dead</item>
+        <item>Unknown</item>
+    </string-array>
+
+    <string-array name="location_type_array">
+        <item>Planet</item>
+        <item>Cluster</item>
+        <item>Space station</item>
+        <item>Microverse</item>
+    </string-array>
+
+    <string-array name="location_dimension_array">
+        <item>Dimension C-137</item>
+        <item>Replacement Dimension</item>
+        <item>Cronenberg Dimension</item>
+    </string-array>
 
 </resources>

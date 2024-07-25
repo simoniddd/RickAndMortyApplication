@@ -15,10 +15,15 @@ class CharacterRepository(
     private val characterDao: CharacterDao
 ) {
 
-    suspend fun getCharacters(page: Int, query: String = ""): List<CharacterEntity> {
-        return withContext(Dispatchers.IO) {
-            if (query.isBlank()) {
-                // No search query, handle pagination
+    suspend fun getCharacters(
+        page: Int,
+        name: String = "",
+        status: String = "",
+        species: String = "",
+        gender: String = ""
+    ): List<CharacterEntity> {
+        return withContext(Dispatchers.IO) {val dbCharacters = characterDao.getAllCharacters()
+            if (name.isBlank() && status.isBlank() && species.isBlank() && gender.isBlank()) {
                 val cachedCharacters = characterDao.getCharactersForPage(page)
                 if (cachedCharacters.isNotEmpty()) {
                     cachedCharacters
@@ -36,14 +41,16 @@ class CharacterRepository(
                     }
                 }
             } else {
-                val filteredCharacters = characterDao.getAllCharacters()
+                dbCharacters
                     .map { characterList ->
                         characterList.filter { character ->
-                            character.name.contains(query, ignoreCase = true)
+                            (name.isBlank() || character.name.contains(name, ignoreCase = true)) &&
+                                    (status.isBlank() || character.status == status) &&
+                                    (species.isBlank() || character.species.contains(species, ignoreCase = true)) &&
+                                    (gender.isBlank() || character.gender == gender)
                         }
                     }
                     .first()
-                filteredCharacters
             }
         }
     }

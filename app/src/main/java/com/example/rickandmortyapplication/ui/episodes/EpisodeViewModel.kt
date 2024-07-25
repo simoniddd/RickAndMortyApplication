@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rickandmortyapplication.data.database.entities.EpisodeEntity
 import com.example.rickandmortyapplication.data.repository.EpisodeRepository
+import com.example.rickandmortyapplication.ui.filters.EpisodeFilterDialogFragment
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,14 +29,29 @@ class EpisodeViewModel(
         loadEpisodes()
     }
 
+    private val _nameFilter = MutableStateFlow("")
+    private val _episodeFilter = MutableStateFlow("")
+
+    fun applyFilters(filters: EpisodeFilterDialogFragment.EpisodeFilterData) {
+        _nameFilter.value = filters.name
+        _episodeFilter.value = filters.episode
+        currentPage = 1
+        isLastPage = false
+        loadEpisodes()
+    }
+
     fun loadEpisodes(query: String = "") {
         viewModelScope.launch {
             _episodeUiState.value = EpisodeUiState.Loading
             try {
-                val episodes = repository.getEpisodes(currentPage, query)
+                val episodes = repository.getEpisodes(
+                    page = currentPage,
+                    name = _nameFilter.value,
+                    episode = _episodeFilter.value
+                )
                 _episodeUiState.value = EpisodeUiState.Success(episodes)
                 isLastPage = episodes.isEmpty()
-                if (!isLastPage){
+                if (!isLastPage) {
                     currentPage++
                 }
             } catch (e: Exception) {

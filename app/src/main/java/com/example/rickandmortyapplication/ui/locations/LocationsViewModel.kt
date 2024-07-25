@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rickandmortyapplication.data.database.entities.LocationEntity
 import com.example.rickandmortyapplication.data.repository.LocationRepository
+import com.example.rickandmortyapplication.ui.filters.LocationFilterDialogFragment
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,14 +29,32 @@ class LocationsViewModel(
         loadLocations()
     }
 
+    private val _nameFilter = MutableStateFlow("")
+    private val _typeFilter = MutableStateFlow("")
+    private val _dimensionFilter = MutableStateFlow("")
+
+    fun applyFilters(filters: LocationFilterDialogFragment.LocationFilterData) {
+        _nameFilter.value = filters.name
+        _typeFilter.value = filters.type
+        _dimensionFilter.value = filters.dimension
+        currentPage= 1
+        isLastPage = false
+        loadLocations()
+    }
+
     fun loadLocations(query: String = "") {
         viewModelScope.launch {
             _locationUiState.value = LocationUiState.Loading
             try {
-                val locations = repository.getLocations(currentPage, query)
+                val locations = repository.getLocations(
+                    page = currentPage,
+                    name = _nameFilter.value,
+                    type = _typeFilter.value,
+                    dimension = _dimensionFilter.value
+                )
                 _locationUiState.value = LocationUiState.Success(locations)
                 isLastPage = locations.isEmpty()
-                if (!isLastPage){
+                if (!isLastPage) {
                     currentPage++
                 }
             } catch (e: Exception) {

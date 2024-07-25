@@ -15,11 +15,13 @@ import com.example.rickandmortyapplication.data.AppDatabase
 import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.data.repository.EpisodeRepository
 import com.example.rickandmortyapplication.databinding.FragmentEpisodesBinding
+import com.example.rickandmortyapplication.ui.filters.EpisodeFilterDialogFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-class EpisodeFragment : Fragment() {
+class EpisodeFragment : Fragment(),
+    EpisodeFilterDialogFragment.EpisodeFilterListener {
 
     private lateinit var binding: FragmentEpisodesBinding
     private val episodeDao by lazy { AppDatabase.getDatabase(requireContext()).episodeDao()}
@@ -64,6 +66,11 @@ class EpisodeFragment : Fragment() {
             }
         }
 
+        binding.filterButton.setOnClickListener {
+            val dialog = EpisodeFilterDialogFragment()
+            dialog.show(childFragmentManager, "EpisodeFilterDialog")
+        }
+
         // Handle scrolling for pagination
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -103,6 +110,11 @@ class EpisodeFragment : Fragment() {
             binding.swipeRefreshLayout.isRefreshing = false
         }
     }
+    override fun onEpisodeFiltersApplied(filters: EpisodeFilterDialogFragment.EpisodeFilterData) {
+        episodeViewModel.applyFilters(filters)
+    }
 }
+
+
 
 

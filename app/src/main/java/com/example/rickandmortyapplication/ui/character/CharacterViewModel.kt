@@ -8,6 +8,7 @@ import com.example.rickandmortyapplication.data.database.entities.CharacterEntit
 import com.example.rickandmortyapplication.data.database.entities.EpisodeEntity
 import com.example.rickandmortyapplication.data.network.RetrofitInstance.api
 import com.example.rickandmortyapplication.data.repository.CharacterRepository
+import com.example.rickandmortyapplication.ui.filters.CharacterFilterDialogFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,14 +35,36 @@ class CharacterViewModel(
         loadCharacters()
     }
 
+    private val _nameFilter = MutableStateFlow("")
+    private val _statusFilter = MutableStateFlow("")
+    private val _speciesFilter = MutableStateFlow("")
+    private val _typeFilter = MutableStateFlow("")
+    private val _genderFilter = MutableStateFlow("")
+
+    fun applyFilters(filters: CharacterFilterDialogFragment.CharacterFilterData) {
+        _nameFilter.value = filters.name
+        _statusFilter.value = filters.status
+        _speciesFilter.value = filters.species
+        _genderFilter.value = filters.gender
+        currentPage = 1
+        isLastPage = false
+        loadCharacters()
+    }
+
     fun loadCharacters(query: String = "") {
         viewModelScope.launch {
             _characterUiState.value = CharacterUiState.Loading
             try {
-                val characters = repository.getCharacters(currentPage, query)
+                val characters = repository.getCharacters(
+                    page = currentPage,
+                    name = _nameFilter.value,
+                    status = _statusFilter.value,
+                    species = _speciesFilter.value,
+                    gender = _genderFilter.value
+                )
                 _characterUiState.value = CharacterUiState.Success(characters)
                 isLastPage = characters.isEmpty()
-                if (!isLastPage){
+                if (!isLastPage) {
                     currentPage++
                 }
             } catch (e: Exception) {

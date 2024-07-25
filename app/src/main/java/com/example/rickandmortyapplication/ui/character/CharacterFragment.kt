@@ -15,12 +15,13 @@ import com.example.rickandmortyapplication.data.AppDatabase
 import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.data.repository.CharacterRepository
 import com.example.rickandmortyapplication.databinding.FragmentCharactersBinding
+import com.example.rickandmortyapplication.ui.filters.CharacterFilterDialogFragment
 import kotlinx.coroutines.launch
 
-class CharacterFragment : Fragment() {
+class CharacterFragment : Fragment(), CharacterFilterDialogFragment.CharacterFilterListener {
 
     private lateinit var binding: FragmentCharactersBinding
-    private val characterDao by lazy { AppDatabase.getDatabase(requireContext()).characterDao()}
+    private val characterDao by lazy { AppDatabase.getDatabase(requireContext()).characterDao() }
     private val apiService by lazy { RetrofitInstance.api }
     private val characterRepository by lazy { CharacterRepository(apiService, characterDao) }
     private val characterViewModel: CharacterViewModel by viewModels {
@@ -54,13 +55,12 @@ class CharacterFragment : Fragment() {
                     }
                     is CharacterUiState.Error -> {
                         binding.progressBar.visibility = View.GONE
-
+                        // Handle error (e.g., show a Snackbar)
                     }
                 }
             }
         }
 
-        // Handle scrolling for pagination
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -70,7 +70,6 @@ class CharacterFragment : Fragment() {
             }
         })
 
-        // Handle search view
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let { characterViewModel.setSearchQuery(it) }
@@ -83,18 +82,25 @@ class CharacterFragment : Fragment() {
             }
         })
 
-        // Handle item click
         characterAdapter.setOnItemClickListener { character ->
             val action = CharacterFragmentDirections
                 .actionCharactersFragmentToCharacterDetailsFragment(character.id.toString())
             findNavController().navigate(action)
         }
 
-        // Handle swipe to refresh
         binding.swipeRefreshLayout.setOnRefreshListener {
-            characterViewModel.setSearchQuery("") // Reset search query
-            characterViewModel.refreshCharacters() // Reload characters (starts from page 1)
+            characterViewModel.setSearchQuery("")
+            characterViewModel.refreshCharacters()
             binding.swipeRefreshLayout.isRefreshing = false
         }
+
+        binding.filterButton.setOnClickListener {
+            val dialog = CharacterFilterDialogFragment()
+            dialog.show(childFragmentManager, "CharacterFilterDialog")
+        }
+    }
+
+    override fun onCharacterFiltersApplied(filters: CharacterFilterDialogFragment.CharacterFilterData) {
+        characterViewModel.applyFilters(filters)
     }
 }

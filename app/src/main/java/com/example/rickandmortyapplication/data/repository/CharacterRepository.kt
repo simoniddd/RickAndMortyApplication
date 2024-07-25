@@ -6,6 +6,8 @@ import com.example.rickandmortyapplication.data.model.toEntity
 import com.example.rickandmortyapplication.data.network.ApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class CharacterRepository(
@@ -13,30 +15,37 @@ class CharacterRepository(
     private val characterDao: CharacterDao
 ) {
 
-    suspend fun getCharacters(page: Int): List<CharacterEntity> {
+    suspend fun getCharacters(page: Int, query: String = ""): List<CharacterEntity> {
         return withContext(Dispatchers.IO) {
-            val cachedCharacters = characterDao.getCharactersForPage(page)
-            (if (cachedCharacters.isNotEmpty()) {
-                cachedCharacters // Return cached characters if available
-            } else {
-                // Fetch from API and cache if not available
-                val response = api.getAllCharacters(page)
-                if (response.isSuccessful) {
-                    response.body()?.let { characterResponse ->
-                        val characters = characterResponse.results.map { it.toEntity() }
-                        characters.forEach { it.page = page } // Associate page number
-                        characterDao.insertCharacters(characters)
-                        characters
-                    } ?: emptyList()
+            if (query.isBlank()) {
+                // No search query, handle pagination
+                val cachedCharacters = characterDao.getCharactersForPage(page)
+                if (cachedCharacters.isNotEmpty()) {
+                    cachedCharacters
                 } else {
-                    emptyList()
+                    val response = api.getAllCharacters(page)
+                    if (response.isSuccessful) {
+                        response.body()?.let { characterResponse ->
+                            val characters = characterResponse.results.map { it.toEntity() }
+                            characters.forEach { it.page = page }
+                            characterDao.insertCharacters(characters)
+                            characters
+                        } ?: emptyList()
+                    } else {
+                        emptyList()
+                    }
                 }
-            })
+            } else {
+                val filteredCharacters = characterDao.getAllCharacters()
+                    .map { characterList ->
+                        characterList.filter { character ->
+                            character.name.contains(query, ignoreCase = true)
+                        }
+                    }
+                    .first()
+                filteredCharacters
+            }
         }
-    }
-
-    fun getFilteredCharacters(query: String): Flow<List<CharacterEntity>> {
-        return characterDao.getCharactersByName(query)
     }
 
     fun getCharacterById(characterId: Int): Flow<CharacterEntity> {
@@ -50,17 +59,16 @@ class CharacterRepository(
                 if (response.isSuccessful) {
                     response.body()?.let { characterResponse ->
                         val characters = characterResponse.results.map { it.toEntity() }
-                        characters.forEach { it.page = page } // Associate page number
+                        characters.forEach { it.page = page }
                         characterDao.insertCharacters(characters)
-                        characters // Return the fetched and inserted characters
-                    } ?: emptyList() // Return empty list if response bodyis null
+                        characters
+                    } ?: emptyList()
                 } else {
-                    emptyList() // Return empty list if API call fails
+                    emptyList()
                 }
             } catch (e: Exception) {
-                // Handle exception (e.g., log, show error message)
                 e.printStackTrace()
-                emptyList() // Return an empty list in case of an error
+                emptyList()
             }
         }
     }

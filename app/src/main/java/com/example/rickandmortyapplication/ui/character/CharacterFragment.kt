@@ -93,7 +93,7 @@ class CharacterFragment : Fragment() {
         // Handle swipe to refresh
         binding.swipeRefreshLayout.setOnRefreshListener {
             characterViewModel.setSearchQuery("") // Reset search query
-            characterViewModel.loadCharacters() // Reload characters (starts from page 1)
+            characterViewModel.refreshCharacters() // Reload characters (starts from page 1)
             binding.swipeRefreshLayout.isRefreshing = false
         }
     }

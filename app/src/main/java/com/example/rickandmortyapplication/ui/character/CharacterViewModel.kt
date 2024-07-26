@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
@@ -22,11 +23,15 @@ import kotlinx.coroutines.withContext
 class CharacterViewModel(
     application: Application,
     private val repository: CharacterRepository
-) : AndroidViewModel(application) {private val _characterUiState = MutableStateFlow<CharacterUiState>(CharacterUiState.Loading)
+) : AndroidViewModel(application) {
+
+    private val _characterUiState = MutableStateFlow<CharacterUiState>(CharacterUiState.Loading)
     val characterUiState: StateFlow<CharacterUiState> = _characterUiState.asStateFlow()
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+
+    private val ITEMS_PER_PAGE = 20
 
     private var currentPage = 1
     private var isLastPage = false
@@ -38,7 +43,6 @@ class CharacterViewModel(
     private val _nameFilter = MutableStateFlow("")
     private val _statusFilter = MutableStateFlow("")
     private val _speciesFilter = MutableStateFlow("")
-    private val _typeFilter = MutableStateFlow("")
     private val _genderFilter = MutableStateFlow("")
 
     fun applyFilters(filters: CharacterFilterDialogFragment.CharacterFilterData) {
@@ -51,30 +55,37 @@ class CharacterViewModel(
         loadCharacters()
     }
 
-    fun loadCharacters(query: String = "") {
+    fun loadCharacters() {
         viewModelScope.launch {
             _characterUiState.value = CharacterUiState.Loading
             try {
-                val characters = repository.getCharacters(
+                repository.getCharacters(
                     page = currentPage,
                     name = _nameFilter.value,
                     status = _statusFilter.value,
                     species = _speciesFilter.value,
                     gender = _genderFilter.value
-                )
-                _characterUiState.value = CharacterUiState.Success(characters)
-                isLastPage = characters.isEmpty()
-                if (!isLastPage) {
-                    currentPage++
+                ).collect { characters ->
+                    if (characters.isNotEmpty()) {
+                        _characterUiState.value = CharacterUiState.Success(characters)
+                        isLastPage = characters.size < ITEMS_PER_PAGE // ITEMS_PER_PAGE — это количество элементов на одной странице
+                        if (!isLastPage) {
+                            currentPage++
+                        }
+                    } else {
+                        _characterUiState.value = CharacterUiState.Success(emptyList())
+                        isLastPage = true
+                    }
                 }
             } catch (e: Exception) {
-                _characterUiState.value = CharacterUiState.Error("Failed to load characters")
+                _characterUiState.value = CharacterUiState.Error("Failed to load characters: ${e.message}")
             }
         }
     }
 
+
     fun loadNextPage() {
-        if (!isLastPage && searchQuery.value.isBlank()) {
+        if (!isLastPage && _searchQuery.value.isBlank()) {
             loadCharacters()
         }
     }
@@ -95,11 +106,12 @@ class CharacterViewModel(
         _searchQuery.value = query
         currentPage = 1
         isLastPage = false
-        loadCharacters(query)
+        loadCharacters()
     }
 
     fun getCharacter(characterId: Int): Flow<CharacterEntity> {
-        return repository.getCharacterById(characterId)}
+        return repository.getCharacterById(characterId)
+    }
 
     suspend fun getEpisodeData(episodeUrl: String): EpisodeEntity {
         return withContext(Dispatchers.IO) {
@@ -109,7 +121,7 @@ class CharacterViewModel(
 }
 
 sealed class CharacterUiState {
-    data object Loading : CharacterUiState()
+    object Loading : CharacterUiState()
     data class Success(val characters: List<CharacterEntity>) : CharacterUiState()
     data class Error(val message: String) : CharacterUiState()
 }

@@ -21,12 +21,10 @@ class CharacterDetailFragment : Fragment() {
     private var _binding: FragmentCharacterDetailsBinding? = null
     private val binding get() = _binding!!
 
-    private val apiService by lazy { RetrofitInstance.api }
-    private val characterDao by lazy { AppDatabase.getDatabase(requireContext()).characterDao() }
-    private val characterRepository by lazy { CharacterRepository(apiService, characterDao) }
-
     private val characterViewModel: CharacterViewModel by activityViewModels {
-        CharacterViewModelFactory(requireActivity().application, characterRepository)
+        CharacterViewModelFactory(requireActivity().application, CharacterRepository(
+            RetrofitInstance.api, AppDatabase.getDatabase(requireContext()).characterDao())
+        )
     }
 
     override fun onCreateView(
@@ -46,11 +44,14 @@ class CharacterDetailFragment : Fragment() {
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 characterViewModel.getCharacter(characterId).collect { character ->
-                    // Обновить UI с данными персонажа
+                    // Update UI with character details
                     binding.characterName.text = character.name
                     binding.characterSpecies.text = character.species
                     binding.characterStatus.text = character.status
                     binding.characterGender.text = character.gender
+                    binding.characterOrigin.text = character.origin.name
+                    binding.characterLocation.text = character.location.name
+                    binding.characterEpisodes.text = character.episode.joinToString(", ") // Join episodes list
                     Glide.with(this@CharacterDetailFragment)
                         .load(character.image)
                         .into(binding.characterImage)
@@ -58,8 +59,10 @@ class CharacterDetailFragment : Fragment() {
             }
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 }
+

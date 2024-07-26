@@ -24,7 +24,7 @@ class CharacterAdapter : ListAdapter<CharacterEntity, CharacterAdapter.Character
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_character, parent, false)
-        return CharacterViewHolder(view, onItemClickListener, this::getItem)
+        return CharacterViewHolder(view, this, onItemClickListener)
     }
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
@@ -34,9 +34,10 @@ class CharacterAdapter : ListAdapter<CharacterEntity, CharacterAdapter.Character
 
     class CharacterViewHolder(
         itemView: View,
-        private val onItemClickListener: ((CharacterEntity) -> Unit)?,
-        private val getItem: (Int) -> CharacterEntity?
+        private val adapter: CharacterAdapter,
+        private val onItemClickListener: ((CharacterEntity) -> Unit)?
     ) : RecyclerView.ViewHolder(itemView) {
+
         private val nameTextView: TextView = itemView.findViewById(R.id.characterName)
         private val speciesTextView: TextView = itemView.findViewById(R.id.characterSpecies)
         private val statusTextView: TextView = itemView.findViewById(R.id.characterStatus)
@@ -48,14 +49,22 @@ class CharacterAdapter : ListAdapter<CharacterEntity, CharacterAdapter.Character
             speciesTextView.text = character.species
             statusTextView.text = character.status
             genderTextView.text = character.gender
-            Glide.with(itemView.context).load(character.image).into(imageView)
+            Glide.with(itemView.context)
+                .load(character.image)
+                .placeholder(R.drawable.placeholder_image) // Add a placeholder image if needed
+                .error(R.drawable.error_image) // Add an error image if needed
+                .into(imageView)
         }
 
         init {
             itemView.setOnClickListener {
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    getItem(position)?.let { onItemClickListener?.invoke(it) }
+                itemView.setOnClickListener {
+                    val position = adapterPosition
+                    if (position != RecyclerView.NO_POSITION) {
+                        val character = adapter.getItem(position)
+                        if (character != null) {
+                            onItemClickListener?.invoke(character)
+                    }
                 }
             }
         }
@@ -71,3 +80,5 @@ class CharacterDiffCallback : DiffUtil.ItemCallback<CharacterEntity>() {
         return oldItem == newItem
     }
 }
+}
+

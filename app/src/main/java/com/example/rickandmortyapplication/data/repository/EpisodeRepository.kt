@@ -1,6 +1,5 @@
 package com.example.rickandmortyapplication.data.repository
 
-import android.util.Log
 import com.example.rickandmortyapplication.data.database.EpisodeDao
 import com.example.rickandmortyapplication.data.database.entities.EpisodeEntity
 import com.example.rickandmortyapplication.data.network.ApiService

@@ -2,10 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <!-- Переменные для привязки данных (если нужно) -->
-    </data>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -42,6 +38,27 @@
 
         <TextView
             android:id="@+id/characterGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:paddingTop="4dp" />
+
+        <TextView
+            android:id="@+id/characterOrigin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:paddingTop="4dp" />
+
+        <TextView
+            android:id="@+id/characterLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:paddingTop="4dp" />
+
+        <TextView
+            android:id="@+id/characterEpisodes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"

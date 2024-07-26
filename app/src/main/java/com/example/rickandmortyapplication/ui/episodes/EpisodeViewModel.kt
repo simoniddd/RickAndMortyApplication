@@ -16,7 +16,8 @@ import kotlinx.coroutines.launch
 class EpisodeViewModel(
     application: Application,
     private val repository: EpisodeRepository
-) : AndroidViewModel(application) {private val _episodeUiState = MutableStateFlow<EpisodeUiState>(EpisodeUiState.Loading)
+) : AndroidViewModel(application) {
+    private val _episodeUiState = MutableStateFlow<EpisodeUiState>(EpisodeUiState.Loading)
     val episodeUiState: StateFlow<EpisodeUiState> = _episodeUiState.asStateFlow()
 
     private val _searchQuery = MutableStateFlow("")

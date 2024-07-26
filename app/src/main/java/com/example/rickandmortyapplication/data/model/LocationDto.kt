@@ -1,6 +1,6 @@
 package com.example.rickandmortyapplication.data.model
 
-data class LocationDTO(
+data class LocationDto(
     val id: Int,
     val name: String,
     val type: String,

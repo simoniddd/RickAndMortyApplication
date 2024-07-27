@@ -57,7 +57,6 @@ class CharacterAdapter : ListAdapter<CharacterEntity, CharacterAdapter.Character
         }
 
         init {
-            itemView.setOnClickListener {
                 itemView.setOnClickListener {
                     val position = adapterPosition
                     if (position != RecyclerView.NO_POSITION) {
@@ -80,5 +79,5 @@ class CharacterDiffCallback : DiffUtil.ItemCallback<CharacterEntity>() {
         return oldItem == newItem
     }
 }
-}
+
 

@@ -2,11 +2,10 @@ package com.example.rickandmortyapplication.data.repository
 
 import com.example.rickandmortyapplication.data.database.CharacterDao
 import com.example.rickandmortyapplication.data.database.entities.CharacterEntity
-import com.example.rickandmortyapplication.data.model.toEntity
+import com.example.rickandmortyapplication.data.model.toCharacterEntity
 import com.example.rickandmortyapplication.data.network.ApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -29,7 +28,7 @@ class CharacterRepository(
         val response = api.getAllCharacters(page)
         if (response.isSuccessful) {
             response.body()?.let { characterResponse ->
-                val characters = characterResponse.results.map { it.toEntity() }
+                val characters = characterResponse.results.map { it.toCharacterEntity() }
                 characters.forEach { it.page = page }
                 characterDao.insertCharacters(characters)
 
@@ -61,7 +60,7 @@ class CharacterRepository(
                 val response = api.getAllCharacters(page)
                 if (response.isSuccessful) {
                     response.body()?.let { characterResponse ->
-                        val characters = characterResponse.results.map { it.toEntity() }
+                        val characters = characterResponse.results.map { it.toCharacterEntity() }
                         characters.forEach { it.page = page }
                         characterDao.insertCharacters(characters)
                         characters

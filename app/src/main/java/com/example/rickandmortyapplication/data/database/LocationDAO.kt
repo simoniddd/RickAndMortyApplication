@@ -14,7 +14,10 @@ interface LocationDao {
     fun getAllLocations(): Flow<List<LocationEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertLocations(locations: List<LocationEntity>)
+    fun insertLocations(locations: List<LocationEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertLocation(location: LocationEntity)
 
     @Query("SELECT * FROM locations WHERE id = :locationId")
     fun getLocationById(locationId: Int): Flow<LocationEntity>

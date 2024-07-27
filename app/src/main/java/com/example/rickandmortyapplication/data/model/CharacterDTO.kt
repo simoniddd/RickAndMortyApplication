@@ -27,19 +27,36 @@ data class CharacterLocationDto(
     val url: String
 )
 
-fun CharacterDto.toEntity(): CharacterEntity {
+fun CharacterDto.toCharacterEntity(): CharacterEntity {
     return CharacterEntity(
         id = this.id,
         name = this.name,
         status = this.status,
         species = this.species,
+        type = this.type,
         gender = this.gender,
-        image = this.image,
-        created = this.created,
         origin = this.origin,
         location = this.location,
+        image = this.image,
         episode = this.episode,
-        type = this.type,
-        url = this.url
+        url = this.url,
+        created = this.created
+    )
+}
+
+fun CharacterEntity.toCharacterDto(): CharacterDto {
+    return CharacterDto(
+        id = this.id,
+        name = this.name,
+        status = this.status,
+        species = this.species,
+        type = this.type.toString(),
+        gender = this.gender,
+        origin = this.origin,
+        location = this.location,
+        image = this.image,
+        episode = this.episode,
+        url = this.url,
+        created = this.created
     )
 }

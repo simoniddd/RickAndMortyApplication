@@ -1,5 +1,6 @@
 package com.example.rickandmortyapplication.ui.locations
 
+import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,30 +8,28 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.databinding.FragmentLocationsBinding
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmortyapplication.data.AppDatabase
 import com.example.rickandmortyapplication.data.repository.LocationRepository
 import com.example.rickandmortyapplication.ui.filters.EpisodeFilterDialogFragment
 import com.example.rickandmortyapplication.ui.filters.LocationFilterDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-class LocationsFragment : Fragment(),
-    LocationFilterDialogFragment.LocationFilterListener {
+class LocationsFragment : Fragment(), LocationFilterDialogFragment.LocationFilterListener {
 
     private lateinit var binding: FragmentLocationsBinding
-    private val locationDao by lazy { AppDatabase.getDatabase(requireContext()).locationDao()}
-    private val apiService by lazy { RetrofitInstance.api }
-    private val locationRepository by lazy { LocationRepository(apiService, locationDao) }
-    private val locationViewModel: LocationsViewModel by viewModels {
-        LocationViewModelFactory(requireActivity().application, locationRepository)
-    }
+    private val locationRepository by lazy { LocationRepository(RetrofitInstance.api, AppDatabase.getDatabase(requireContext()).locationDao()) }
+    private val locationViewModel: LocationsViewModel by viewModels { LocationViewModelFactory(Application(), locationRepository) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,7 +59,7 @@ class LocationsFragment : Fragment(),
                     is LocationUiState.Error -> {
                         binding.progressBar.visibility = View.GONE
                         // Show error message (e.g., Snackbar)
-                        // Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -100,11 +99,19 @@ class LocationsFragment : Fragment(),
 
         binding.swipeRefreshLayout.setOnRefreshListener {
             locationViewModel.setSearchQuery("")
+            locationViewModel.setFilters("", "", "")
             locationViewModel.loadLocations()
             binding.swipeRefreshLayout.isRefreshing = false
         }
     }
+
     override fun onLocationFiltersApplied(filters: LocationFilterDialogFragment.LocationFilterData) {
-        locationViewModel.applyFilters(filters)
+        locationViewModel.setFilters(
+            name = filters.name,
+            type = filters.type,
+            dimension = filters.dimension
+        )
     }
 }
+
+

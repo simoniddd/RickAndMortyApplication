@@ -4,85 +4,90 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rickandmortyapplication.data.database.entities.LocationEntity
+import com.example.rickandmortyapplication.data.model.LocationDto
 import com.example.rickandmortyapplication.data.repository.LocationRepository
 import com.example.rickandmortyapplication.ui.filters.LocationFilterDialogFragment
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class LocationsViewModel(
     application: Application,
     private val repository: LocationRepository
-) : AndroidViewModel(application) {private val _locationUiState = MutableStateFlow<LocationUiState>(LocationUiState.Loading)
-    val locationUiState: StateFlow<LocationUiState> = _locationUiState.asStateFlow()
+) : AndroidViewModel(application) {
+
+    private val _locationUiState = MutableStateFlow<LocationUiState>(LocationUiState.Loading)
+    val locationUiState: StateFlow<LocationUiState> = _locationUiState
 
     private val _searchQuery = MutableStateFlow("")
-    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+    private val _nameFilter = MutableStateFlow("")
+    private val _typeFilter = MutableStateFlow("")
+    private val _dimensionFilter = MutableStateFlow("")
+
+    var searchQuery: StateFlow<String> = _searchQuery
+    var nameFilter: StateFlow<String> = _nameFilter
+    var typeFilter: StateFlow<String> = _typeFilter
+    var dimensionFilter: StateFlow<String> = _dimensionFilter
 
     private var currentPage = 1
     private var isLastPage = false
 
     init {
-        loadLocations()
+        observeFiltersAndQuery()
     }
 
-    private val _nameFilter = MutableStateFlow("")
-    private val _typeFilter = MutableStateFlow("")
-    private val _dimensionFilter = MutableStateFlow("")
-
-    fun applyFilters(filters: LocationFilterDialogFragment.LocationFilterData) {
-        _nameFilter.value = filters.name
-        _typeFilter.value = filters.type
-        _dimensionFilter.value = filters.dimension
-        currentPage= 1
-        isLastPage = false
-        loadLocations()
+    private fun observeFiltersAndQuery() {
+        viewModelScope.launch {
+            combine(
+                _nameFilter,
+                _typeFilter,
+                _dimensionFilter
+            ) { name, type, dimension ->
+                Triple( name, type, dimension)
+            }.collect { ( name, type, dimension) ->
+                currentPage = 1
+                isLastPage = false
+                loadLocations( name, type, dimension)
+            }
+        }
     }
 
-    fun loadLocations(query: String = "") {
+    fun setFilters(name: String, type: String, dimension: String) {
+        _nameFilter.value = name
+        _typeFilter.value = type
+        _dimensionFilter.value = dimension
+    }
+
+    fun setSearchQuery(query: String) {
+        _searchQuery.value = query
+    }
+
+    fun loadLocations(name: String = _nameFilter.value, type: String = _typeFilter.value, dimension: String = _dimensionFilter.value) {
         viewModelScope.launch {
             _locationUiState.value = LocationUiState.Loading
             try {
                 val locations = repository.getLocations(
                     page = currentPage,
-                    name = _nameFilter.value,
-                    type = _typeFilter.value,
-                    dimension = _dimensionFilter.value
+                    name = name,
+                    type = type,
+                    dimension = dimension,
                 )
                 _locationUiState.value = LocationUiState.Success(locations)
-                isLastPage = locations.isEmpty()
-                if (!isLastPage) {
-                    currentPage++
-                }
             } catch (e: Exception) {
-                _locationUiState.value = LocationUiState.Error("Failed to load locations")
+                _locationUiState.value = LocationUiState.Error(e.message ?: "Unknown error")
             }
         }
     }
 
     fun loadNextPage() {
-        if (!isLastPage && searchQuery.value.isBlank()) { // Only load next page if not searching
+        if (!isLastPage) {
+            currentPage++
             loadLocations()
         }
     }
-
-    fun setSearchQuery(query: String) {
-        _searchQuery.value = query
-        currentPage = 1
-        isLastPage = false
-        loadLocations(query)
-    }
-
-    fun getLocationById(id: Int): Flow<LocationEntity> {
-        return repository.getLocationById(id)
-    }
-}
-
-sealed class LocationUiState {
-    object Loading : LocationUiState()
-    data class Success(val locations: List<LocationEntity>) : LocationUiState()
-    data class Error(val message: String) : LocationUiState()
 }

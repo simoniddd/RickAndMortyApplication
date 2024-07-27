@@ -82,11 +82,14 @@
     <fragment
         android:id="@+id/locationDetailsFragment"
         android:name="com.example.rickandmortyapplication.ui.locations.LocationDetailsFragment"
-        android:label="Location Details Fragment"
+        android:label="Location Details"
         tools:layout="@layout/fragment_location_details">
         <argument
             android:name="locationId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_locationDetailsFragment_to_characterDetailsFragment"
+            app:destination="@id/characterDetailsFragment" />
     </fragment>
 
 </navigation>

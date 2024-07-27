@@ -108,16 +108,6 @@ class CharacterViewModel(
         isLastPage = false
         loadCharacters()
     }
-
-    fun getCharacter(characterId: Int): Flow<CharacterEntity> {
-        return repository.getCharacterById(characterId)
-    }
-
-    suspend fun getEpisodeData(episodeUrl: String): EpisodeEntity {
-        return withContext(Dispatchers.IO) {
-            api.getEpisode(episodeUrl)
-        }
-    }
 }
 
 sealed class CharacterUiState {

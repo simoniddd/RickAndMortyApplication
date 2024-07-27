@@ -1,6 +1,8 @@
 package com.example.rickandmortyapplication.data.database.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.rickandmortyapplication.data.database.Converters
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "episodes")
@@ -9,5 +11,6 @@ data class EpisodeEntity(
     val name: String,
     @SerializedName("air_date") val air_date: String,
     val episode: String,
+    val characters: List<String>,
     var page: Int? = null
 )

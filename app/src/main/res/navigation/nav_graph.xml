@@ -25,12 +25,19 @@
     <!-- Фрагмент с деталями персонажа -->
     <fragment
         android:id="@+id/characterDetailsFragment"
-        android:name="com.example.rickandmortyapplication.ui.character.CharacterDetailFragment"
+        android:name="com.example.rickandmortyapplication.ui.character.CharacterDetailsFragment"
         android:label="Character Details Fragment"
         tools:layout="@layout/fragment_character_details">
         <argument
             android:name="characterId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_characterDetailsFragment_to_episodeDetailsFragment"
+            app:destination="@id/episodeDetailsFragment">
+            <argument
+                android:name="episodeId"
+                app:argType="string" />
+        </action>
     </fragment>
 
     <!-- Фрагмент с эпизодами -->
@@ -55,10 +62,13 @@
         android:id="@+id/episodeDetailsFragment"
         android:name="com.example.rickandmortyapplication.ui.episodes.EpisodeDetailsFragment"
         android:label="Episode Details Fragment"
-        tools:layout="@layout/fragment_episode_detail">
+        tools:layout="@layout/fragment_episode_details">
         <argument
             android:name="episodeId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_episodeDetailsFragment_to_characterDetailsFragment"
+            app:destination="@id/characterDetailsFragment" />
     </fragment>
 
     <!-- Фрагмент с локациями -->

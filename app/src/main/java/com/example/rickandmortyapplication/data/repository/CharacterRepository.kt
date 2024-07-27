@@ -2,6 +2,8 @@ package com.example.rickandmortyapplication.data.repository
 
 import com.example.rickandmortyapplication.data.database.CharacterDao
 import com.example.rickandmortyapplication.data.database.entities.CharacterEntity
+import com.example.rickandmortyapplication.data.model.CharacterDto
+import com.example.rickandmortyapplication.data.model.EpisodeDTO
 import com.example.rickandmortyapplication.data.model.toCharacterEntity
 import com.example.rickandmortyapplication.data.network.ApiService
 import kotlinx.coroutines.Dispatchers
@@ -50,8 +52,8 @@ class CharacterRepository(
     }.flowOn(Dispatchers.IO)
 
 
-    fun getCharacterById(characterId: Int): Flow<CharacterEntity> {
-        return characterDao.getCharacterById(characterId).flowOn(Dispatchers.IO)
+    suspend fun getCharacterById(id: Int): CharacterDto {
+        return api.getCharacterById(id)
     }
 
     suspend fun refreshCharacters(page: Int): List<CharacterEntity> {
@@ -75,8 +77,9 @@ class CharacterRepository(
         }
     }
 
-    fun deleteAll() {
-        characterDao.deleteAll()
+    suspend fun getEpisodeByUrl(url: String): EpisodeDTO {
+        // Получите информацию о персонаже по URL
+        return api.getEpisodeByUrl(url)
     }
 }
 

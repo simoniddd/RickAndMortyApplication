@@ -18,8 +18,8 @@ interface CharacterDao {
     @Query("DELETE FROM characters")
     fun deleteAll()
 
-    @Query("SELECT * FROM characters WHERE id = :characterId")
-    fun getCharacterById(characterId: Int): Flow<CharacterEntity>
+    @Query("SELECT * FROM characters WHERE id = :id")
+    fun getCharacterById(id: Int): Flow<CharacterEntity>
 
     @Query("SELECT * FROM characters WHERE name LIKE '%' || :query || '%'")
     fun getCharactersByName(query: String): Flow<List<CharacterEntity>>

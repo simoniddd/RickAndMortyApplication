@@ -3,13 +3,11 @@ package com.example.rickandmortyapplication.ui.locations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rickandmortyapplication.data.model.toCharacterEntity
-import com.example.rickandmortyapplication.data.model.toLocationDto
 import com.example.rickandmortyapplication.data.repository.LocationRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class LocationDetailsViewModel(

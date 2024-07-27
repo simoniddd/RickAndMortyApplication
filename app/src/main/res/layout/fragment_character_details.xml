@@ -9,60 +9,85 @@
         android:padding="16dp"
         tools:context=".ui.characters.CharacterDetailsFragment">
 
+        <!-- ImageView for character image -->
         <ImageView
             android:id="@+id/characterImage"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop" />
 
+        <!-- TextView for character name -->
         <TextView
             android:id="@+id/characterName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="24sp"
-            android:paddingTop="8dp" />
+            android:paddingTop="8dp"
+            android:textColor="@android:color/black" />
 
+        <!-- TextView for character species -->
         <TextView
             android:id="@+id/characterSpecies"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:paddingTop="4dp" />
+            android:paddingTop="4dp"
+            android:textColor="@android:color/black" />
 
+        <!-- TextView for character status -->
         <TextView
             android:id="@+id/characterStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:paddingTop="4dp" />
+            android:paddingTop="4dp"
+            android:textColor="@android:color/black" />
 
+        <!-- TextView for character gender -->
         <TextView
             android:id="@+id/characterGender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:paddingTop="4dp" />
+            android:paddingTop="4dp"
+            android:textColor="@android:color/black" />
 
+        <!-- TextView for character origin -->
         <TextView
             android:id="@+id/characterOrigin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:paddingTop="4dp" />
+            android:paddingTop="4dp"
+            android:textColor="@android:color/black" />
 
+        <!-- TextView for character location -->
         <TextView
             android:id="@+id/characterLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:paddingTop="4dp" />
+            android:paddingTop="4dp"
+            android:textColor="@android:color/black" />
 
-        <TextView
-            android:id="@+id/characterEpisodes"
+        <!-- ProgressBar for loading state -->
+        <ProgressBar
+            android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:paddingTop="4dp" />
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <!-- RecyclerView for displaying episodes -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/episodesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingTop="8dp"
+            tools:listitem="@layout/item_character" />
 
     </LinearLayout>
 </layout>
+

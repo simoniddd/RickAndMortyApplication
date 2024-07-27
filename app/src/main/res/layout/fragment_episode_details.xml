@@ -1,0 +1,70 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <!-- Declare ViewModel -->
+        <variable
+            name="viewModel"
+            type="com.example.rickandmortyapplication.ui.episodes.EpisodeDetailsViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:context=".ui.episode.EpisodeDetailsFragment">
+
+        <!-- ProgressBar for loading state -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <!-- TextViews for Episode Details -->
+        <TextView
+            android:id="@+id/episodeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:paddingBottom="8dp"
+            tools:text="Episode Name" />
+
+        <TextView
+            android:id="@+id/episodeAirDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:paddingBottom="8dp"
+            tools:text="Air Date: December 2, 2013" />
+
+        <TextView
+            android:id="@+id/episodeCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:paddingBottom="16dp"
+            tools:text="Episode Code: S01E01" />
+
+        <TextView
+            android:id="@+id/charactersLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Characters"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <!-- RecyclerView for Characters -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/charactersRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingTop="8dp"
+            tools:listitem="@layout/item_character" />
+    </LinearLayout>
+</layout>

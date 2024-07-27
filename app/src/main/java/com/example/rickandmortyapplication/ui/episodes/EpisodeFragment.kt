@@ -16,15 +16,15 @@ import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.data.repository.EpisodeRepository
 import com.example.rickandmortyapplication.databinding.FragmentEpisodesBinding
 import com.example.rickandmortyapplication.ui.filters.EpisodeFilterDialogFragment
+import com.example.rickandmortyapplication.ui.filters.LocationFilterDialogFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-class EpisodeFragment : Fragment(),
-    EpisodeFilterDialogFragment.EpisodeFilterListener {
+class EpisodeFragment : Fragment(), EpisodeFilterDialogFragment.EpisodeFilterListener {
 
     private lateinit var binding: FragmentEpisodesBinding
-    private val episodeDao by lazy { AppDatabase.getDatabase(requireContext()).episodeDao()}
+    private val episodeDao by lazy { AppDatabase.getDatabase(requireContext()).episodeDao() }
     private val apiService by lazy { RetrofitInstance.api }
     private val episodeRepository by lazy { EpisodeRepository(apiService, episodeDao) }
     private val episodeViewModel: EpisodeViewModel by viewModels {
@@ -43,8 +43,8 @@ class EpisodeFragment : Fragment(),
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = EpisodeAdapter()
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
+        binding.episodesRecyclerView.adapter = adapter
+        binding.episodesRecyclerView.layoutManager = GridLayoutManager(context, 2)
 
         // Observe episode UI state
         viewLifecycleOwner.lifecycleScope.launch {
@@ -66,13 +66,14 @@ class EpisodeFragment : Fragment(),
             }
         }
 
+        // Open filter dialog
         binding.filterButton.setOnClickListener {
             val dialog = EpisodeFilterDialogFragment()
             dialog.show(childFragmentManager, "EpisodeFilterDialog")
         }
 
         // Handle scrolling for pagination
-        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.episodesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!recyclerView.canScrollVertically(1)) {
@@ -84,9 +85,7 @@ class EpisodeFragment : Fragment(),
         // Set item click listener
         adapter.setOnItemClickListener { episode ->
             val action = EpisodeFragmentDirections
-                .actionEpisodesFragmentToEpisodeDetailsFragment(
-                    episode.id.toString()
-                )
+                .actionEpisodesFragmentToEpisodeDetailsFragment(episode.id.toString())
             findNavController().navigate(action)
         }
 
@@ -110,8 +109,12 @@ class EpisodeFragment : Fragment(),
             binding.swipeRefreshLayout.isRefreshing = false
         }
     }
+
     override fun onEpisodeFiltersApplied(filters: EpisodeFilterDialogFragment.EpisodeFilterData) {
-        episodeViewModel.applyFilters(filters)
+        episodeViewModel.setFilters(
+            name = filters.name,
+            episode = filters.episode
+        )
     }
 }
 

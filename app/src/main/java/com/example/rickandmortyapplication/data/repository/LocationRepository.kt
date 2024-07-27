@@ -80,10 +80,6 @@ class LocationRepository(
         // Получение персонажа по URL из API
         return apiService.getCharacterByUrl(url)
     }
-
-    fun getLocationEntityById(id: Int): Flow<LocationEntity> {
-        return locationDao.getLocationById(id)
-    }
 }
 
 

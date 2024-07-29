@@ -59,7 +59,9 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:paddingTop="4dp"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:clickable="true"
+            android:focusable="true" />
 
         <!-- TextView for character location -->
         <TextView

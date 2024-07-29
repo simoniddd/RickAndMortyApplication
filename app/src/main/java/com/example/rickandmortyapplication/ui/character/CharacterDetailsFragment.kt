@@ -56,6 +56,28 @@ class CharacterDetailsFragment : Fragment() {
 
         // Fetch character details
         characterId?.let { characterDetailsViewModel.getCharacterDetails(it) }
+
+        // Set click listener for origin TextView
+        binding.characterOrigin.setOnClickListener {
+            when (val uiState = characterDetailsViewModel.characterUiState.value) {
+                is CharacterDetailsUiState.Success -> {
+                    // Теперь вы можете безопасно получить доступ к `character`
+                    val originId = uiState.character.origin.getLocationId()
+                    val action = CharacterDetailsFragmentDirections
+                        .actionCharacterDetailsFragmentToLocationDetailsFragment(originId.toString())
+                    findNavController().navigate(action)
+                }
+
+                else -> {
+                    // Обработка других состояний, таких как Loading или Error
+                    Toast.makeText(
+                        requireContext(),
+                        "Unable to navigate, data not available",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
     }
 
     private fun setupRecyclerView() {

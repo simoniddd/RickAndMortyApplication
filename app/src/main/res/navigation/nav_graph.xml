@@ -38,6 +38,13 @@
                 android:name="episodeId"
                 app:argType="string" />
         </action>
+        <action
+            android:id="@+id/action_characterDetailsFragment_to_locationDetailsFragment"
+            app:destination="@id/locationDetailsFragment">
+            <argument
+                android:name="locationId"
+                app:argType="string" />
+        </action>
     </fragment>
 
     <!-- Фрагмент с эпизодами -->

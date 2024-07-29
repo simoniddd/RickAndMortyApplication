@@ -20,7 +20,11 @@ data class CharacterDto(
 data class OriginDto(
     val name: String,
     val url: String
-)
+) {
+    fun getLocationId(): Int {
+        return url.substringAfterLast("/").toInt()
+    }
+}
 
 data class CharacterLocationDto(
     val name: String,

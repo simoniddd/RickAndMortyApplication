@@ -24,7 +24,8 @@ class CharacterRepository(
         name: String = "",
         status: String = "",
         species: String = "",
-        gender: String = ""
+        gender: String = "",
+        searchQuery: String = ""
     ): Flow<List<CharacterEntity>> = flow {
         // Fetch characters from API
         val response = api.getAllCharacters(page)
@@ -44,6 +45,7 @@ class CharacterRepository(
     }.map { characters ->
         // Filter the characters based on the provided criteria
         characters.filter { character ->
+            (searchQuery.isBlank() || character.name.contains(searchQuery, ignoreCase = true)) &&
             (name.isBlank() || character.name.contains(name, ignoreCase = true)) &&
                     (status.isBlank() || character.status == status) &&
                     (species.isBlank() || character.species.contains(species, ignoreCase = true)) &&

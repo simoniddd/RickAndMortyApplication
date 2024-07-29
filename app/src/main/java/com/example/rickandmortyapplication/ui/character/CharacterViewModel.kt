@@ -64,11 +64,12 @@ class CharacterViewModel(
                     name = _nameFilter.value,
                     status = _statusFilter.value,
                     species = _speciesFilter.value,
-                    gender = _genderFilter.value
+                    gender = _genderFilter.value,
+                    searchQuery = _searchQuery.value
                 ).collect { characters ->
                     if (characters.isNotEmpty()) {
                         _characterUiState.value = CharacterUiState.Success(characters)
-                        isLastPage = characters.size < ITEMS_PER_PAGE // ITEMS_PER_PAGE — это количество элементов на одной странице
+                        isLastPage = characters.size < ITEMS_PER_PAGE
                         if (!isLastPage) {
                             currentPage++
                         }
@@ -86,6 +87,7 @@ class CharacterViewModel(
 
     fun loadNextPage() {
         if (!isLastPage && _searchQuery.value.isBlank()) {
+            currentPage++
             loadCharacters()
         }
     }

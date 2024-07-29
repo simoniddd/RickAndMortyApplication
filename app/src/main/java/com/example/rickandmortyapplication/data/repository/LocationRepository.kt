@@ -26,11 +26,12 @@ class LocationRepository(
         page: Int,
         name: String = "",
         type: String = "",
-        dimension: String = ""
+        dimension: String = "",
+        searchQuery: String = ""
     ): List<LocationEntity> {
         return withContext(Dispatchers.IO) {
             val dbLocations = locationDao.getAllLocations()
-            if (name.isBlank() && type.isBlank() && dimension.isBlank()) {
+            if (name.isBlank() && type.isBlank() && dimension.isBlank() && searchQuery.isBlank()) {
                 val cachedLocations = locationDao.getLocationsForPage(page)
                 if (cachedLocations.isNotEmpty()) {
                     return@withContext cachedLocations
@@ -61,6 +62,7 @@ class LocationRepository(
                 return@withContext dbLocations
                     .map { locationList ->
                         locationList.filter { locationEntity ->
+                            (searchQuery.isBlank() || locationEntity.name.contains(searchQuery, ignoreCase = true)) &&
                             (name.isBlank() || locationEntity.name.contains(name, ignoreCase = true)) &&
                                     (type.isBlank() || locationEntity.type.contains(type, ignoreCase = true)) &&
                                     (dimension.isBlank() || locationEntity.dimension.contains(dimension, ignoreCase = true))

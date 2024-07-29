@@ -3,15 +3,10 @@ package com.example.rickandmortyapplication.ui.episodes
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.rickandmortyapplication.data.database.entities.EpisodeEntity
 import com.example.rickandmortyapplication.data.repository.EpisodeRepository
-import com.example.rickandmortyapplication.ui.filters.EpisodeFilterDialogFragment
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
 class EpisodeViewModel(
@@ -41,13 +36,14 @@ class EpisodeViewModel(
         viewModelScope.launch {
             combine(
                 _nameFilter,
-                _episodeFilter
-            ) { name, episode ->
-                Pair(name, episode)
-            }.collect { (name, episode) ->
+                _episodeFilter,
+                _searchQuery
+            ) { name, episode, query ->
+                Triple(name, episode, query)
+            }.collect { (name, episode, query) ->
                 currentPage = 1
                 isLastPage = false
-                loadEpisodes(name, episode)
+                loadEpisodes(name, episode, query)
             }
         }
     }
@@ -61,14 +57,15 @@ class EpisodeViewModel(
         _searchQuery.value = query
     }
 
-    fun loadEpisodes(name: String = _nameFilter.value, episode: String = _episodeFilter.value) {
+    fun loadEpisodes(name: String = _nameFilter.value, episode: String = _episodeFilter.value, query: String = _searchQuery.value) {
         viewModelScope.launch {
             _episodeUiState.value = EpisodeUiState.Loading
             try {
                 val episodes = repository.getEpisodes(
                     page = currentPage,
                     name = name,
-                    episode = episode
+                    episode = episode,
+                    searchQuery = query
                 )
                 _episodeUiState.value = EpisodeUiState.Success(episodes)
                 isLastPage = episodes.isEmpty()
@@ -82,7 +79,7 @@ class EpisodeViewModel(
     }
 
     fun loadNextPage() {
-        if (!isLastPage && searchQuery.value.isBlank()) { // Only load next page if not searching
+        if (!isLastPage && searchQuery.value.isBlank()) {
             currentPage++
             loadEpisodes()
         }

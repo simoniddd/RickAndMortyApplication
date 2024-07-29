@@ -46,13 +46,14 @@ class LocationsViewModel(
             combine(
                 _nameFilter,
                 _typeFilter,
-                _dimensionFilter
-            ) { name, type, dimension ->
-                Triple( name, type, dimension)
-            }.collect { ( name, type, dimension) ->
+                _dimensionFilter,
+                _searchQuery
+            ) { name, type, dimension, query ->
+                Quad(name, type, dimension, query)
+            }.collect { (name, type, dimension, query) ->
                 currentPage = 1
                 isLastPage = false
-                loadLocations( name, type, dimension)
+                loadLocations(name, type, dimension, query)
             }
         }
     }
@@ -67,7 +68,10 @@ class LocationsViewModel(
         _searchQuery.value = query
     }
 
-    fun loadLocations(name: String = _nameFilter.value, type: String = _typeFilter.value, dimension: String = _dimensionFilter.value) {
+    fun loadLocations(name: String = _nameFilter.value,
+                      type: String = _typeFilter.value,
+                      dimension: String = _dimensionFilter.value,
+                      query: String = _searchQuery.value) {
         viewModelScope.launch {
             _locationUiState.value = LocationUiState.Loading
             try {
@@ -76,6 +80,7 @@ class LocationsViewModel(
                     name = name,
                     type = type,
                     dimension = dimension,
+                    searchQuery = query,
                 )
                 _locationUiState.value = LocationUiState.Success(locations)
             } catch (e: Exception) {
@@ -91,3 +96,10 @@ class LocationsViewModel(
         }
     }
 }
+
+data class Quad<A, B, C, D>(
+    val first: A,
+    val second: B,
+    val third: C,
+    val fourth: D
+)

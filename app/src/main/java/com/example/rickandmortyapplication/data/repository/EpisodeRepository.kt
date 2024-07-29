@@ -21,14 +21,15 @@ class EpisodeRepository(
     suspend fun getEpisodes(
         page: Int,
         name: String = "",
-        episode: String = ""
+        episode: String = "",
+        searchQuery: String = ""
     ): List<EpisodeEntity> {
         return withContext(Dispatchers.IO) {
             // Получение всех эпизодов из базы данных
             val dbEpisodes = episodeDao.getAllEpisodes()
 
             // Если нет фильтров, проверяем наличие кэшированных данных
-            if (name.isBlank() && episode.isBlank()) {
+            if (name.isBlank() && episode.isBlank() && searchQuery.isBlank()) {
                 val cachedEpisodes = episodeDao.getEpisodesForPage(page)
                 if (cachedEpisodes.isNotEmpty()) {
                     return@withContext cachedEpisodes
@@ -62,6 +63,7 @@ class EpisodeRepository(
                 return@withContext dbEpisodes
                     .map { episodeList ->
                         episodeList.filter { episodeEntity ->
+                            (searchQuery.isBlank() || episodeEntity.name.contains(searchQuery, ignoreCase = true)) &&
                             (name.isBlank() || episodeEntity.name.contains(name, ignoreCase = true)) &&
                                     (episode.isBlank() || episodeEntity.episode.contains(episode, ignoreCase = true))
                         }
@@ -79,11 +81,4 @@ class EpisodeRepository(
         // Получите информацию о персонаже по URL
         return api.getCharacterByUrl(url)
     }
-
-    suspend fun getEpisodeByUrl(url: String): EpisodeDTO {
-        // Extract episode ID from URL and fetch episode details
-        val episodeId = url.split("/").last().toInt()
-        return getEpisodeById(episodeId)
-    }
-
 }

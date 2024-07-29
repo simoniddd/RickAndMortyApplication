@@ -16,6 +16,7 @@ import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.data.repository.CharacterRepository
 import com.example.rickandmortyapplication.databinding.FragmentCharactersBinding
 import com.example.rickandmortyapplication.ui.filters.CharacterFilterDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 class CharacterFragment : Fragment(), CharacterFilterDialogFragment.CharacterFilterListener {
@@ -43,19 +44,24 @@ class CharacterFragment : Fragment(), CharacterFilterDialogFragment.CharacterFil
         binding.recyclerView.adapter = characterAdapter
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
 
+        val lottieAnimationView = binding.lottieAnimationView
+
         viewLifecycleOwner.lifecycleScope.launch {
             characterViewModel.characterUiState.collect { state ->
                 when (state) {
                     is CharacterUiState.Loading -> {
-                        binding.progressBar.visibility = View.VISIBLE
+                        lottieAnimationView.visibility = View.VISIBLE
+                        lottieAnimationView.playAnimation()
                     }
                     is CharacterUiState.Success -> {
                         characterAdapter.submitList(state.characters)
-                        binding.progressBar.visibility = View.GONE
+                        lottieAnimationView.visibility = View.GONE
+                        lottieAnimationView.pauseAnimation()
                     }
                     is CharacterUiState.Error -> {
-                        binding.progressBar.visibility = View.GONE
-                        // Handle error (e.g., show a Snackbar)
+                        lottieAnimationView.visibility = View.GONE
+                        lottieAnimationView.pauseAnimation()
+                        Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
                     }
                 }
             }

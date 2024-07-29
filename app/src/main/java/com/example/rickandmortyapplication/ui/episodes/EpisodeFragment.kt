@@ -17,6 +17,7 @@ import com.example.rickandmortyapplication.data.repository.EpisodeRepository
 import com.example.rickandmortyapplication.databinding.FragmentEpisodesBinding
 import com.example.rickandmortyapplication.ui.filters.EpisodeFilterDialogFragment
 import com.example.rickandmortyapplication.ui.filters.LocationFilterDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -46,21 +47,25 @@ class EpisodeFragment : Fragment(), EpisodeFilterDialogFragment.EpisodeFilterLis
         binding.episodesRecyclerView.adapter = adapter
         binding.episodesRecyclerView.layoutManager = GridLayoutManager(context, 2)
 
+        val lottieAnimationView = binding.lottieAnimationView
+
         // Observe episode UI state
         viewLifecycleOwner.lifecycleScope.launch {
             episodeViewModel.episodeUiState.collectLatest { state ->
                 when (state) {
                     is EpisodeUiState.Loading -> {
-                        binding.progressBar.visibility = View.VISIBLE
+                        lottieAnimationView.visibility = View.VISIBLE
+                        lottieAnimationView.playAnimation()
                     }
                     is EpisodeUiState.Success -> {
                         adapter.submitList(state.episodes)
-                        binding.progressBar.visibility = View.GONE
+                        lottieAnimationView.visibility = View.GONE
+                        lottieAnimationView.pauseAnimation()
                     }
                     is EpisodeUiState.Error -> {
-                        binding.progressBar.visibility = View.GONE
-                        // Show error message (e.g., Snackbar)
-                        // Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
+                        lottieAnimationView.visibility = View.GONE
+                        lottieAnimationView.pauseAnimation()
+                        Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
                     }
                 }
             }

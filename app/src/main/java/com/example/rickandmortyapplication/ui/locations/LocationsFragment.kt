@@ -50,15 +50,16 @@ class LocationsFragment : Fragment(), LocationFilterDialogFragment.LocationFilte
             locationViewModel.locationUiState.collect { state ->
                 when (state) {
                     is LocationUiState.Loading -> {
-                        binding.progressBar.visibility = View.VISIBLE
+                        binding.lottieAnimationView.visibility = View.VISIBLE
+                        binding.lottieAnimationView.playAnimation()
                     }
                     is LocationUiState.Success -> {
                         adapter.submitList(state.locations)
-                        binding.progressBar.visibility = View.GONE
+                        binding.lottieAnimationView.visibility = View.GONE
+                        binding.lottieAnimationView.cancelAnimation()
                     }
                     is LocationUiState.Error -> {
-                        binding.progressBar.visibility = View.GONE
-                        // Show error message (e.g., Snackbar)
+                        binding.lottieAnimationView.visibility = View.GONE
                         Snackbar.make(binding.root, state.message, Snackbar.LENGTH_SHORT).show()
                     }
                 }

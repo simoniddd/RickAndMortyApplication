@@ -31,22 +31,22 @@ MVVM (Model-View-ViewModel)
 ## Скриншоты
 
 ### Главный экран
-![Главный экран](characters_list_screenshot.png)
+<img src="screenshots/characters_list_screenshot.png" alt="Главный экран" width="20%" height="20%"/>
 
 ### Детали персонажа
-![Детали персонажа](screenshots/character_details_screenshot.png)
+<img src="screenshots/character_details_screenshot.png" alt="Главный экран" width="20%" height="20%"/>
 
 ### Список Эпизодов
-![Список Эпизодов](screenshots/episodes_list_screenshot.png)
+<img src="screenshots/episodes_list_screenshot.png" alt="Главный экран" width="20%" height="20%"/>
 
 ### Детали эпизода
-![Детали эпизода](screenshots/episode_details_screenshot.png)
+<img src="screenshots/episode_details_screenshot.png" alt="Главный экран" width="20%" height="20%"/>
 
 ### Список Локаций
-![Список Локаций](screenshots/locations_list_screenshot.png)
+<img src="screenshots/locations_list_screenshot.png" alt="Главный экран" width="20%" height="20%"/>
 
 ### Детали локации
-![Детали локации](screenshots/location_details_screenshot.png)
+<img src="screenshots/location_details_screenshot.png" alt="Главный экран" width="20%" height="20%"/>
 
 
 ## Установка

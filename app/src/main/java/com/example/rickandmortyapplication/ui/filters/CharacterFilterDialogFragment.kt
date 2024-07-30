@@ -31,7 +31,6 @@ class CharacterFilterDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set up status spinner
         val statusAdapter = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.character_status_array,
@@ -40,7 +39,6 @@ class CharacterFilterDialogFragment : DialogFragment() {
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.statusSpinner.adapter = statusAdapter
 
-        // Set up gender spinner
         val genderAdapter = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.character_gender_array,
@@ -49,29 +47,19 @@ class CharacterFilterDialogFragment : DialogFragment() {
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.genderSpinner.adapter = genderAdapter
 
-        // Set up apply button click listener
         binding.applyButton.setOnClickListener {
-            // Get filter values from UI elements
             val name = binding.nameEditText.text.toString()
             val status = binding.statusSpinner.selectedItem.toString()
             val species = binding.speciesEditText.text.toString()
             val type = binding.typeEditText.text.toString()
             val gender = binding.genderSpinner.selectedItem.toString()
-
-            // Create FilterData object
             val filterData = CharacterFilterData(name, status, species, type, gender)
-
-            // Pass filter data to CharacterFragment
             (parentFragment as? CharacterFilterListener)?.onCharacterFiltersApplied(filterData)
-
             dismiss()
         }
 
-        // Set up clear button click listener
         binding.clearFiltersButton.setOnClickListener {
-            // Clear filters and notify listener
             (parentFragment as? CharacterFilterListener)?.onCharacterFiltersCleared()
-
             dismiss()
         }
     }

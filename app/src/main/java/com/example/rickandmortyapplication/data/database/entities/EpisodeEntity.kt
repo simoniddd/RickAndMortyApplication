@@ -1,8 +1,7 @@
 package com.example.rickandmortyapplication.data.database.entities
+
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
-import com.example.rickandmortyapplication.data.database.Converters
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "episodes")

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp">
@@ -11,9 +9,9 @@
         android:id="@+id/nameInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/hintTextColor"
-        android:padding="6dp"
         android:hint="@string/name"
+        android:padding="6dp"
+        android:textColorHint="@color/hintTextColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -30,8 +28,8 @@
         android:id="@+id/statusInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="6dp"
         android:hint="@string/status"
+        android:padding="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nameInputLayout">
@@ -96,26 +94,26 @@
 
     <Button
         android:id="@+id/clearFiltersButton"
+        style="@style/CustomButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="6dp"
-        style="@style/CustomButtonStyle"
         android:text="Clear"
-        app:layout_constraintTop_toBottomOf="@id/genderInputLayout"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/applyButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/applyButton" />
+        app:layout_constraintTop_toBottomOf="@id/genderInputLayout" />
 
     <Button
         android:id="@+id/applyButton"
+        style="@style/CustomButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        style="@style/CustomButtonStyle"
         android:text="@string/apply"
-        app:layout_constraintTop_toBottomOf="@id/genderInputLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/clearFiltersButton" />
+        app:layout_constraintStart_toEndOf="@+id/clearFiltersButton"
+        app:layout_constraintTop_toBottomOf="@id/genderInputLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,7 +16,6 @@ import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.data.repository.EpisodeRepository
 import com.example.rickandmortyapplication.databinding.FragmentEpisodesBinding
 import com.example.rickandmortyapplication.ui.filters.EpisodeFilterDialogFragment
-import com.example.rickandmortyapplication.ui.filters.LocationFilterDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -35,7 +34,7 @@ class EpisodeFragment : Fragment(), EpisodeFilterDialogFragment.EpisodeFilterLis
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentEpisodesBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -49,7 +48,6 @@ class EpisodeFragment : Fragment(), EpisodeFilterDialogFragment.EpisodeFilterLis
 
         val lottieAnimationView = binding.lottieAnimationView
 
-        // Observe episode UI state
         viewLifecycleOwner.lifecycleScope.launch {
             episodeViewModel.episodeUiState.collectLatest { state ->
                 when (state) {
@@ -57,11 +55,13 @@ class EpisodeFragment : Fragment(), EpisodeFilterDialogFragment.EpisodeFilterLis
                         lottieAnimationView.visibility = View.VISIBLE
                         lottieAnimationView.playAnimation()
                     }
+
                     is EpisodeUiState.Success -> {
                         adapter.submitList(state.episodes)
                         lottieAnimationView.visibility = View.GONE
                         lottieAnimationView.pauseAnimation()
                     }
+
                     is EpisodeUiState.Error -> {
                         lottieAnimationView.visibility = View.GONE
                         lottieAnimationView.pauseAnimation()
@@ -71,13 +71,11 @@ class EpisodeFragment : Fragment(), EpisodeFilterDialogFragment.EpisodeFilterLis
             }
         }
 
-        // Open filter dialog
         binding.filterButton.setOnClickListener {
             val dialog = EpisodeFilterDialogFragment()
             dialog.show(childFragmentManager, "EpisodeFilterDialog")
         }
 
-        // Handle scrolling for pagination
         binding.episodesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -87,14 +85,12 @@ class EpisodeFragment : Fragment(), EpisodeFilterDialogFragment.EpisodeFilterLis
             }
         })
 
-        // Set item click listener
         adapter.setOnItemClickListener { episode ->
             val action = EpisodeFragmentDirections
                 .actionEpisodesFragmentToEpisodeDetailsFragment(episode.id.toString())
             findNavController().navigate(action)
         }
 
-        // Handle search query
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let { episodeViewModel.setSearchQuery(it) }
@@ -107,10 +103,9 @@ class EpisodeFragment : Fragment(), EpisodeFilterDialogFragment.EpisodeFilterLis
             }
         })
 
-        // Handle swipe to refresh
         binding.swipeRefreshLayout.setOnRefreshListener {
-            episodeViewModel.setSearchQuery("") // Reset search query
-            episodeViewModel.loadEpisodes() // Reload episodes (starts from page 1)
+            episodeViewModel.setSearchQuery("")
+            episodeViewModel.loadEpisodes()
             binding.swipeRefreshLayout.isRefreshing = false
         }
     }

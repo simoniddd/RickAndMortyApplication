@@ -14,8 +14,14 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        window.setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
+            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+        )
 
         setContentView(R.layout.activity_splash_screen)
 
@@ -23,7 +29,6 @@ class SplashScreenActivity : AppCompatActivity() {
 
         lottieAnimationView.playAnimation()
 
-        // Запуск следующей активности после окончания анимации
         lottieAnimationView.addAnimatorListener(object : Animator.AnimatorListener {
 
             override fun onAnimationStart(p0: Animator) {

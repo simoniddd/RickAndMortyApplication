@@ -8,36 +8,39 @@
 
     <TextView
         android:id="@+id/nameTextView"
+        style="@style/TextAppearance.RickAndMortyApplication.Title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:textStyle="bold"
         android:gravity="center"
         android:padding="4dp"
-        tools:text="Location Name"/>
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Location Name" />
 
     <TextView
         android:id="@+id/typeTextView"
+        style="@style/TextAppearance.RickAndMortyApplication.Body"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/nameTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center"
         android:padding="4dp"
-        tools:text="Type"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nameTextView"
+        tools:text="Type" />
 
     <TextView
         android:id="@+id/dimensionTextView"
+        style="@style/TextAppearance.RickAndMortyApplication.Body"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/typeTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center"
         android:padding="4dp"
-        tools:text="Dimension"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/typeTextView"
+        tools:text="Dimension" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,24 +13,19 @@ import kotlinx.coroutines.launch
 class LocationDetailsViewModel(
     private val locationRepository: LocationRepository
 ) : ViewModel() {
-    private val _locationUiState = MutableStateFlow<LocationDetailsUiState>(LocationDetailsUiState.Loading)
+    private val _locationUiState =
+        MutableStateFlow<LocationDetailsUiState>(LocationDetailsUiState.Loading)
     val locationUiState: StateFlow<LocationDetailsUiState> = _locationUiState
 
     fun getLocationDetails(locationId: Int) {
         viewModelScope.launch {
             _locationUiState.value = LocationDetailsUiState.Loading
             try {
-                // Fetch location details
                 val locationDto = locationRepository.getLocationById(locationId)
-
-                // Use async to fetch characters in parallel
                 val charactersDeferred = locationDto.residents.map { url ->
                     async { locationRepository.getCharacterByUrl(url) }
                 }
-
-                // Await results of all character fetches
                 val characters = charactersDeferred.awaitAll().map { it.toCharacterEntity() }
-
                 _locationUiState.value = LocationDetailsUiState.Success(locationDto, characters)
             } catch (e: Exception) {
                 _locationUiState.value = LocationDetailsUiState.Error(e.message ?: "Unknown error")

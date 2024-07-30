@@ -23,7 +23,8 @@ class CharacterAdapter : ListAdapter<CharacterEntity, CharacterAdapter.Character
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_character, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_character, parent, false)
         return CharacterViewHolder(view, this, onItemClickListener)
     }
 
@@ -51,18 +52,18 @@ class CharacterAdapter : ListAdapter<CharacterEntity, CharacterAdapter.Character
             genderTextView.text = character.gender
             Glide.with(itemView.context)
                 .load(character.image)
-                .placeholder(R.drawable.placeholder_image) // Add a placeholder image if needed
-                .error(R.drawable.error_image) // Add an error image if needed
+                .placeholder(R.drawable.placeholder_image)
+                .error(R.drawable.error_image)
                 .into(imageView)
         }
 
         init {
-                itemView.setOnClickListener {
-                    val position = adapterPosition
-                    if (position != RecyclerView.NO_POSITION) {
-                        val character = adapter.getItem(position)
-                        if (character != null) {
-                            onItemClickListener?.invoke(character)
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val character = adapter.getItem(position)
+                    if (character != null) {
+                        onItemClickListener?.invoke(character)
                     }
                 }
             }

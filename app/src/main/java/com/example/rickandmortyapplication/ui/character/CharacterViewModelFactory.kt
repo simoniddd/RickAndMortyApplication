@@ -12,7 +12,10 @@ class CharacterViewModelFactory(
 ) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        Log.d("CharacterViewModelFactory", "Creating ViewModel: $modelClass with repository: $repository")
+        Log.d(
+            "CharacterViewModelFactory",
+            "Creating ViewModel: $modelClass with repository: $repository"
+        )
         if (modelClass.isAssignableFrom(CharacterViewModel::class.java)) {
             return CharacterViewModel(application, repository) as T
         }

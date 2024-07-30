@@ -30,31 +30,19 @@ class EpisodeFilterDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set up apply button click listener
         binding.applyButton.setOnClickListener {
-            // Collect filter data
             val name = binding.nameEditText.text.toString()
             val episode = binding.episodeEditText.text.toString()
             val filterData = EpisodeFilterData(name, episode)
-
-            // Pass filter data to the listener
             (parentFragment as? EpisodeFilterListener)?.onEpisodeFiltersApplied(filterData)
-
-            // Dismiss the dialog
             dismiss()
         }
 
-        // Set up clear button click listener
         binding.clearFiltersButton.setOnClickListener {
-            // Clear filter fields
             binding.nameEditText.text?.clear()
             binding.episodeEditText.text?.clear()
-
-            // Pass empty filter data to the listener
             val filterData = EpisodeFilterData("", "")
             (parentFragment as? EpisodeFilterListener)?.onEpisodeFiltersApplied(filterData)
-
-            // Dismiss the dialog
             dismiss()
         }
     }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.RickAndMortyApplication" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:fontFamily">@font/roboto_regular_body</item>
+    </style>
+
+    <style name="TextAppearance.RickAndMortyApplication.Title" parent="TextAppearance.AppCompat.Large">
+        <item name="android:fontFamily">@font/roboto_black_title</item>
+    </style>
+
+    <style name="TextAppearance.RickAndMortyApplication.Body" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">@font/roboto_regular_body</item>
+    </style>
+</resources>

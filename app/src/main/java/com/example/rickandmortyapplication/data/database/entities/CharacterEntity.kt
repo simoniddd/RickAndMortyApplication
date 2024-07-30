@@ -5,7 +5,6 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.example.rickandmortyapplication.data.database.Converters
 import com.example.rickandmortyapplication.data.model.CharacterLocationDto
-import com.example.rickandmortyapplication.data.model.LocationDto
 import com.example.rickandmortyapplication.data.model.OriginDto
 
 @Entity(tableName = "characters")

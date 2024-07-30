@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -41,20 +40,18 @@ class EpisodeDetailsFragment : Fragment() {
 
         val episodeIdString = arguments?.getString("episodeId") ?: return
         val episodeId = episodeIdString.toIntOrNull() ?: return
-
-        // Initialize ViewModel with the factory
         val application = requireActivity().application
         val episodeDao = AppDatabase.getDatabase(application).episodeDao()
         val apiService = RetrofitInstance.api
         val episodeRepository = EpisodeRepository(apiService, episodeDao)
         val factory = EpisodeDetailsViewModelFactory(episodeRepository)
-        episodeDetailsViewModel = ViewModelProvider(this, factory).get(EpisodeDetailsViewModel::class.java)
+        episodeDetailsViewModel =
+            ViewModelProvider(this, factory).get(EpisodeDetailsViewModel::class.java)
 
         setupRecyclerView()
         observeViewModel()
 
-        // Fetch episode details
-        episodeId?.let { episodeDetailsViewModel.getEpisodeDetails(it) }
+        episodeId.let { episodeDetailsViewModel.getEpisodeDetails(it) }
     }
 
     private fun setupRecyclerView() {
@@ -79,6 +76,7 @@ class EpisodeDetailsFragment : Fragment() {
                         is EpisodeDetailsUiState.Loading -> {
                             binding.progressBar.visibility = View.VISIBLE
                         }
+
                         is EpisodeDetailsUiState.Success -> {
                             binding.progressBar.visibility = View.GONE
                             binding.episodeName.text = uiState.episode.name
@@ -86,9 +84,11 @@ class EpisodeDetailsFragment : Fragment() {
                             binding.episodeCode.text = uiState.episode.episode
                             characterAdapter.submitList(uiState.characters)
                         }
+
                         is EpisodeDetailsUiState.Error -> {
                             binding.progressBar.visibility = View.GONE
-                            Toast.makeText(requireContext(), uiState.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), uiState.message, Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }

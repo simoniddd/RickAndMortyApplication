@@ -4,12 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
 import com.example.rickandmortyapplication.R
 import com.example.rickandmortyapplication.databinding.FragmentLocationFilterDialogBinding
-import com.example.rickandmortyapplication.ui.filters.EpisodeFilterDialogFragment.EpisodeFilterData
-import com.example.rickandmortyapplication.ui.filters.EpisodeFilterDialogFragment.EpisodeFilterListener
 
 class LocationFilterDialogFragment : DialogFragment() {
 
@@ -35,31 +32,25 @@ class LocationFilterDialogFragment : DialogFragment() {
 
         binding.applyButton.setOnClickListener {
             val name = binding.nameEditText.text.toString()
-            val type = binding.typeEditText.text.toString() // Get value from EditText
-            val dimension = binding.dimensionEditText.text.toString() // Get value from EditText
-
+            val type = binding.typeEditText.text.toString()
+            val dimension = binding.dimensionEditText.text.toString()
             val filterData = LocationFilterData(name, type, dimension)
-
             (parentFragment as? LocationFilterListener)?.onLocationFiltersApplied(filterData)
-
-            dismiss()}
+            dismiss()
+        }
 
         binding.clearFiltersButton.setOnClickListener {
-            // Clear all input fields
             binding.nameEditText.text!!.clear()
             binding.typeEditText.text!!.clear()
             binding.dimensionEditText.text!!.clear()
-
-            // Pass empty filter data to the listener
             val filterData = LocationFilterData("", "", "")
             (parentFragment as? LocationFilterListener)?.onLocationFiltersApplied(filterData)
-
-            // Dismiss the dialog
             dismiss()
         }
     }
 
-    override fun onDestroyView() {super.onDestroyView()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 

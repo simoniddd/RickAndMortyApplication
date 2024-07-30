@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <!-- Declare ViewModel -->
+
         <variable
             name="viewModel"
             type="com.example.rickandmortyapplication.ui.locations.LocationDetailsViewModel" />
@@ -15,56 +15,56 @@
         android:padding="16dp"
         tools:context=".ui.location.LocationDetailsFragment">
 
-        <!-- ProgressBar for loading state -->
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
 
-        <!-- TextViews for Location Details -->
         <TextView
             android:id="@+id/locationName"
+            style="@style/TextAppearance.RickAndMortyApplication.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:paddingBottom="8dp"
             tools:text="Location Name" />
 
         <TextView
             android:id="@+id/locationType"
+            style="@style/TextAppearance.RickAndMortyApplication.Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
             android:paddingBottom="8dp"
+            android:textSize="16sp"
             tools:text="Type: Planet" />
 
         <TextView
             android:id="@+id/locationDimension"
+            style="@style/TextAppearance.RickAndMortyApplication.Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
             android:paddingBottom="16dp"
+            android:textSize="16sp"
             tools:text="Dimension: Dimension C-137" />
 
         <TextView
             android:id="@+id/residentsLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="Residents"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp" />
+            android:textStyle="bold" />
 
-        <!-- RecyclerView for Characters -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:paddingBottom="8dp"
             tools:text="Characters:" />
 
         <androidx.recyclerview.widget.RecyclerView

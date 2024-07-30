@@ -3,17 +3,10 @@ package com.example.rickandmortyapplication.ui.locations
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.rickandmortyapplication.data.database.entities.LocationEntity
-import com.example.rickandmortyapplication.data.model.LocationDto
 import com.example.rickandmortyapplication.data.repository.LocationRepository
-import com.example.rickandmortyapplication.ui.filters.LocationFilterDialogFragment
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class LocationsViewModel(
@@ -75,10 +68,12 @@ class LocationsViewModel(
         _searchQuery.value = query
     }
 
-    fun loadLocations(name: String = _nameFilter.value,
-                      type: String = _typeFilter.value,
-                      dimension: String = _dimensionFilter.value,
-                      query: String = _searchQuery.value) {
+    fun loadLocations(
+        name: String = _nameFilter.value,
+        type: String = _typeFilter.value,
+        dimension: String = _dimensionFilter.value,
+        query: String = _searchQuery.value
+    ) {
         viewModelScope.launch {
             _locationUiState.value = LocationUiState.Loading
             try {

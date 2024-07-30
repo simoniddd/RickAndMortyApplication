@@ -14,13 +14,14 @@
             android:id="@+id/characterImage"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="fitCenter" />
 
         <!-- TextView for character name -->
         <TextView
             android:id="@+id/characterName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/TextAppearance.RickAndMortyApplication.Title"
             android:textSize="24sp"
             android:paddingTop="8dp"
             android:textColor="@android:color/black" />
@@ -30,6 +31,7 @@
             android:id="@+id/characterSpecies"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/TextAppearance.RickAndMortyApplication.Body"
             android:textSize="18sp"
             android:paddingTop="4dp"
             android:textColor="@android:color/black" />
@@ -39,6 +41,7 @@
             android:id="@+id/characterStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/TextAppearance.RickAndMortyApplication.Body"
             android:textSize="18sp"
             android:paddingTop="4dp"
             android:textColor="@android:color/black" />
@@ -48,6 +51,7 @@
             android:id="@+id/characterGender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/TextAppearance.RickAndMortyApplication.Body"
             android:textSize="18sp"
             android:paddingTop="4dp"
             android:textColor="@android:color/black" />
@@ -57,9 +61,11 @@
             android:id="@+id/characterOrigin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/TextAppearance.RickAndMortyApplication.Body"
             android:textSize="18sp"
+            android:textStyle="italic"
             android:paddingTop="4dp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/purple_700"
             android:clickable="true"
             android:focusable="true" />
 
@@ -68,6 +74,7 @@
             android:id="@+id/characterLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/TextAppearance.RickAndMortyApplication.Body"
             android:textSize="18sp"
             android:paddingTop="4dp"
             android:textColor="@android:color/black" />
@@ -81,13 +88,21 @@
             android:visibility="gone"
             tools:visibility="visible"/>
 
+        <TextView
+            android:id="@+id/charactersLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Episodes"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp" />
+
         <!-- RecyclerView for displaying episodes -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/episodesRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:paddingTop="8dp"
+            android:paddingTop="6dp"
             tools:listitem="@layout/item_character" />
 
     </LinearLayout>

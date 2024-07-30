@@ -12,6 +12,11 @@
     <string name="episode">Episode</string>
     <string name="dimension">Dimension</string>
     <string name="clear" />
+    <string name="character_status_label">Status: %1$s</string>
+    <string name="character_species_label">Species: %1$s</string>
+    <string name="character_gender_label">Gender: %1$s</string>
+    <string name="character_origin_label">Origin: %1$s</string>
+    <string name="character_location_label">Location: %1$s</string>
 
     <string-array name="character_gender_array">
         <item>Male</item>

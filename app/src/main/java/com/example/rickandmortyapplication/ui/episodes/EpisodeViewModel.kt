@@ -52,6 +52,7 @@ class EpisodeViewModel(
         _nameFilter.value = name
         _episodeFilter.value = episode
     }
+
     fun clearFilters() {
         _nameFilter.value = ""
         _episodeFilter.value = ""
@@ -65,7 +66,11 @@ class EpisodeViewModel(
         _searchQuery.value = query
     }
 
-    fun loadEpisodes(name: String = _nameFilter.value, episode: String = _episodeFilter.value, query: String = _searchQuery.value) {
+    fun loadEpisodes(
+        name: String = _nameFilter.value,
+        episode: String = _episodeFilter.value,
+        query: String = _searchQuery.value
+    ) {
         viewModelScope.launch {
             _episodeUiState.value = EpisodeUiState.Loading
             try {

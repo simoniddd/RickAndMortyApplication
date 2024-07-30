@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -14,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.rickandmortyapplication.R
 import com.example.rickandmortyapplication.data.AppDatabase
 import com.example.rickandmortyapplication.data.network.RetrofitInstance
 import com.example.rickandmortyapplication.data.repository.CharacterRepository
@@ -42,26 +42,22 @@ class CharacterDetailsFragment : Fragment() {
 
         val characterIdString = arguments?.getString("characterId") ?: return
         val characterId = characterIdString.toIntOrNull() ?: return
-
-        // Initialize ViewModel with the factory
         val application = requireActivity().application
         val characterDao = AppDatabase.getDatabase(application).characterDao()
         val apiService = RetrofitInstance.api
         val characterRepository = CharacterRepository(apiService, characterDao)
         val factory = CharacterDetailsViewModelFactory(characterRepository)
-        characterDetailsViewModel = ViewModelProvider(this, factory).get(CharacterDetailsViewModel::class.java)
+        characterDetailsViewModel =
+            ViewModelProvider(this, factory).get(CharacterDetailsViewModel::class.java)
 
         setupRecyclerView()
         observeViewModel()
 
-        // Fetch character details
-        characterId?.let { characterDetailsViewModel.getCharacterDetails(it) }
+        characterId.let { characterDetailsViewModel.getCharacterDetails(it) }
 
-        // Set click listener for origin TextView
         binding.characterOrigin.setOnClickListener {
             when (val uiState = characterDetailsViewModel.characterUiState.value) {
                 is CharacterDetailsUiState.Success -> {
-                    // Теперь вы можете безопасно получить доступ к `character`
                     val originId = uiState.character.origin.getLocationId()
                     val action = CharacterDetailsFragmentDirections
                         .actionCharacterDetailsFragmentToLocationDetailsFragment(originId.toString())
@@ -69,7 +65,6 @@ class CharacterDetailsFragment : Fragment() {
                 }
 
                 else -> {
-                    // Обработка других состояний, таких как Loading или Error
                     Toast.makeText(
                         requireContext(),
                         "Unable to navigate, data not available",
@@ -102,24 +97,37 @@ class CharacterDetailsFragment : Fragment() {
                         is CharacterDetailsUiState.Loading -> {
                             binding.progressBar.visibility = View.VISIBLE
                         }
+
                         is CharacterDetailsUiState.Success -> {
                             binding.progressBar.visibility = View.GONE
                             binding.characterName.text = uiState.character.name
-                            binding.characterStatus.text = uiState.character.status
-                            binding.characterSpecies.text = uiState.character.species
-                            binding.characterGender.text = uiState.character.gender
-                            binding.characterOrigin.text = uiState.character.origin.name
-                            binding.characterLocation.text = uiState.character.location.name
-
+                            binding.characterStatus.text =
+                                getString(R.string.character_status_label, uiState.character.status)
+                            binding.characterSpecies.text = getString(
+                                R.string.character_species_label,
+                                uiState.character.species
+                            )
+                            binding.characterGender.text =
+                                getString(R.string.character_gender_label, uiState.character.gender)
+                            binding.characterOrigin.text = getString(
+                                R.string.character_origin_label,
+                                uiState.character.origin.name
+                            )
+                            binding.characterLocation.text = getString(
+                                R.string.character_location_label,
+                                uiState.character.location.name
+                            )
                             Glide.with(this@CharacterDetailsFragment)
                                 .load(uiState.character.image)
                                 .into(binding.characterImage)
 
                             episodeAdapter.submitList(uiState.episodes)
                         }
+
                         is CharacterDetailsUiState.Error -> {
                             binding.progressBar.visibility = View.GONE
-                            Toast.makeText(requireContext(), uiState.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), uiState.message, Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }

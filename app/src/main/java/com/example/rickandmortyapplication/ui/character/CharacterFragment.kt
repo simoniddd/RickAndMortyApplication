@@ -40,10 +40,8 @@ class CharacterFragment : Fragment(), CharacterFilterDialogFragment.CharacterFil
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.recyclerView.adapter = characterAdapter
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
-
         val lottieAnimationView = binding.lottieAnimationView
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -53,11 +51,13 @@ class CharacterFragment : Fragment(), CharacterFilterDialogFragment.CharacterFil
                         lottieAnimationView.visibility = View.VISIBLE
                         lottieAnimationView.playAnimation()
                     }
+
                     is CharacterUiState.Success -> {
                         characterAdapter.submitList(state.characters)
                         lottieAnimationView.visibility = View.GONE
                         lottieAnimationView.pauseAnimation()
                     }
+
                     is CharacterUiState.Error -> {
                         lottieAnimationView.visibility = View.GONE
                         lottieAnimationView.pauseAnimation()

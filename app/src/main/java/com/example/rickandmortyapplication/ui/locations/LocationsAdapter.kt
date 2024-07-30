@@ -22,7 +22,8 @@ class LocationsAdapter : ListAdapter<LocationEntity, LocationsAdapter.LocationVi
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_location, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_location, parent, false)
         return LocationViewHolder(view, onItemClickListener, this::getItem)
     }
 
@@ -35,7 +36,7 @@ class LocationsAdapter : ListAdapter<LocationEntity, LocationsAdapter.LocationVi
         itemView: View,
         private val onItemClickListener: ((LocationEntity) -> Unit)?,
         private val getItem: (Int) -> LocationEntity?
-    ) : RecyclerView.ViewHolder(itemView)  {
+    ) : RecyclerView.ViewHolder(itemView) {
         private val nameTextView: TextView = itemView.findViewById(R.id.nameTextView)
         private val typeTextView: TextView = itemView.findViewById(R.id.typeTextView)
         private val dimensionTextView: TextView = itemView.findViewById(R.id.dimensionTextView)

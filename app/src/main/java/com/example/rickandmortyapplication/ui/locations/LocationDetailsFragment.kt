@@ -11,9 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.example.rickandmortyapplication.data.model.LocationDto
-import com.example.rickandmortyapplication.data.model.CharacterDto
-import com.example.rickandmortyapplication.ui.locations.LocationUiState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.rickandmortyapplication.data.AppDatabase
 import com.example.rickandmortyapplication.data.network.RetrofitInstance
@@ -44,19 +41,18 @@ class LocationDetailsFragment : Fragment() {
         val locationIdString = arguments?.getString("locationId") ?: return
         val locationId = locationIdString.toIntOrNull() ?: return
 
-        // Initialize ViewModel with the factory
         val application = requireActivity().application
         val locationDao = AppDatabase.getDatabase(application).locationDao()
         val apiService = RetrofitInstance.api
         val locationRepository = LocationRepository(apiService, locationDao)
         val factory = LocationDetailsViewModelFactory(locationRepository)
-        locationDetailsViewModel = ViewModelProvider(this, factory).get(LocationDetailsViewModel::class.java)
+        locationDetailsViewModel =
+            ViewModelProvider(this, factory).get(LocationDetailsViewModel::class.java)
 
         setupRecyclerView()
         observeViewModel()
-
-        // Fetch location details
-        locationId?.let { locationDetailsViewModel.getLocationDetails(it) }
+        
+        locationId.let { locationDetailsViewModel.getLocationDetails(it) }
     }
 
     private fun setupRecyclerView() {
@@ -81,6 +77,7 @@ class LocationDetailsFragment : Fragment() {
                         is LocationDetailsUiState.Loading -> {
                             binding.progressBar.visibility = View.VISIBLE
                         }
+
                         is LocationDetailsUiState.Success -> {
                             binding.progressBar.visibility = View.GONE
                             binding.locationName.text = uiState.location.name
@@ -88,9 +85,11 @@ class LocationDetailsFragment : Fragment() {
                             binding.locationDimension.text = uiState.location.dimension
                             characterAdapter.submitList(uiState.characters)
                         }
+
                         is LocationDetailsUiState.Error -> {
                             binding.progressBar.visibility = View.GONE
-                            Toast.makeText(requireContext(), uiState.message, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), uiState.message, Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }

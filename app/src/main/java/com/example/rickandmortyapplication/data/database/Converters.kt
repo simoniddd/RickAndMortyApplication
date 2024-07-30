@@ -2,7 +2,6 @@ package com.example.rickandmortyapplication.data.database
 
 import androidx.room.TypeConverter
 import com.example.rickandmortyapplication.data.model.CharacterLocationDto
-import com.example.rickandmortyapplication.data.model.LocationDto
 import com.example.rickandmortyapplication.data.model.OriginDto
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

@@ -19,7 +19,6 @@ class CharacterViewModel(
     val characterUiState: StateFlow<CharacterUiState> = _characterUiState.asStateFlow()
 
     private val _searchQuery = MutableStateFlow("")
-    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
     private val ITEMS_PER_PAGE = 20
 
@@ -80,7 +79,8 @@ class CharacterViewModel(
                     }
                 }
             } catch (e: Exception) {
-                _characterUiState.value = CharacterUiState.Error("Failed to load characters: ${e.message}")
+                _characterUiState.value =
+                    CharacterUiState.Error("Failed to load characters: ${e.message}")
             }
         }
     }

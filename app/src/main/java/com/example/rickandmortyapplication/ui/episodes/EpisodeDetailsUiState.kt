@@ -9,5 +9,6 @@ sealed class EpisodeDetailsUiState {
         val episode: EpisodeDTO,
         val characters: List<CharacterEntity>
     ) : EpisodeDetailsUiState()
+
     data class Error(val message: String) : EpisodeDetailsUiState()
 }

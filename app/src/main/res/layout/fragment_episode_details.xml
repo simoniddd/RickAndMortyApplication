@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <!-- Declare ViewModel -->
+
         <variable
             name="viewModel"
             type="com.example.rickandmortyapplication.ui.episodes.EpisodeDetailsViewModel" />
@@ -15,50 +15,50 @@
         android:padding="16dp"
         tools:context=".ui.episode.EpisodeDetailsFragment">
 
-        <!-- ProgressBar for loading state -->
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
 
-        <!-- TextViews for Episode Details -->
         <TextView
             android:id="@+id/episodeName"
+            style="@style/TextAppearance.RickAndMortyApplication.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:paddingBottom="8dp"
             tools:text="Episode Name" />
 
         <TextView
             android:id="@+id/episodeAirDate"
+            style="@style/TextAppearance.RickAndMortyApplication.Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
             android:paddingBottom="8dp"
+            android:textSize="16sp"
             tools:text="Air Date: December 2, 2013" />
 
         <TextView
             android:id="@+id/episodeCode"
+            style="@style/TextAppearance.RickAndMortyApplication.Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
             android:paddingBottom="16dp"
+            android:textSize="16sp"
             tools:text="Episode Code: S01E01" />
 
         <TextView
             android:id="@+id/charactersLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="Characters"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp" />
+            android:textStyle="bold" />
 
-        <!-- RecyclerView for Characters -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/charactersRecyclerView"
             android:layout_width="match_parent"

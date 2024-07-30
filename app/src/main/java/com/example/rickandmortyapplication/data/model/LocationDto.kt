@@ -1,6 +1,5 @@
 package com.example.rickandmortyapplication.data.model
 
-import com.example.rickandmortyapplication.data.database.entities.CharacterEntity
 import com.example.rickandmortyapplication.data.database.entities.LocationEntity
 
 data class LocationDto(

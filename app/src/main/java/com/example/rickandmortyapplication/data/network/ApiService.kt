@@ -1,7 +1,6 @@
 package com.example.rickandmortyapplication.data.network
 
 import com.example.rickandmortyapplication.data.model.CharacterResponse
-import com.example.rickandmortyapplication.data.database.entities.EpisodeEntity
 import com.example.rickandmortyapplication.data.model.CharacterDto
 import com.example.rickandmortyapplication.data.model.EpisodeDTO
 import com.example.rickandmortyapplication.data.model.EpisodeResponse
@@ -15,11 +14,15 @@ import retrofit2.http.Url
 
 interface ApiService {
 
-    //запрос на получение листа всех персонажей
     @GET("character")
     suspend fun getAllCharacters(@Query("page") page: Int): Response<CharacterResponse>
 
-    //запрос на получение листа всех эпизодов
+    @GET
+    suspend fun getCharacterByUrl(@Url url: String): CharacterDto
+
+    @GET("character/{id}")
+    suspend fun getCharacterById(@Path("id") id: Int): CharacterDto
+
     @GET("episode")
     suspend fun getAllEpisodes(@Query("page") page: Int): Response<EpisodeResponse>
 
@@ -29,13 +32,7 @@ interface ApiService {
     @GET
     suspend fun getEpisodeByUrl(@Url url: String): EpisodeDTO
 
-    @GET
-    suspend fun getCharacterByUrl(@Url url: String): CharacterDto
 
-    @GET("character/{id}")
-    suspend fun getCharacterById(@Path("id") id: Int): CharacterDto
-
-    //запрос на получение листа всех локаций
     @GET("location")
     suspend fun getAllLocations(@Query("page") page: Int): Response<LocationResponse>
 

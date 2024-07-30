@@ -13,8 +13,10 @@ import com.example.rickandmortyapplication.data.database.entities.CharacterEntit
 import com.example.rickandmortyapplication.data.database.entities.EpisodeEntity
 import com.example.rickandmortyapplication.data.database.entities.LocationEntity
 
-@Database(entities = [CharacterEntity::class, EpisodeEntity::class, LocationEntity::class],
-    version = 1)
+@Database(
+    entities = [CharacterEntity::class, EpisodeEntity::class, LocationEntity::class],
+    version = 1
+)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun characterDao(): CharacterDao

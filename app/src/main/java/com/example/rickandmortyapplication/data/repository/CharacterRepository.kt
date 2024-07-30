@@ -27,15 +27,12 @@ class CharacterRepository(
         gender: String = "",
         searchQuery: String = ""
     ): Flow<List<CharacterEntity>> = flow {
-        // Fetch characters from API
         val response = api.getAllCharacters(page)
         if (response.isSuccessful) {
             response.body()?.let { characterResponse ->
                 val characters = characterResponse.results.map { it.toCharacterEntity() }
                 characters.forEach { it.page = page }
                 characterDao.insertCharacters(characters)
-
-                // Emit updated characters from cache
                 val updatedCharacters = characterDao.getAllCharacters().first()
                 emit(updatedCharacters)
             } ?: emit(emptyList())
@@ -43,10 +40,9 @@ class CharacterRepository(
             emit(emptyList())
         }
     }.map { characters ->
-        // Filter the characters based on the provided criteria
         characters.filter { character ->
             (searchQuery.isBlank() || character.name.contains(searchQuery, ignoreCase = true)) &&
-            (name.isBlank() || character.name.contains(name, ignoreCase = true)) &&
+                    (name.isBlank() || character.name.contains(name, ignoreCase = true)) &&
                     (status.isBlank() || character.status == status) &&
                     (species.isBlank() || character.species.contains(species, ignoreCase = true)) &&
                     (gender.isBlank() || character.gender == gender)
@@ -80,7 +76,6 @@ class CharacterRepository(
     }
 
     suspend fun getEpisodeByUrl(url: String): EpisodeDTO {
-        // Получите информацию о персонаже по URL
         return api.getEpisodeByUrl(url)
     }
 }

@@ -121,6 +121,10 @@ class EpisodeFragment : Fragment(), EpisodeFilterDialogFragment.EpisodeFilterLis
             episode = filters.episode
         )
     }
+
+    override fun onClearFilters() {
+        episodeViewModel.clearFilters()
+    }
 }
 
 

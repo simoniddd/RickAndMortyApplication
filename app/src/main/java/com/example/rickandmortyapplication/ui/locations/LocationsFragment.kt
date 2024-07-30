@@ -113,6 +113,10 @@ class LocationsFragment : Fragment(), LocationFilterDialogFragment.LocationFilte
             dimension = filters.dimension
         )
     }
+
+    override fun onClearFilters() {
+        locationViewModel.clearFilters()
+    }
 }
 
 

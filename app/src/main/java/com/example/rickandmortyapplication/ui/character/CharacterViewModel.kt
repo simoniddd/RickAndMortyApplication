@@ -1,24 +1,14 @@
 package com.example.rickandmortyapplication.ui.character
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.rickandmortyapplication.data.database.entities.CharacterEntity
-import com.example.rickandmortyapplication.data.database.entities.EpisodeEntity
-import com.example.rickandmortyapplication.data.network.RetrofitInstance.api
 import com.example.rickandmortyapplication.data.repository.CharacterRepository
 import com.example.rickandmortyapplication.ui.filters.CharacterFilterDialogFragment
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class CharacterViewModel(
     application: Application,
@@ -50,6 +40,17 @@ class CharacterViewModel(
         _statusFilter.value = filters.status
         _speciesFilter.value = filters.species
         _genderFilter.value = filters.gender
+        currentPage = 1
+        isLastPage = false
+        loadCharacters()
+    }
+
+    fun clearFilters() {
+        _nameFilter.value = ""
+        _statusFilter.value = ""
+        _speciesFilter.value = ""
+        _genderFilter.value = ""
+        _searchQuery.value = ""
         currentPage = 1
         isLastPage = false
         loadCharacters()

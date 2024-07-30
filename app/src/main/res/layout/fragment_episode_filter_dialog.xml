@@ -1,29 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:padding="8dp">
 
+    <!-- Name EditText -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/nameInputLayout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/name"
+        android:textColorHint="@color/hintTextColor"
+        android:padding="6dp"
+        android:hint="Title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/nameEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Episode EditText -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/episodeInputLayout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/episode"
+        android:hint="Episode Number"
+        android:padding="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nameInputLayout">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -33,13 +45,30 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Clear Button -->
+    <Button
+        android:id="@+id/clearFiltersButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+        style="@style/CustomButtonStyle"
+        android:text="Clear"
+        app:layout_constraintTop_toBottomOf="@id/episodeInputLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/applyButton" />
+
+    <!-- Apply Button -->
     <Button
         android:id="@+id/applyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="8dp"
+        style="@style/CustomButtonStyle"
         android:text="@string/apply"
+        app:layout_constraintTop_toBottomOf="@id/episodeInputLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/episodeInputLayout" />
+        app:layout_constraintStart_toEndOf="@id/clearFiltersButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

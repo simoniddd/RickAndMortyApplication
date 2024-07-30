@@ -64,6 +64,13 @@ class LocationsViewModel(
         _dimensionFilter.value = dimension
     }
 
+    fun clearFilters() {
+        _nameFilter.value = ""
+        _typeFilter.value = ""
+        _dimensionFilter.value = ""
+        _searchQuery.value = ""
+    }
+
     fun setSearchQuery(query: String) {
         _searchQuery.value = query
     }

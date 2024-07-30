@@ -106,6 +106,10 @@ class CharacterFragment : Fragment(), CharacterFilterDialogFragment.CharacterFil
         }
     }
 
+    override fun onCharacterFiltersCleared() {
+        characterViewModel.clearFilters()
+    }
+
     override fun onCharacterFiltersApplied(filters: CharacterFilterDialogFragment.CharacterFilterData) {
         characterViewModel.applyFilters(filters)
     }

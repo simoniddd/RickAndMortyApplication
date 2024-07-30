@@ -14,6 +14,11 @@ class CharacterFilterDialogFragment : DialogFragment() {
     private var _binding: FragmentCharacterFilterDialogBinding? = null
     private val binding get() = _binding!!
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.CustomDialogTheme)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,6 +66,14 @@ class CharacterFilterDialogFragment : DialogFragment() {
 
             dismiss()
         }
+
+        // Set up clear button click listener
+        binding.clearFiltersButton.setOnClickListener {
+            // Clear filters and notify listener
+            (parentFragment as? CharacterFilterListener)?.onCharacterFiltersCleared()
+
+            dismiss()
+        }
     }
 
     override fun onDestroyView() {
@@ -68,8 +81,17 @@ class CharacterFilterDialogFragment : DialogFragment() {
         _binding = null
     }
 
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+    }
+
     interface CharacterFilterListener {
         fun onCharacterFiltersApplied(filters: CharacterFilterData)
+        fun onCharacterFiltersCleared()
     }
 
     data class CharacterFilterData(

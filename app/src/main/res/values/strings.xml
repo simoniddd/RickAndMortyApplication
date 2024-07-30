@@ -11,6 +11,7 @@
     <string name="apply">Apply</string>
     <string name="episode">Episode</string>
     <string name="dimension">Dimension</string>
+    <string name="clear" />
 
     <string-array name="character_gender_array">
         <item>Male</item>

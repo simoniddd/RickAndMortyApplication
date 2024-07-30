@@ -52,6 +52,14 @@ class EpisodeViewModel(
         _nameFilter.value = name
         _episodeFilter.value = episode
     }
+    fun clearFilters() {
+        _nameFilter.value = ""
+        _episodeFilter.value = ""
+        currentPage = 1
+        isLastPage = false
+        loadEpisodes()
+    }
+
 
     fun setSearchQuery(query: String) {
         _searchQuery.value = query

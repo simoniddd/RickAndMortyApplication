@@ -5,10 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.rickandmortyapplication.data.database.CharacterDao
-import com.example.rickandmortyapplication.data.database.EpisodeDao
+import com.example.rickandmortyapplication.data.database.dao.CharacterDao
+import com.example.rickandmortyapplication.data.database.dao.EpisodeDao
 import com.example.rickandmortyapplication.data.database.Converters
-import com.example.rickandmortyapplication.data.database.LocationDao
+import com.example.rickandmortyapplication.data.database.dao.LocationDao
 import com.example.rickandmortyapplication.data.database.entities.CharacterEntity
 import com.example.rickandmortyapplication.data.database.entities.EpisodeEntity
 import com.example.rickandmortyapplication.data.database.entities.LocationEntity

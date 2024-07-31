@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.rickandmortyapplication.ui.episodes.EpisodeViewModel" />
+            type="com.example.rickandmortyapplication.ui.episodes.list.vm.EpisodeViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.rickandmortyapplication.ui.locations.LocationDetailsViewModel" />
+            type="com.example.rickandmortyapplication.ui.locations.details.vm.LocationDetailsViewModel" />
     </data>
 
     <LinearLayout

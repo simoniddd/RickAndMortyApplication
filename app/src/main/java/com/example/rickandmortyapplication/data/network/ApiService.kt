@@ -1,11 +1,11 @@
 package com.example.rickandmortyapplication.data.network
 
-import com.example.rickandmortyapplication.data.model.CharacterResponse
-import com.example.rickandmortyapplication.data.model.CharacterDto
-import com.example.rickandmortyapplication.data.model.EpisodeDTO
-import com.example.rickandmortyapplication.data.model.EpisodeResponse
-import com.example.rickandmortyapplication.data.model.LocationDto
-import com.example.rickandmortyapplication.data.model.LocationResponse
+import com.example.rickandmortyapplication.data.model.responses.CharacterResponse
+import com.example.rickandmortyapplication.data.model.dto.CharacterDto
+import com.example.rickandmortyapplication.data.model.dto.EpisodeDTO
+import com.example.rickandmortyapplication.data.model.responses.EpisodeResponse
+import com.example.rickandmortyapplication.data.model.dto.LocationDto
+import com.example.rickandmortyapplication.data.model.responses.LocationResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

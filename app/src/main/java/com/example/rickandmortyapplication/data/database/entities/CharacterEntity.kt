@@ -4,8 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.example.rickandmortyapplication.data.database.Converters
-import com.example.rickandmortyapplication.data.model.CharacterLocationDto
-import com.example.rickandmortyapplication.data.model.OriginDto
+import com.example.rickandmortyapplication.data.model.dto.CharacterLocationDto
+import com.example.rickandmortyapplication.data.model.dto.OriginDto
 
 @Entity(tableName = "characters")
 data class CharacterEntity(

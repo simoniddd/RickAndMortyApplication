@@ -1,9 +1,9 @@
 package com.example.rickandmortyapplication.data.repository
 
-import com.example.rickandmortyapplication.data.database.LocationDao
+import com.example.rickandmortyapplication.data.database.dao.LocationDao
 import com.example.rickandmortyapplication.data.database.entities.LocationEntity
-import com.example.rickandmortyapplication.data.model.CharacterDto
-import com.example.rickandmortyapplication.data.model.LocationDto
+import com.example.rickandmortyapplication.data.model.dto.CharacterDto
+import com.example.rickandmortyapplication.data.model.dto.LocationDto
 import com.example.rickandmortyapplication.data.network.ApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

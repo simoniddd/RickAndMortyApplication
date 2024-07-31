@@ -6,6 +6,7 @@
 - [Описание](#описание)
 - [Библиотеки](#библиотеки)
 - [Паттерны проектирования](#паттерн)
+- [Скриншоты](#скриншоты)
 - [Установка](#установка)
 - [Использование](#использование)
 - [Функции](#функции)
@@ -26,6 +27,27 @@ RecyclerView, Retrofit, Room, Flow & ViewModel, Navigation Component, SplashScre
 ## Паттерн проектирования
 
 MVVM (Model-View-ViewModel)
+
+## Скриншоты
+
+### Главный экран
+<img src="screenshots/characters_list_screenshot.png" alt="Главный экран" width="20%" height="20%"/>
+
+### Детали персонажа
+<img src="screenshots/character_details_screenshot.png" alt="Главный экран" width="20%" height="20%"/>
+
+### Список Эпизодов
+<img src="screenshots/episodes_list_screenshot.png" alt="Главный экран" width="20%" height="20%"/>
+
+### Детали эпизода
+<img src="screenshots/episode_details_screenshot.png" alt="Главный экран" width="20%" height="20%"/>
+
+### Список Локаций
+<img src="screenshots/locations_list_screenshot.png" alt="Главный экран" width="20%" height="20%"/>
+
+### Детали локации
+<img src="screenshots/location_details_screenshot.png" alt="Главный экран" width="20%" height="20%"/>
+
 
 ## Установка
 

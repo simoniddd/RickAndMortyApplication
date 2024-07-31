@@ -48,7 +48,6 @@ class LocationRepository(
         return dbLocations.filter { it.page == page }
     }
 
-    // Запрос данных из API и сохранение в базу данных
     private suspend fun fetchLocationsFromApi(page: Int): List<LocationEntity> {
         return try {
             val response = apiService.getAllLocations(page)
@@ -74,7 +73,6 @@ class LocationRepository(
         }
     }
 
-    // Фильтрация данных в кэше по заданным критериям
     private fun filterLocationsInCache(
         name: String,
         type: String,

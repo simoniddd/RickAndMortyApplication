@@ -1,15 +1,16 @@
 package com.example.rickandmortyapplication.ui.character
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rickandmortyapplication.data.repository.CharacterRepository
 import com.example.rickandmortyapplication.ui.filters.CharacterFilterDialogFragment
-import com.example.rickandmortyapplication.ui.locations.Quad
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 
 class CharacterViewModel(
@@ -21,10 +22,7 @@ class CharacterViewModel(
     val characterUiState: StateFlow<CharacterUiState> = _characterUiState.asStateFlow()
 
     private val _searchQuery = MutableStateFlow("")
-    private val _nameFilter = MutableStateFlow("")
-    private val _statusFilter = MutableStateFlow("")
-    private val _speciesFilter = MutableStateFlow("")
-    private val _genderFilter = MutableStateFlow("")
+    val _filters = MutableStateFlow(CharacterFilters())
 
     private var currentPage = 1
     private var isLastPage = false
@@ -36,42 +34,38 @@ class CharacterViewModel(
     private fun observeFiltersAndQuery() {
         viewModelScope.launch {
             combine(
-                _nameFilter,
-                _statusFilter,
-                _speciesFilter,
-                _genderFilter,
+                _filters,
                 _searchQuery
-            ) { name, status, species, gender, query ->
-                Quad(name, status, species, gender) to query
-            }.collect { (filters, query) ->
-                val (name, status, species, gender) = filters
-                currentPage = 1
-                isLastPage = false
-                loadCharacters(name, status, species, gender, query)
-            }
+            ) { filters, query ->
+                filters to query
+
+            }.debounce(300)
+                .collect { (filters, query) ->
+                    val (name, status, species, gender) = filters
+                    currentPage = 1
+                    isLastPage = false
+                    loadCharacters(filters, query)
+                }
         }
     }
 
-    fun loadCharacters(
-        name: String = _nameFilter.value,
-        status: String = _statusFilter.value,
-        species: String = _speciesFilter.value,
-        gender: String = _genderFilter.value,
-        query: String = _searchQuery.value
-    ) {
+    fun loadCharacters(filters: CharacterFilters, query: String) {
         viewModelScope.launch {
             _characterUiState.value = CharacterUiState.Loading
             try {
                 val characters = repository.getCharacters(
                     page = currentPage,
-                    name = name,
-                    status = status,
-                    species = species,
-                    gender = gender,
+                    name = filters.name,
+                    status = filters.status,
+                    species = filters.species,
+                    gender = filters.gender,
                     searchQuery = query
                 )
                 _characterUiState.value = CharacterUiState.Success(characters)
-                isLastPage = characters.isEmpty()
+                isLastPage = characters.isEmpty() || characters.size < 20
+                if (!isLastPage) {
+                    currentPage++
+                }
             } catch (e: Exception) {
                 _characterUiState.value =
                     CharacterUiState.Error("Failed to load characters: ${e.message}")
@@ -82,39 +76,39 @@ class CharacterViewModel(
 
     fun loadNextPage() {
         if (!isLastPage && _searchQuery.value.isBlank()) {
-            currentPage++
-            loadCharacters()
+            loadCharacters(_filters.value, "")
         }
     }
 
-
     fun applyFilters(filters: CharacterFilterDialogFragment.CharacterFilterData) {
-        _nameFilter.value = filters.name
-        _statusFilter.value = if (filters.status == "All") "" else filters.status
-        _speciesFilter.value = filters.species
-        _genderFilter.value = if (filters.gender == "All") "" else filters.gender
-        resetPagination()
-        loadCharacters()
+        _filters.value = CharacterFilters(
+            name = filters.name,
+            status = if (filters.status == "All") "" else filters.status,
+            species = filters.species,
+            gender = if (filters.gender == "All") "" else filters.gender
+        )
     }
 
     fun clearFilters() {
-        _nameFilter.value = ""
-        _statusFilter.value = ""
-        _speciesFilter.value = ""
-        _genderFilter.value = ""
+        _filters.value = CharacterFilters()
         _searchQuery.value = ""
-        resetPagination()
-        loadCharacters()
     }
 
     private fun resetPagination() {
         currentPage = 1
         isLastPage = false
+        loadCharacters(_filters.value, "")
     }
 
     fun setSearchQuery(query: String) {
         _searchQuery.value = query
         resetPagination()
-        loadCharacters()
     }
 }
+
+data class CharacterFilters(
+    val name: String = "",
+    val status: String = "",
+    val species: String = "",
+    val gender: String = ""
+)

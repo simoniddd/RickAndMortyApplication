@@ -27,7 +27,6 @@ class CharacterRepository(
         return withContext(Dispatchers.IO) {
             val allCachedCharacters = getAllCachedCharacters().first()
             val cachedCharacters = getCharactersForPage(page, allCachedCharacters)
-
             if (cachedCharacters.isNotEmpty()) {
                 filterCharactersInCache(
                     name,

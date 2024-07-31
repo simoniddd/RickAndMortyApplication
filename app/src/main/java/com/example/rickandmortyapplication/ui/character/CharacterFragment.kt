@@ -96,7 +96,7 @@ class CharacterFragment : Fragment(), CharacterFilterDialogFragment.CharacterFil
 
         binding.swipeRefreshLayout.setOnRefreshListener {
             characterViewModel.setSearchQuery("")
-            characterViewModel.refreshCharacters()
+            characterViewModel.loadCharacters()
             binding.swipeRefreshLayout.isRefreshing = false
         }
 

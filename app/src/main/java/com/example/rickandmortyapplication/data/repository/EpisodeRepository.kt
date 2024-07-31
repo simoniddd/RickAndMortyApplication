@@ -8,7 +8,6 @@ import com.example.rickandmortyapplication.data.network.ApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class EpisodeRepository(
@@ -42,7 +41,10 @@ class EpisodeRepository(
         return episodeDao.getAllEpisodes()
     }
 
-    private fun getEpisodesForPage(page: Int, dbEpisodes: List<EpisodeEntity>): List<EpisodeEntity> {
+    private fun getEpisodesForPage(
+        page: Int,
+        dbEpisodes: List<EpisodeEntity>
+    ): List<EpisodeEntity> {
         return dbEpisodes.filter { it.page == page }
     }
 
@@ -78,9 +80,15 @@ class EpisodeRepository(
         dbEpisodes: List<EpisodeEntity>
     ): List<EpisodeEntity> {
         return dbEpisodes.filter { episodeEntity ->
-            (searchQuery.isBlank() || episodeEntity.name.contains(searchQuery, ignoreCase = true)) &&
+            (searchQuery.isBlank() || episodeEntity.name.contains(
+                searchQuery,
+                ignoreCase = true
+            )) &&
                     (name.isBlank() || episodeEntity.name.contains(name, ignoreCase = true)) &&
-                    (episode.isBlank() || episodeEntity.episode.contains(episode, ignoreCase = true))
+                    (episode.isBlank() || episodeEntity.episode.contains(
+                        episode,
+                        ignoreCase = true
+                    ))
         }
     }
 

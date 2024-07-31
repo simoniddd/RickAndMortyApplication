@@ -59,23 +59,6 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/typeInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/type"
-        android:padding="6dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/speciesInputLayout">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/typeEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/genderInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -83,7 +66,7 @@
         android:padding="7dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/typeInputLayout">
+        app:layout_constraintTop_toBottomOf="@id/speciesInputLayout">
 
         <Spinner
             android:id="@+id/genderSpinner"

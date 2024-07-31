@@ -7,9 +7,7 @@ import com.example.rickandmortyapplication.data.model.LocationDto
 import com.example.rickandmortyapplication.data.network.ApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class LocationRepository(
@@ -43,7 +41,10 @@ class LocationRepository(
         return locationDao.getAllLocations()
     }
 
-    private fun getLocationsForPage(page: Int, dbLocations: List<LocationEntity>): List<LocationEntity> {
+    private fun getLocationsForPage(
+        page: Int,
+        dbLocations: List<LocationEntity>
+    ): List<LocationEntity> {
         return dbLocations.filter { it.page == page }
     }
 
@@ -82,10 +83,16 @@ class LocationRepository(
         dbLocations: List<LocationEntity>
     ): List<LocationEntity> {
         return dbLocations.filter { locationEntity ->
-                    (searchQuery.isBlank() || locationEntity.name.contains(searchQuery, ignoreCase = true)) &&
-                            (name.isBlank() || locationEntity.name.contains(name, ignoreCase = true)) &&
-                            (type.isBlank() || locationEntity.type.contains(type, ignoreCase = true)) &&
-                            (dimension.isBlank() || locationEntity.dimension.contains(dimension, ignoreCase = true))
+            (searchQuery.isBlank() || locationEntity.name.contains(
+                searchQuery,
+                ignoreCase = true
+            )) &&
+                    (name.isBlank() || locationEntity.name.contains(name, ignoreCase = true)) &&
+                    (type.isBlank() || locationEntity.type.contains(type, ignoreCase = true)) &&
+                    (dimension.isBlank() || locationEntity.dimension.contains(
+                        dimension,
+                        ignoreCase = true
+                    ))
         }
     }
 

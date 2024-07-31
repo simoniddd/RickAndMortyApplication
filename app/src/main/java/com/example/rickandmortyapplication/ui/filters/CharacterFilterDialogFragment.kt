@@ -20,9 +20,7 @@ class CharacterFilterDialogFragment : DialogFragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCharacterFilterDialogBinding.inflate(inflater, container, false)
         return binding.root
@@ -32,17 +30,13 @@ class CharacterFilterDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val statusAdapter = ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.character_status_array,
-            android.R.layout.simple_spinner_item
+            requireContext(), R.array.character_status_array, android.R.layout.simple_spinner_item
         )
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.statusSpinner.adapter = statusAdapter
 
         val genderAdapter = ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.character_gender_array,
-            android.R.layout.simple_spinner_item
+            requireContext(), R.array.character_gender_array, android.R.layout.simple_spinner_item
         )
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.genderSpinner.adapter = genderAdapter
@@ -51,14 +45,15 @@ class CharacterFilterDialogFragment : DialogFragment() {
             val name = binding.nameEditText.text.toString()
             val status = binding.statusSpinner.selectedItem.toString()
             val species = binding.speciesEditText.text.toString()
-            val type = binding.typeEditText.text.toString()
             val gender = binding.genderSpinner.selectedItem.toString()
-            val filterData = CharacterFilterData(name, status, species, type, gender)
+            val filterData = CharacterFilterData(name, status, species, gender)
             (parentFragment as? CharacterFilterListener)?.onCharacterFiltersApplied(filterData)
             dismiss()
         }
 
         binding.clearFiltersButton.setOnClickListener {
+            binding.nameEditText.text?.clear()
+            binding.speciesEditText.text?.clear()
             (parentFragment as? CharacterFilterListener)?.onCharacterFiltersCleared()
             dismiss()
         }
@@ -72,8 +67,7 @@ class CharacterFilterDialogFragment : DialogFragment() {
     override fun onStart() {
         super.onStart()
         dialog?.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         )
     }
 
@@ -84,9 +78,8 @@ class CharacterFilterDialogFragment : DialogFragment() {
 
     data class CharacterFilterData(
         val name: String,
-        val status: String,
+        val status: String = "All",
         val species: String,
-        val type: String,
-        val gender: String
+        val gender: String = "All"
     )
 }

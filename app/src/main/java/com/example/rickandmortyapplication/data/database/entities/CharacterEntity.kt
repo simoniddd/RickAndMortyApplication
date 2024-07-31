@@ -14,7 +14,7 @@ data class CharacterEntity(
     val name: String,
     val status: String,
     val species: String,
-    val type: String?,
+    val type: String,
     val gender: String,
     @TypeConverters(Converters::class)
     val origin: OriginDto,

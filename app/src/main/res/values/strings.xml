@@ -19,6 +19,7 @@
     <string name="character_location_label">Location: %1$s</string>
 
     <string-array name="character_gender_array">
+        <item>All</item>
         <item>Male</item>
         <item>Female</item>
         <item>Genderless</item>
@@ -26,6 +27,7 @@
     </string-array>
 
     <string-array name="character_status_array">
+        <item>All</item>
         <item>Alive</item>
         <item>Dead</item>
         <item>Unknown</item>

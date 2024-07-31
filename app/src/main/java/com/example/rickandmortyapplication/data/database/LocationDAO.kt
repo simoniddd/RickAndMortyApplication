@@ -16,15 +16,9 @@ interface LocationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLocations(locations: List<LocationEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertLocation(location: LocationEntity)
-
     @Query("SELECT * FROM locations WHERE id = :locationId")
     fun getLocationById(locationId: Int): Flow<LocationEntity>
 
     @Query("SELECT * FROM locations WHERE name LIKE '%' || :query || '%'")
     fun getFilteredLocations(query: String): Flow<List<LocationEntity>>
-
-    @Query("SELECT* FROM locations WHERE page = :page")
-    suspend fun getLocationsForPage(page: Int): List<LocationEntity>
 }

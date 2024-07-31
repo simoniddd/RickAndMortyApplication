@@ -109,10 +109,7 @@ class CharacterDetailsFragment : Fragment() {
                             )
                             binding.characterGender.text =
                                 getString(R.string.character_gender_label, uiState.character.gender)
-                            binding.characterOrigin.text = getString(
-                                R.string.character_origin_label,
-                                uiState.character.origin.name
-                            )
+                            binding.characterOrigin.text = uiState.character.origin.name
                             binding.characterLocation.text = getString(
                                 R.string.character_location_label,
                                 uiState.character.location.name

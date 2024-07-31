@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rickandmortyapplication.data.repository.LocationRepository
+import com.example.rickandmortyapplication.ui.episodes.EpisodeUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -22,10 +23,7 @@ class LocationsViewModel(
     private val _typeFilter = MutableStateFlow("")
     private val _dimensionFilter = MutableStateFlow("")
 
-    var searchQuery: StateFlow<String> = _searchQuery
-    var nameFilter: StateFlow<String> = _nameFilter
-    var typeFilter: StateFlow<String> = _typeFilter
-    var dimensionFilter: StateFlow<String> = _dimensionFilter
+    val searchQuery: StateFlow<String> = _searchQuery
 
     private var currentPage = 1
     private var isLastPage = false
@@ -85,6 +83,10 @@ class LocationsViewModel(
                     searchQuery = query,
                 )
                 _locationUiState.value = LocationUiState.Success(locations)
+                isLastPage = locations.isEmpty()
+                if (!isLastPage) {
+                    currentPage++
+                }
             } catch (e: Exception) {
                 _locationUiState.value = LocationUiState.Error(e.message ?: "Unknown error")
             }
@@ -92,8 +94,7 @@ class LocationsViewModel(
     }
 
     fun loadNextPage() {
-        if (!isLastPage) {
-            currentPage++
+        if (!isLastPage && searchQuery.value.isBlank()) {
             loadLocations()
         }
     }

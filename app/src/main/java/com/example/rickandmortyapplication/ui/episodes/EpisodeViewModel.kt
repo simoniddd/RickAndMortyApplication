@@ -22,8 +22,6 @@ class EpisodeViewModel(
     private val _episodeFilter = MutableStateFlow("")
 
     val searchQuery: StateFlow<String> = _searchQuery
-    val nameFilter: StateFlow<String> = _nameFilter
-    val episodeFilter: StateFlow<String> = _episodeFilter
 
     private var currentPage = 1
     private var isLastPage = false
@@ -56,11 +54,11 @@ class EpisodeViewModel(
     fun clearFilters() {
         _nameFilter.value = ""
         _episodeFilter.value = ""
+        _searchQuery.value = ""
         currentPage = 1
         isLastPage = false
         loadEpisodes()
     }
-
 
     fun setSearchQuery(query: String) {
         _searchQuery.value = query
@@ -93,7 +91,6 @@ class EpisodeViewModel(
 
     fun loadNextPage() {
         if (!isLastPage && searchQuery.value.isBlank()) {
-            currentPage++
             loadEpisodes()
         }
     }

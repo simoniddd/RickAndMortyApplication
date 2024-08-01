@@ -38,7 +38,7 @@ class EpisodeViewModel(
                 _episodeFilter,
                 _searchQuery
             ) { name, episode, query ->
-                Triple(name, episode, query)
+                arrayOf(name, episode, query)
             }.collect { (name, episode, query) ->
                 currentPage = 1
                 isLastPage = false

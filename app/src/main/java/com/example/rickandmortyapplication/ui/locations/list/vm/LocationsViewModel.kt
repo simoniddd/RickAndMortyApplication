@@ -40,7 +40,7 @@ class LocationsViewModel(
                 _dimensionFilter,
                 _searchQuery
             ) { name, type, dimension, query ->
-                Quad(name, type, dimension, query)
+                arrayOf(name, type, dimension, query)
             }.collect { (name, type, dimension, query) ->
                 currentPage = 1
                 isLastPage = false
@@ -99,10 +99,3 @@ class LocationsViewModel(
         }
     }
 }
-
-data class Quad<A, B, C, D>(
-    val first: A,
-    val second: B,
-    val third: C,
-    val fourth: D
-)
